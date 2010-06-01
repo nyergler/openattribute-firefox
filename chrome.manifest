@@ -1,0 +1,14 @@
+# The "ccffext" is chosen to be the internal identifier of the extension
+
+# Main data
+content ccffext   content/
+
+# Localizations
+# For now, only the "en-US" locale is supported
+locale  ccffext   en-US locale/en-US/
+
+# Skins (style definitions)
+skin    ccffext   classic/1.0 skin/
+
+# The overlay of UI specifies the entry point of the extension's code
+overlay chrome://browser/content/browser.xul chrome://ccffext/content/browser.xul

@@ -1,0 +1,24 @@
+/*
+	An icon being displayed in the location bar when licensed objects are present.
+
+	Default behavior is to keep the icon hidden.
+	The Creative Commons website`s favicon is used as it's suitable for now and is subject to change.
+	Additional space is added to the icon to look distinctively among other icons
+*/
+image#ccffext-icon
+{
+	display: none;
+	list-style-image: url("http://creativecommons.org/favicon.ico");
+	margin: 0 3px 0 3px;
+}
+
+	/*
+		The "enabled" attribute makes the icon to be displayed.
+
+		For now, the icon is always visible for demo purposes
+		TODO: Hide the icon by default and make it follow the docs
+	*/
+	image#ccffext-icon/*[enabled]*/
+	{
+		display: inherit;
+	}

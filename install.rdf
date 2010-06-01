@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+    <Description about="urn:mozilla:install-manifest">
+	    <!--
+	        Extension identifier.
+
+	        It's not likely there`d be the other project named "cc.ff_ext" hosted on the Creative Commons Code website,
+	        so this identifier is considered unique
+	    -->
+	    <em:id>cc.ff_ext@code.creativecommons.org</em:id>
+
+	    <!--
+	        Extension version.
+
+	        The version number has the "major.minor.release" format. For the GSoC development period the major number
+	        is "0", the minor increases every week (the "0" week starts 2010-05-24), the release increases as a new
+	        change is made publicly available
+	    -->
+	    <em:version>0.1.0</em:version>
+
+	    <!--
+	        Extension type.
+
+	        Here "2" means this is an extension, not a theme or anything else
+	    -->
+	    <em:type>2</em:type>
+
+	    <!-- Extension name -->
+	    <em:name>Creative Commons Firefox Extension</em:name>
+
+	    <!-- Extension description -->
+	    <em:description>Attribution helper browser extension (GSoC 2010 project)</em:description>
+
+	    <!-- Extension contributors -->
+	    <em:creator>Igor Lukanin (mail@igor.lukanin.name)</em:creator>
+
+	    <!--
+	        Extension homepage.
+
+	        During the development period, let`s point to the repository
+	    -->
+	    <em:homepageURL>http://code.creativecommons.org/viewgit/cc.ff_ext.git/</em:homepageURL>
+
+	    <!-- Shows what application is augmented using this extension -->
+	    <em:targetApplication>
+		    <Description>
+			    <!-- Firefox identifier -->
+			    <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+
+			    <!--
+			        Supported versions.
+
+			        During the early development period, only the latest versions of Firefox are supported
+			    -->
+			    <em:minVersion>3.6</em:minVersion>
+			    <em:maxVersion>3.6.*</em:maxVersion>
+		    </Description>
+	    </em:targetApplication>
+	</Description>
+</RDF>

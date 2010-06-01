@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<!-- Load style definitions -->
+<?xml-stylesheet type="text/css" href="chrome://ccffext/skin/browser.css"?>
+
+<!-- Setup UI augmentations -->
+<overlay id="ccffext-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<!-- Load localization -->
+	<stringbundleset id="stringbundleset">
+		<stringbundle id="ccffext-l10n"	src="chrome://ccffext/locale/browser.properties"/>
+	</stringbundleset>
+
+	<!-- Load scripts -->
+	<script type="text/javascript" src="chrome://ccffext/content/browser.js"/>
+
+	<!--
+		Do the setup.
+
+		Pass the state to our code (including the tabbed browser "gBrowser" object)
+	-->
+	<script type="text/javascript">
+		ccffext.init(
+		{
+			browser : gBrowser
+		});
+	</script>
+
+	<!-- Add an icon to the location bar -->
+	<toolbarpalette id="BrowserToolbarPalette">
+		<toolbaritem id="urlbar-container">
+			<textbox id="urlbar">
+				<hbox id="urlbar-icons">
+					<!--
+						An icon being displayed when licensed objects are present.
+
+						A listener invoked on the click event is registered.
+						Specifying the position puts the icon before all icons, including the "Go To" icon (a triangle)
+					-->
+					<image id="ccffext-icon" onclick="ccffext.listener.iconClick();" position="1"/>
+				</hbox>
+			</textbox>
+		</toolbaritem>
+	</toolbarpalette>
+</overlay>
