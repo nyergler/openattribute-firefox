@@ -8,7 +8,6 @@
  * 
  * includes the AJAR (Tabulator) stuff
  */
-
 //
 //
 //
@@ -1856,14 +1855,14 @@ RDFA.CALLBACK_DONE_LOADING();
 
 
 
-RDFA.CALLBACK_DONE_PARSING = function() {
-    var CC = new Namespace('http://creativecommons.org/ns#');
-    var cc_license = CC('license');
+//RDFA.CALLBACK_DONE_PARSING = function() {
+//    var CC = new Namespace('http://creativecommons.org/ns#');
+//    var cc_license = CC('license');
 
-    var XHTML = new Namespace('http://www.w3.org/1999/xhtml/vocab#');
-    var xhtml_license = XHTML('license');
-ccffext.log(ccffext.state.rdfa.triplestore);
-    var current_page = ccffext.state.rdfa.triplestore.sym(Util.uri.join('', RDFA.BASE));
+//    var XHTML = new Namespace('http://www.w3.org/1999/xhtml/vocab#');
+//    var xhtml_license = XHTML('license');
+
+//    var current_page = ccffext.state.rdfa.triplestore.sym(Util.uri.join('', RDFA.BASE));
 
 //    var license = ccffext.state.rdfa.triplestore.the(current_page,cc_license);
-}
+//}

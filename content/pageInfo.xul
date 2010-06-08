@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<!-- Load style definitions -->
+<?xml-stylesheet type="text/css" href="chrome://ccffext/skin/pageInfo.css"?>
+
+<!-- Load localization -->
+<!DOCTYPE overlay SYSTEM "chrome://ccffext/locale/locale.dtd">
+
+<!-- Setup UI augmentations -->
+<overlay id="ccffext-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<!--
+		Load scripts
+	-->
+	<script type="text/javascript">
+		Components.utils.import("resource://ccffext/ccffextstore.js");
+	</script>
+	
+	<script type="text/javascript" src="resource://ccffext/ccffext.js"/>
+
+	<!-- Add a new tab -->
+	<windowdragbox id="topBar">
+		<radiogroup id="viewGroup">
+			<!-- The id of the tab should be specified in the "ccffext.config.tabName" variable -->
+			<radio id="ccffextTab" label="&ccffext.tab.title;" accesskey="L"
+			       oncommand="showTab('ccffext'); ccffext.listener.tabShow(document);"/>
+		</radiogroup>
+	</windowdragbox>
+
+	<deck id="mainDeck" flex="1">
+		<vbox id="ccffextPanel">
+			<textbox id="ccffextPanel-content" multiline="true" style="height: 2000px;"/>
+		</vbox>
+	</deck>
+</overlay>
