@@ -182,12 +182,9 @@ var ccffext =
 					}
 
 					const document = progress.DOMWindow.document;
-					const pattern = "//a[@rel = 'license']";
-					const tags = document.evaluate(pattern,document,null,XPathResult.ANY_TYPE,null);
-					for (var tag = tags.iterateNext(); tag; tag = tags.iterateNext())
-					{
-						alert(tag.getAttribute("href"));
-					}
+					XH.transform(document.getElementsByTagName('body')[0]);
+					XH.transform(document.getElementsByTagName('head')[0]);
+					ccffext.state.rdfa.parse(document,document.location.href);
 				}
 			},
 

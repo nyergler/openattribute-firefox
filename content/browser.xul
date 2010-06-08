@@ -10,7 +10,12 @@
 		<stringbundle id="ccffext-l10n"	src="chrome://ccffext/locale/browser.properties"/>
 	</stringbundleset>
 
-	<!-- Load scripts -->
+	<!--
+		Load scripts.
+
+		First the "RDFA in Javascript" library is loaded, then the code of the extension itself
+	-->
+	<script type="text/javascript" src="chrome://ccffext/content/rdfa.js"/>
 	<script type="text/javascript" src="chrome://ccffext/content/browser.js"/>
 
 	<!--
@@ -21,7 +26,8 @@
 	<script type="text/javascript">
 		ccffext.init(
 		{
-			browser : gBrowser
+			browser : gBrowser,
+			rdfa : RDFA
 		});
 	</script>
 
