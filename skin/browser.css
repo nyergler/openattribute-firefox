@@ -6,6 +6,7 @@
 */
 image#ccffext-icon
 {
+	cursor: pointer;
 	list-style-image: url("chrome://ccffext/content/media/cc.small.png");
 	margin: 0 3px 0 3px;
 }
