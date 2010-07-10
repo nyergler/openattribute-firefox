@@ -8,7 +8,7 @@
 image#ccffext-icon
 {
 	display: none;
-	list-style-image: url("chrome://ccffext/content/media/cc-locationbar-icon.png");
+	list-style-image: url("chrome://ccffext/content/media/cc.small.png");
 	margin: 0 3px 0 3px;
 }
 
