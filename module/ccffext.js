@@ -1,9 +1,31 @@
 var EXPORTED_SYMBOLS = ["ccffext"];
 
 /**
- * Main extension object.
+ * An extension of the "Array" object's prototype. Inspired by Shamasis Bhattacharya's code
  *
- * Behaves as a namespace for all code, containing configuration and references to objects and routines
+ * @return array An array of unique items
+ * @see http://www.shamasis.net/2009/09/fast-algorithm-to-find-unique-items-in-javascript-array/
+ */
+Array.prototype.unique = function()
+{
+	var object = {}, result = [];
+
+    for(let i = 0; i < this.length; ++i)
+    {
+	    object[this[i]] = this[i];
+    }
+
+    for(let i in object)
+    {
+	    result.push(object[i]);
+    }
+
+    return result;
+};
+
+/**
+ * Main extension object.
+ * Behaves as a namespace for all code
  */
 var ccffext =
 {
@@ -74,6 +96,137 @@ var ccffext =
 		get : function(key)
 		{
 			return this.values[key];
+		}
+	},
+
+	/**
+	 * Licensed objects (RDFa subjects) methods
+	 */
+	objects :
+	{
+		/**
+		 * Top-level predicates that mark licensed objects
+		 */
+		predicates :
+		{
+			"http://www.w3.org/1999/xhtml/vocab#" : ["copyright","license"]
+		},
+
+		/**
+		 * Finds licensed objects in a page
+		 *
+		 * @param location Location of the page containing licensed objects
+		 * @return array Array of objects
+		 */
+		extract : function(location)
+		{
+			var subjects = [];
+
+			for (let i = 0, statements = ccffext.cache.get(location).statements; i < statements.length; ++i)
+			{
+				for (let j in this.predicates)
+				{
+					for (let k = 0; k < this.predicates[j].length; ++k)
+					{
+						if (statements[i].predicate.uri == j + this.predicates[j][k])
+						{
+							subjects.push(statements[i].subject);
+						}
+					}
+				}
+			}
+
+			return subjects.unique();
+		},
+
+		/**
+		 * Checks if the cache contains the information for a document, calling a callback if not. Then calls a callback
+		 * if the document has any licensed objects
+		 */
+		callbackify : function(document,callbackHas,callbackNotCached)
+		{
+			const location = document.location.href;
+
+			// For all pages, except for system ones like "about:blank", "about:config" and so on
+			if (! location.match(/^about\:/i))
+			{
+				if (! ccffext.cache.contains(location) && callbackNotCached)
+				{
+					callbackNotCached.call(document);
+				}
+
+				if (ccffext.cache.contains(location))
+				{
+					const objects = ccffext.objects.extract(location);
+
+					if (0 < objects.length && callbackHas)
+					{
+						callbackHas.call(document);
+					}
+				}
+			}
+		}
+	},
+
+	/**
+	 * UI-related code
+	 */
+	ui :
+	{
+		/**
+		 * The location bar icon-related code
+		 */
+		icon :
+		{
+			/**
+			 * A XUL object represention the icon
+			 */
+			icon : undefined,
+
+			/**
+			 * Initializes the container for the icon and the icon itself
+			 *
+			 * @param document DOM document for the container and the icon
+			 * @param callback A callback function that is called when clicking on the icon
+			 */
+			init : function(document,callback)
+			{
+				this.icon = document.createElement("image");
+
+				with (this.icon)
+				{
+					setAttribute("id","ccffext-icon");
+					addEventListener("click",callback,true);
+				}
+			},
+
+			/**
+			 * Shows the icon. The icon is put to the container using DOM
+			 *
+			 * @param document DOM document for the container and the icon
+			 */
+			show : function(document)
+			{
+				var container = document.getElementById("urlbar-icons");
+				container.setAttribute("ccffext-icon","true");
+				container.appendChild(this.icon);
+			},
+
+			/**
+			 * Hides the icon. The icon is removed from the container using DOM
+			 *
+			 * @param document DOM document for the container and the icon
+			 */
+			hide : function(document)
+			{
+				var container = document.getElementById("urlbar-icons");
+
+				if (container.hasAttribute("ccffext-icon"))
+				{
+					container.removeAttribute("ccffext-icon");
+					container.removeChild(this.icon);
+				}
+			}
 		}
 	},
 

@@ -42,12 +42,12 @@
 			list.setAttribute("flex","1");
 			panel.appendChild(list);
 
-//			const item1 = document.createElement("listitem");
-//			item1.setAttribute("label","Load images"); // TODO
-//			list.appendChild(item1);
-//			const item2 = document.createElement("listitem");
-//			item2.setAttribute("label","5665464654"); // TODO
-//			list.appendChild(item2);
+			//			const item1 = document.createElement("listitem");
+			//			item1.setAttribute("label","Load images"); // TODO
+			//			list.appendChild(item1);
+			//			const item2 = document.createElement("listitem");
+			//			item2.setAttribute("label","5665464654"); // TODO
+			//			list.appendChild(item2);
 		}
 
 		/**
@@ -64,8 +64,6 @@
 
 				addEventListener("command",function()
 				{
-					//const statements = ccffext.cache.get(window.opener.content.document.location.href);
-
 					showTab('ccffext'); // Activates a panel with the "ccffextPanel" id
 				},true);
 			}

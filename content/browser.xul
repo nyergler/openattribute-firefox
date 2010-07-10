@@ -12,56 +12,72 @@
 	<script type="text/javascript">
 		<![CDATA[
 		/**
-		 * Add an icon to the location bar
+		 * Create an icon for the location bar
 		 */
+		ccffext.ui.icon.init(document,function()
 		{
-			const icon = document.createElement("image");
-
-			with (icon)
-			{
-				setAttribute("id","ccffext-icon");
-				setAttribute("position","1");
-
-				addEventListener("click",function()
-				{
-					BrowserPageInfo(null,'ccffext-tab'); // Open a tab in the "Page Info" dialog
-				},true);
-			}
-
-			document.getElementById("urlbar-icons").appendChild(icon);
-		}
+			BrowserPageInfo(null,'ccffext-tab'); // Open a tab in the "Page Info" dialog
+		});
 
 		/**
-		 * Register a page load listener that would look for licensing information on pages.
+		 * Register a page load listener that would look for licensing information on pages properly responding for it.
 		 * Gathered information is cached for performance reasons
 		 */
+		window.addEventListener("load",function()
 		{
-			gBrowser.addEventListener("load",function(event)
+			gBrowser.addProgressListener(
 			{
-				const document = event.originalTarget;
-
-				// Only for web pages
-				if (document instanceof HTMLDocument)
+				// A tab is opened, closed, or switched to
+				onLocationChange : function(progress,request,uri)
 				{
-					const location = document.location.href;
+					// Hide the location bar icon
+					ccffext.ui.icon.hide(document);
 
-					// For all pages, except for system ones like "about:blank", "about:config" and so on
-					if (! location.match(/^about\:/i))
+					const doc = progress.DOMWindow.document;
+
+					if (doc instanceof HTMLDocument)
 					{
-						if (! ccffext.cache.contains(location))
+						// Show the icon back if the document is cached and contains licensed objects
+						ccffext.objects.callbackify(doc,function()
 						{
-							XH.transform(document.getElementsByTagName("body")[0]);
-							XH.transform(document.getElementsByTagName("head")[0]);
+							ccffext.ui.icon.show(document);
+						});
+					}
+				},
 
-							RDFA.reset();
-							RDFA.parse(document);
+				// A document in an existing tab stopped loading
+				onStateChange : function(progress,request,flag,status)
+				{
+					if (flag & Components.interfaces.nsIWebProgressListener.STATE_STOP)
+					{
+						const doc = progress.DOMWindow.document;
 
-							ccffext.cache.put(location,RDFA.triplestore);
+						if (doc instanceof HTMLDocument)
+						{
+							// Parse the information and put it to cache.
+							// Show the icon back if the document contains licensed objects
+							ccffext.objects.callbackify(doc,function()
+							{
+								ccffext.ui.icon.show(document);
+							},function()
+							{
+								XH.transform(doc.getElementsByTagName("body")[0]);
+								XH.transform(doc.getElementsByTagName("head")[0]);
+
+								RDFA.reset();
+								RDFA.parse(doc);
+
+								ccffext.cache.put(doc.location.href,RDFA.triplestore);
+							});
 						}
 					}
-				}
-			},true);
-		}
+				},
+
+				onProgressChange: function() {},
+				onStatusChange: function() {},
+				onSecurityChange: function() {}
+			},Components.interfaces.nsIWebProgress.NOTIFY_LOCATION);
+		},false);
 		]]>
 	</script>
 </overlay>
