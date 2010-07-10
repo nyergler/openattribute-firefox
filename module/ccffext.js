@@ -32,93 +32,59 @@ var ccffext =
 	},
 
 	/**
-	 * Configuration
+	 * Cache of analysed pages that is used to store the RDFa information.
+	 * The "hashing" approach is used
+	 *
+	 * @see http://www.shamasis.net/2009/09/fast-algorithm-to-find-unique-items-in-javascript-array/
 	 */
-	config :
+	cache :
 	{
 		/**
-		 * Logging enabled.
-		 *
-		 * If set to true, then {@link ccffext.log} function is allowed to output debugging messages to the console
+		 * The cache backend, initially empty
 		 */
-		loggingEnabled : true
-	},
+		values : {},
 
-	/**
-	 * External state.
-	 *
-	 * Keeps references to external objects
-	 */
-	state :
-	{
 		/**
-		 * The "gBrowser" object, representing the tabbed browser component.
+		 * Checks if the cache contains an object by its key
 		 *
-		 * Must be initialized in the {@link ccffext.init} routine
+		 * @param key A key
+		 * @return boolean True if the cache contains the object, false otherwise
 		 */
-		browser : null,
+		contains : function(key)
+		{
+			return undefined != this.values[key];
+		},
 
-		rdfa : null
+		/**
+		 * Stores a "key-object" pair in the cache
+		 *
+		 * @param key A key
+		 * @param object An object
+		 */
+		put : function(key,object)
+		{
+			this.values[key] = object;
+		},
+
+		/**
+		 * Fetches an object by its key from the cache
+		 *
+		 * @param key A key
+		 */
+		get : function(request)
+		{
+			return this.values[key];
+		}
 	},
 
 	/**
-	 * Initialization routine.
-	 *
-	 * Stores references to external objects for further use, registers the window loading event listener
-	 *
-	 * @param state References to external objects
-	 */
-	init : function(state)
-	{
-		ccffext.state = state;
-
-		ccffext.state.browser.addEventListener("load",ccffext.listener.documentLoad,true);
-	},
-
-	/**
-	 * Writes a message to the console if the {@link ccffext.config.loggingEnabled} is true
+	 * Utility function that writes a message to the JavaScript console
 	 *
 	 * @param message A message
 	 */
 	log : function(message)
 	{
-		if (ccffext.config.loggingEnabled)
-		{
-			Cc["@mozilla.org/consoleservice;1"]	.getService(Ci.nsIConsoleService).logStringMessage(message);
-		}
-    },
-
-	/**
-	 * Event listeners
-	 */
-	listener :
-	{
-		documentLoad : function(event)
-		{
-			const document = event.originalTarget;
-
-			if (document instanceof HTMLDocument)
-			{
-				const location = document.location.href;
-
-				if (! location.match(/^about\:/i))
-				{
-					if (! ccffextstore.contains(location))
-					{
-						XH.transform(document.getElementsByTagName("body")[0]);
-						XH.transform(document.getElementsByTagName("head")[0]);
-						ccffext.state.rdfa.reset();
-						ccffext.state.rdfa.parse(document);
-						ccffextstore.put(location,ccffext.state.rdfa.triplestore);
-					}
-				}
-			}
-		},
-
-		tabShow : function(document)
-		{
-			const content = document.getElementById("ccffextPanel-content");
-			content.value = ccffextstore.get(window.opener.content.document.location.href);
-		}
-	}
+		Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService)
+				.logStringMessage(message);
+    }
 };

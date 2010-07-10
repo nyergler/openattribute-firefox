@@ -11,25 +11,57 @@
 	<!-- Control the main browser window behavior -->
 	<script type="text/javascript">
 		<![CDATA[
-			/**
-			 * Add an icon to the location bar
-			 */
+		/**
+		 * Add an icon to the location bar
+		 */
+		{
+			const icon = document.createElement("image");
+
+			with (icon)
 			{
-				const icon = document.createElement("image");
+				setAttribute("id","ccffext-icon");
+				setAttribute("position","1");
 
-				with (icon)
+				addEventListener("click",function()
 				{
-					setAttribute("id","ccffext-icon");
-					setAttribute("position","1");
-
-					addEventListener("click",function()
-					{
-						BrowserPageInfo(null,'ccffext-tab'); // Open a tab in the "Page Info" dialog
-					},true);
-				}
-
-				document.getElementById("urlbar-icons").appendChild(icon);
+					BrowserPageInfo(null,'ccffext-tab'); // Open a tab in the "Page Info" dialog
+				},true);
 			}
+
+			document.getElementById("urlbar-icons").appendChild(icon);
+		}
+
+		/**
+		 * Register a page load listener that would look for licensing information on pages.
+		 * Gathered information is cached for performance reasons
+		 */
+		{
+			gBrowser.addEventListener("load",function(event)
+			{
+				const document = event.originalTarget;
+
+				// Only for web pages
+				if (document instanceof HTMLDocument)
+				{
+					const location = document.location.href;
+
+					// For all pages, except for system ones like "about:blank", "about:config" and so on
+					if (! location.match(/^about\:/i))
+					{
+						if (! ccffext.cache.contains(location))
+						{
+							XH.transform(document.getElementsByTagName("body")[0]);
+							XH.transform(document.getElementsByTagName("head")[0]);
+
+							RDFA.reset();
+							RDFA.parse(document);
+
+							ccffext.cache.put(location,RDFA.triplestore);
+						}
+					}
+				}
+			},true);
+		}
 		]]>
 	</script>
 </overlay>

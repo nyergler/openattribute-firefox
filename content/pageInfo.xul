@@ -25,8 +25,10 @@
 
 				addEventListener("command",function()
 				{
+
+//					const value = ccffextstore.get(window.opener.content.document.location.href);
+
 					showTab('ccffext');
-					ccffext.listener.tabShow(document);
 				},true);
 			}
 
