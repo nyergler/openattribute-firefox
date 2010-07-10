@@ -4,22 +4,34 @@
 <?xml-stylesheet type="text/css" href="chrome://ccffext/skin/pageInfo.css"?>
 
 <!-- Setup UI augmentations -->
-<overlay id="ccffext-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	<!-- Bootstrap scripts -->
 	<script type="text/javascript" src="resource://ccffext/bootstrap.js"></script>
 
-	<!-- Add a new tab -->
-	<windowdragbox id="topBar">
-		<radiogroup id="viewGroup">
-			<!-- The id of the tab should be specified in the "ccffext.config.tabName" variable -->
-			<radio id="ccffext-tab" label="&ccffext.tab.title;" accesskey="L"
-			       oncommand="showTab('ccffext'); ccffext.listener.tabShow(document);"/>
-		</radiogroup>
-	</windowdragbox>
+	<!-- Control the "Page Info" dialog behavior -->
+	<script type="text/javascript">
+		<![CDATA[
+		/**
+		 * Add a tab to the top panel
+		 */
+		{
+			const tab = document.createElement("radio");
 
-	<deck id="mainDeck" flex="1">
-		<vbox id="ccffextPanel">
-			<textbox id="ccffextPanel-content" multiline="true" style="height: 2000px;"/>
-		</vbox>
-	</deck>
+			with (tab)
+			{
+				setAttribute("id","ccffext-tab");
+				setAttribute("label",ccffext.l10n.get("tab.title.label"));
+				setAttribute("accesskey",ccffext.l10n.get("tab.title.key"));
+
+				addEventListener("command",function()
+				{
+					showTab('ccffext');
+					ccffext.listener.tabShow(document);
+				},true);
+			}
+
+			document.getElementById("viewGroup").appendChild(tab);
+		}
+		]]>
+	</script>
 </overlay>

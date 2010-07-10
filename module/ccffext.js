@@ -8,6 +8,30 @@ var EXPORTED_SYMBOLS = ["ccffext"];
 var ccffext =
 {
 	/**
+	 * Localization object that is used to fetch localized strings from a property file
+	 */
+	l10n :
+	{
+		/**
+		 * Bundle holding all strings
+		 */
+		bundle : Components.classes["@mozilla.org/intl/stringbundle;1"]
+				.getService(Components.interfaces.nsIStringBundleService)
+				.createBundle("chrome://ccffext/locale/locale.properties"),
+
+		/**
+		 * Fetched a string by its name from the bundle
+		 *
+		 * @param name The name of a string
+		 * @return string A string
+		 */
+		get : function(name)
+		{
+			return this.bundle.GetStringFromName(name);
+		}
+	},
+
+	/**
 	 * Configuration
 	 */
 	config :
