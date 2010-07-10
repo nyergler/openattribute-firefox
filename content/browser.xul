@@ -38,9 +38,9 @@
 					if (doc instanceof HTMLDocument)
 					{
 						// Show the icon back if the document is cached and contains licensed objects
-						ccffext.objects.callbackify(doc,function()
+						ccffext.objects.callbackify(doc,document,function(document,callbackDocument)
 						{
-							ccffext.ui.icon.show(document);
+							ccffext.ui.icon.show(callbackDocument);
 						});
 					}
 				},
@@ -56,18 +56,19 @@
 						{
 							// Parse the information and put it to cache.
 							// Show the icon back if the document contains licensed objects
-							ccffext.objects.callbackify(doc,function()
+
+							ccffext.objects.callbackify(doc,document,function(document,callbackDocument)
 							{
-								ccffext.ui.icon.show(document);
-							},function()
+								ccffext.ui.icon.show(callbackDocument);
+							},function(document,callbackDocument)
 							{
-								XH.transform(doc.getElementsByTagName("body")[0]);
-								XH.transform(doc.getElementsByTagName("head")[0]);
+								XH.transform(document.getElementsByTagName("body")[0]);
+								XH.transform(document.getElementsByTagName("head")[0]);
 
 								RDFA.reset();
-								RDFA.parse(doc);
+								RDFA.parse(document);
 
-								ccffext.cache.put(doc.location.href,RDFA.triplestore);
+								ccffext.cache.put(document.location.href,RDFA.triplestore);
 							});
 						}
 					}

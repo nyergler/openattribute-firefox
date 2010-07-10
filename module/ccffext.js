@@ -143,7 +143,7 @@ var ccffext =
 		 * Checks if the cache contains the information for a document, calling a callback if not. Then calls a callback
 		 * if the document has any licensed objects
 		 */
-		callbackify : function(document,callbackHas,callbackNotCached)
+		callbackify : function(document,callbackDocument,callbackHas,callbackNotCached)
 		{
 			const location = document.location.href;
 
@@ -152,7 +152,7 @@ var ccffext =
 			{
 				if (! ccffext.cache.contains(location) && callbackNotCached)
 				{
-					callbackNotCached.call(document);
+					callbackNotCached(document,callbackDocument);
 				}
 
 				if (ccffext.cache.contains(location))
@@ -161,7 +161,7 @@ var ccffext =
 
 					if (0 < objects.length && callbackHas)
 					{
-						callbackHas.call(document);
+						callbackHas(document,callbackDocument);
 					}
 				}
 			}
