@@ -12,7 +12,46 @@
 	<script type="text/javascript">
 		<![CDATA[
 		/**
-		 * Add a tab to the top panel
+		 * Create a panel for a tab at the top
+		 */
+		{
+			// Main outer panel
+			const panel = document.createElement("vbox");
+			panel.setAttribute("id","ccffextPanel");
+			document.getElementById("mainDeck").appendChild(panel);
+
+			// Horizontal box at the top
+			const topLine = document.createElement("hbox");
+			panel.appendChild(topLine);
+
+			// Label showing the number of licensed objects
+			const numberLabel = document.createElement("label");
+			numberLabel.setAttribute("flex","1");
+			topLine.appendChild(numberLabel);
+
+			// Checkbox indicating whether to highlight licensed objects on page or not
+			const highlightBox = document.createElement("checkbox");
+			highlightBox.setAttribute("id","ccffext-highlight");
+			highlightBox.setAttribute("label",ccffext.l10n.get("checkbox.highlight.label"));
+			highlightBox.setAttribute("checked","true"); // By default, the objects are highlighted
+			topLine.appendChild(highlightBox);
+
+			// List of licensed objects
+			const list = document.createElement("listbox");
+			list.setAttribute("id","ccffext-objects");
+			list.setAttribute("flex","1");
+			panel.appendChild(list);
+
+//			const item1 = document.createElement("listitem");
+//			item1.setAttribute("label","Load images"); // TODO
+//			list.appendChild(item1);
+//			const item2 = document.createElement("listitem");
+//			item2.setAttribute("label","5665464654"); // TODO
+//			list.appendChild(item2);
+		}
+
+		/**
+		 * Add a tab at the top
 		 */
 		{
 			const tab = document.createElement("radio");
@@ -25,10 +64,9 @@
 
 				addEventListener("command",function()
 				{
+					//const statements = ccffext.cache.get(window.opener.content.document.location.href);
 
-//					const value = ccffextstore.get(window.opener.content.document.location.href);
-
-					showTab('ccffext');
+					showTab('ccffext'); // Activates a panel with the "ccffextPanel" id
 				},true);
 			}
 

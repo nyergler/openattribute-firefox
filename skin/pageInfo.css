@@ -1,7 +1,45 @@
 /*
-
+	A tab being displayed in the "Page Info" dialog.
+	The CC image is used as an icon
 */
 radio#ccffext-tab
 {
 	list-style-image: url("chrome://ccffext/content/media/cc.png");
+}
+
+/*
+	Main outer panel in the "Page Info" dialog.
+	Should look similar the "Permissions" tab (of Fx 3.6)
+*/
+vbox#ccffextPanel
+{
+	padding: 0 2px 0 2px;
+}
+
+/*
+	Highlight checkbox
+*/
+checkbox#ccffext-highlight
+{
+	margin: 0;
+	margin-top: -2px;
+	-moz-margin-end: 3px;
+}
+
+/*
+	List of licensed objects
+*/
+listbox#ccffext-objects
+{
+	margin-top: 5px;
+	margin-bottom: 0px;
+}
+
+/*
+	Licensed object item
+*/
+listbox#ccffext-objects listitem
+{
+	border-bottom: dotted 1px #c0c0c0;
+	padding: 6px 8px 6px 8px;
 }
