@@ -37,17 +37,13 @@
 			topLine.appendChild(highlightBox);
 
 			// List of licensed objects
-			const list = document.createElement("listbox");
+			const list = document.createElement("vbox");
 			list.setAttribute("id","ccffext-objects");
 			list.setAttribute("flex","1");
 			panel.appendChild(list);
 
-			//			const item1 = document.createElement("listitem");
-			//			item1.setAttribute("label","Load images"); // TODO
-			//			list.appendChild(item1);
-			//			const item2 = document.createElement("listitem");
-			//			item2.setAttribute("label","5665464654"); // TODO
-			//			list.appendChild(item2);
+			// List of added items
+			var items = [];
 		}
 
 		/**
@@ -64,6 +60,51 @@
 
 				addEventListener("command",function()
 				{
+					const doc = window.opener.content.document;
+					const objects = ccffext.objects.extract(doc.location.href);
+
+					for (let i = 0; i < items.length; ++i)
+					{
+						list.removeChild(items[i]);
+					}
+
+					items = [];
+
+					for (let i = 0; i < objects.length; ++i)
+					{
+						const item = document.createElement("hbox");
+						item.setAttribute("class","item");
+						items.push(item);
+						list.appendChild(item);
+
+						const topLine = document.createElement("vbox");
+						item.appendChild(topLine);
+
+						const title = document.createElement("label");
+						title.setAttribute("class","title");
+						title.setAttribute("value",ccffext.objects.getTitle(doc,objects[i]));
+						topLine.appendChild(title);
+
+						const sourceLine = document.createElement("hbox");
+						sourceLine.setAttribute("class","line");
+						topLine.appendChild(sourceLine);
+
+						const sourceTitle = document.createElement("label");
+						sourceTitle.setAttribute("class","line-title");
+						sourceTitle.setAttribute("value",ccffext.l10n.get("object.source.title.label"));
+						sourceLine.appendChild(sourceTitle);
+
+						const source = ccffext.objects.getSource(doc,objects[i]);
+						const sourceValue = document.createElement("label");
+						sourceValue.setAttribute("class","anchor");
+						sourceValue.setAttribute("value",source);
+						sourceValue.addEventListener("click",function()
+						{
+							window.open(source);
+						},true);
+						sourceLine.appendChild(sourceValue);
+					}
+
 					showTab('ccffext'); // Activates a panel with the "ccffextPanel" id
 				},true);
 			}

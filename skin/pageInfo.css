@@ -13,7 +13,7 @@ radio#ccffext-tab
 */
 vbox#ccffextPanel
 {
-	padding: 0 2px 0 2px;
+	padding: 0 6px 0 6px;
 }
 
 /*
@@ -29,17 +29,52 @@ checkbox#ccffext-highlight
 /*
 	List of licensed objects
 */
-listbox#ccffext-objects
+vbox#ccffext-objects
 {
 	margin-top: 5px;
 	margin-bottom: 0px;
+	-moz-appearance: listbox;
 }
 
 /*
 	Licensed object item
 */
-listbox#ccffext-objects listitem
+vbox#ccffext-objects .item
 {
 	border-bottom: dotted 1px #c0c0c0;
 	padding: 6px 8px 6px 8px;
+}
+
+/*
+	Title of licensed object item
+*/
+vbox#ccffext-objects .item label.title
+{
+	font-weight: bold;
+}
+
+/*
+    A line of information of licensed object item
+*/
+vbox#ccffext-objects .item hbox.line
+{
+	margin-top: 5px;
+}
+
+/*
+    A line of information of licensed object item
+*/
+vbox#ccffext-objects .item hbox.line label.line-title
+{
+	width: 30%;
+}
+
+/*
+	A label that looks like an anchor element
+ */
+label.anchor
+{
+	color: #0000ff;
+	cursor: pointer;
+	text-decoration: underline;
 }

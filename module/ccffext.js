@@ -165,6 +165,31 @@ var ccffext =
 					}
 				}
 			}
+		},
+
+		/**
+		 * Returns a title for a licensed object.
+		 * TODO There must be a smart algorithm implemented, involving usage of additional RDFa properties.
+		 * For now only the case when the object refers to the current document is processed in a smart way
+		 *
+		 * @param document The analysed document
+		 * @param object The object
+		 */
+		getTitle : function(document,object)
+		{
+			return document.location.href == object.uri ? ccffext.l10n.get("object.title.current-page.label") : object.uri;
+		},
+
+		/**
+		 * Returns a source for a licensed object.
+		 * TODO There must be a smart algorithm implemented, involving usage of additional RDFa properties
+		 *
+		 * @param document The analysed document
+		 * @param object The object
+		 */
+		getSource : function(document,object)
+		{
+			return object.uri;
 		}
 	},
 
