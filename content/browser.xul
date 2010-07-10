@@ -4,37 +4,32 @@
 <?xml-stylesheet type="text/css" href="chrome://ccffext/skin/browser.css"?>
 
 <!-- Setup UI augmentations -->
-<overlay id="ccffext-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	<!-- Bootstrap scripts -->
 	<script type="text/javascript" src="resource://ccffext/bootstrap.js"></script>
 
-	<!--
-		Do the setup.
-
-		Pass the state to our code (including the tabbed browser "gBrowser" object)
-	-->
+	<!-- Control the main browser window behavior -->
 	<script type="text/javascript">
-		ccffext.init(
-		{
-			browser : gBrowser,
-			rdfa : RDFA
-		});
+		<![CDATA[
+			/**
+			 * Add an icon to the location bar
+			 */
+			{
+				const icon = document.createElement("image");
+
+				with (icon)
+				{
+					setAttribute("id","ccffext-icon");
+					setAttribute("position","1");
+
+					addEventListener("click",function()
+					{
+						BrowserPageInfo(null,'ccffext-tab'); // Open a tab in the "Page Info" dialog
+					},true);
+				}
+
+				document.getElementById("urlbar-icons").appendChild(icon);
+			}
+		]]>
 	</script>
-
-	<!-- Add an icon to the location bar -->
-	<toolbarpalette id="BrowserToolbarPalette">
-		<toolbaritem id="urlbar-container">
-			<textbox id="urlbar">
-				<hbox id="urlbar-icons">
-					<!--
-						An icon being displayed when licensed objects are present.
-
-						Shows a "Page Info" window with a special tab selected.
-						Specifying the position puts the icon before all icons, including the "Go To" icon (a triangle)
-					-->
-					<image id="ccffext-icon" onclick="BrowserPageInfo(null,'ccffextTab');" position="1"/>
-				</hbox>
-			</textbox>
-		</toolbaritem>
-	</toolbarpalette>
 </overlay>

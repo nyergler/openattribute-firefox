@@ -12,7 +12,7 @@
 	<windowdragbox id="topBar">
 		<radiogroup id="viewGroup">
 			<!-- The id of the tab should be specified in the "ccffext.config.tabName" variable -->
-			<radio id="ccffextTab" label="&ccffext.tab.title;" accesskey="L"
+			<radio id="ccffext-tab" label="&ccffext.tab.title;" accesskey="L"
 			       oncommand="showTab('ccffext'); ccffext.listener.tabShow(document);"/>
 		</radiogroup>
 	</windowdragbox>
