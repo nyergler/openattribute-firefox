@@ -3,19 +3,10 @@
 <!-- Load style definitions -->
 <?xml-stylesheet type="text/css" href="chrome://ccffext/skin/pageInfo.css"?>
 
-<!-- Load localization -->
-<!DOCTYPE overlay SYSTEM "chrome://ccffext/locale/locale.dtd">
-
 <!-- Setup UI augmentations -->
 <overlay id="ccffext-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<!--
-		Load scripts
-	-->
-	<script type="text/javascript">
-		Components.utils.import("resource://ccffext/ccffextstore.js");
-	</script>
-	
-	<script type="text/javascript" src="resource://ccffext/ccffext.js"/>
+	<!-- Bootstrap scripts -->
+	<script type="text/javascript" src="resource://ccffext/bootstrap.js"></script>
 
 	<!-- Add a new tab -->
 	<windowdragbox id="topBar">

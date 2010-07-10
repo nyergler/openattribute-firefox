@@ -1,9 +1,11 @@
+var EXPORTED_SYMBOLS = ["ccffext"];
+
 /**
  * Main extension object.
  *
  * Behaves as a namespace for all code, containing configuration and references to objects and routines
  */
-var ccffext = undefined != ccffext ? ccffext :
+var ccffext =
 {
 	/**
 	 * Configuration

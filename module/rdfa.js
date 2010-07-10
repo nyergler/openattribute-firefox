@@ -1,3 +1,5 @@
+var EXPORTED_SYMBOLS = ["RDFA","XH"];
+
 /**
  *  RDFA in Javascript
  *  Ben Adida - ben@adida.net

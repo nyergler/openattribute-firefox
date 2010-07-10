@@ -5,22 +5,8 @@
 
 <!-- Setup UI augmentations -->
 <overlay id="ccffext-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<!-- Load localization -->
-	<stringbundleset id="stringbundleset">
-		<stringbundle id="ccffext-l10n"	src="chrome://ccffext/locale/locale.properties"/>
-	</stringbundleset>
-
-	<!--
-		Load scripts.
-
-		First the "RDFA in Javascript" library is loaded, then the code of the extension itself
-	-->
-	<script type="text/javascript">
-		Components.utils.import("resource://ccffext/ccffextstore.js");
-	</script>
-
-	<script type="text/javascript" src="resource://ccffext/rdfa.js"/>
-	<script type="text/javascript" src="resource://ccffext/ccffext.js"/>
+	<!-- Bootstrap scripts -->
+	<script type="text/javascript" src="resource://ccffext/bootstrap.js"></script>
 
 	<!--
 		Do the setup.
