@@ -71,7 +71,7 @@ var ccffext =
 		 *
 		 * @param key A key
 		 */
-		get : function(request)
+		get : function(key)
 		{
 			return this.values[key];
 		}
