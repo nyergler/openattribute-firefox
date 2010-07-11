@@ -33,7 +33,7 @@ Any software is made to provide ways to solve a specific problem of its end user
 
 Here "+" marks already implemented features, "±" — partly implemented, "-" — unimplemented. This list is the subject for updates during the development period.
 
-On the other hand, there`re the other criteria to be used for functional specification, primarily for technical specialists who`re more familiar with the domain. Due to the fact that the extension is the interface between markup languages used to bring web-pages (or, more specifically, embedded RDFa markup) and a human being, the criterion may be the following: list the elements in the markup that are percieved by the extension.
+On the other hand, there`re the other criteria to be used for functional specification, primarily for technical specialists who`re more familiar with the domain. Due to the fact that the extension is the interface between markup languages used to bring web-pages (or, more specifically, embedded RDFa markup) and a human being, the criterion may be the following: list the elements in the markup that are perceived by the extension.
 
 The extension may use information defined by:
 	+ http://www.w3.org/1999/xhtml/vocab#
