@@ -143,25 +143,25 @@ var ccffext =
 		 * Checks if the cache contains the information for a document, calling a callback if not. Then calls a callback
 		 * if the document has any licensed objects
 		 */
-		callbackify : function(document,callbackDocument,callbackHas,callbackNotCached)
+		callbackify : function(document,callbackHas,callbackNotCached)
 		{
 			const location = document.location.href;
 
 			// For all pages, except for system ones like "about:blank", "about:config" and so on
 			if (! location.match(/^about\:/i))
 			{
-				if (! ccffext.cache.contains(location) && callbackNotCached)
+				if (! ccffext.cache.contains(location) && "function" == typeof callbackNotCached)
 				{
-					callbackNotCached(document,callbackDocument);
+					callbackNotCached(document);
 				}
 
 				if (ccffext.cache.contains(location))
 				{
 					const objects = ccffext.objects.extract(location);
 
-					if (0 < objects.length && callbackHas)
+					if (0 < objects.length && "function" == typeof callbackHas)
 					{
-						callbackHas(document,callbackDocument);
+						callbackHas(document);
 					}
 				}
 			}
@@ -209,6 +209,11 @@ var ccffext =
 			icon : undefined,
 
 			/**
+			 * A XUL object that should hold the icon
+			 */
+			container : {},
+
+			/**
 			 * Initializes the container for the icon and the icon itself
 			 *
 			 * @param document DOM document for the container and the icon
@@ -217,6 +222,7 @@ var ccffext =
 			init : function(document,callback)
 			{
 				this.icon = document.createElement("image");
+				this.container = document.getElementById("urlbar-icons");
 
 				with (this.icon)
 				{
@@ -230,11 +236,10 @@ var ccffext =
 			 *
 			 * @param document DOM document for the container and the icon
 			 */
-			show : function(document)
+			show : function()
 			{
-				var container = document.getElementById("urlbar-icons");
-				container.setAttribute("ccffext-icon","true");
-				container.appendChild(this.icon);
+				ccffext.ui.icon.container.setAttribute("ccffext-icon","true");
+				ccffext.ui.icon.container.appendChild(ccffext.ui.icon.icon);
 			},
 
 			/**
@@ -242,14 +247,12 @@ var ccffext =
 			 *
 			 * @param document DOM document for the container and the icon
 			 */
-			hide : function(document)
+			hide : function()
 			{
-				var container = document.getElementById("urlbar-icons");
-
-				if (container.hasAttribute("ccffext-icon"))
+				if (ccffext.ui.icon.container.hasAttribute("ccffext-icon"))
 				{
-					container.removeAttribute("ccffext-icon");
-					container.removeChild(this.icon);
+					ccffext.ui.icon.container.removeAttribute("ccffext-icon");
+					ccffext.ui.icon.container.removeChild(ccffext.ui.icon.icon);
 				}
 			}
 		}

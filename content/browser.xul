@@ -31,17 +31,14 @@
 				onLocationChange : function(progress,request,uri)
 				{
 					// Hide the location bar icon
-					ccffext.ui.icon.hide(document);
+					ccffext.ui.icon.hide();
 
 					const doc = progress.DOMWindow.document;
 
 					if (doc instanceof HTMLDocument)
 					{
 						// Show the icon back if the document is cached and contains licensed objects
-						ccffext.objects.callbackify(doc,document,function(document,callbackDocument)
-						{
-							ccffext.ui.icon.show(callbackDocument);
-						});
+						ccffext.objects.callbackify(doc,ccffext.ui.icon.show);
 					}
 				},
 
@@ -57,10 +54,7 @@
 							// Parse the information and put it to cache.
 							// Show the icon back if the document contains licensed objects
 
-							ccffext.objects.callbackify(doc,document,function(document,callbackDocument)
-							{
-								ccffext.ui.icon.show(callbackDocument);
-							},function(document,callbackDocument)
+							ccffext.objects.callbackify(doc,ccffext.ui.icon.show,function(document,callbackDocument)
 							{
 								XH.transform(document.getElementsByTagName("body")[0]);
 								XH.transform(document.getElementsByTagName("head")[0]);
