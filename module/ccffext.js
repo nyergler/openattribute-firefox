@@ -23,6 +23,9 @@ Array.prototype.unique = function()
     return result;
 };
 
+// Support for l10n of plurals
+Components.utils.import("resource://gre/modules/PluralForm.jsm");
+
 /**
  * Main extension object.
  * Behaves as a namespace for all code
@@ -42,14 +45,38 @@ var ccffext =
 				.createBundle("chrome://ccffext/locale/locale.properties"),
 
 		/**
+		 * A lazy-initialized function for getting plurals
+		 *
+		 * @param number The number to be shown
+		 * @param string A semicolon-separated string of plural forms containing the "%d" placeholders
+		 * @return string A plural form with the placeholder substituted with the number
+		 */
+		getPlural : undefined,
+
+		/**
 		 * Fetched a string by its name from the bundle
 		 *
 		 * @param name The name of a string
 		 * @return string A string
 		 */
-		get : function(name)
+		get : function(name,number)
 		{
-			return this.bundle.GetStringFromName(name);
+			if ("undefined" == typeof number)
+			{
+				// No plural forms, just get the string
+				return this.bundle.GetStringFromName(name);
+			}
+			else
+			{
+				// Lazy-initialize the "getPlural" function
+				if 	("undefined" == typeof this.getPlural)
+				{
+					this.getPlural = PluralForm.makeGetter(this.bundle.GetStringFromName("l10n.plural.rule"))[0];
+				}
+
+				// Find appropriate plural form, substitute the placeholder
+				return this.getPlural(number,this.bundle.GetStringFromName(name)).replace("%d",number);
+			}
 		}
 	},
 
@@ -161,7 +188,7 @@ var ccffext =
 
 					if (0 < objects.length && "function" == typeof callbackHas)
 					{
-						callbackHas(document);
+						callbackHas(document,objects);
 					}
 				}
 			}
@@ -211,7 +238,7 @@ var ccffext =
 			/**
 			 * A XUL object that should hold the icon
 			 */
-			container : {},
+			container : undefined,
 
 			/**
 			 * Initializes the container for the icon and the icon itself
@@ -236,10 +263,11 @@ var ccffext =
 			 *
 			 * @param document DOM document for the container and the icon
 			 */
-			show : function()
+			show : function(document,objects)
 			{
 				ccffext.ui.icon.container.setAttribute("ccffext-icon","true");
 				ccffext.ui.icon.container.appendChild(ccffext.ui.icon.icon);
+				ccffext.ui.icon.icon.setAttribute("tooltiptext",ccffext.l10n.get("icon.title.label",objects.length));
 			},
 
 			/**
