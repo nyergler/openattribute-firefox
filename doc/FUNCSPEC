@@ -1,0 +1,46 @@
+Functional and UI specification
+-------------------------------
+Last update: 2010-07-11, YEKST.
+
+Any software is made to provide ways to solve a specific problem of its end user. The "end user" is not straightly meant to be a person, but in most cases she is. So, in case of application software, the specification of functionality may be done by listing the ways the software may solve its user`s problems. In case of a browser extension, these ways are cnnected to the UI the user sees. So, lets summarize what UI elements the extension should provide:
+
++ The icon placed in the location bar
+	+ The icon image should refer to CC and reflect the extension`s purpose
+	+ The icon should only be displayed if there`re any licensed objects
+	+ The icon should be clickable, providing extended information about objects
+	+ The icon should have a tooltip, indicating the number of licensed objects
+	- The icon should have a context menu (be right-clickable)
+		- The context menu should provide a way to navigate to extended information about licensed objects
+		- The context menu should provide a way to highlight licensed objects
++ The tab in the "Page Info" dialog
+	+ The tab image should also refer to CC and reflect the extension`s purpose
+	± There`re should be a checkbox to turn the highlighting on/off
+	± There`re should be a label showing the number of all licensed objects
+	+ There`re should be a list displaying an entry for any of licensed objects
+		+ The name of the object should be displayed
+		± Some information about the object should be shown:
+			- The type of the object
+			- The information about object`s creator
+			- The information about object`s rights holder
+			+ The hyperlink to the soure
+		- Some licensing information should be shown:
+			- The name of the license
+			- Standard СС icon(s)
+			- Hyperlink to the extended information about the license
+			- The summary of permissions, requirements and prohibitions
+			- The way to obtain the attribution information (a context menu-enabled button)
+- Licensed objects` highlighting
+
+Here "+" marks already implemented features, "±" — partly implemented, "-" — unimplemented. This list is the subject for updates during the development period.
+
+On the other hand, there`re the other criteria to be used for functional specification, primarily for technical specialists who`re more familiar with the domain. Due to the fact that the extension is the interface between markup languages used to bring web-pages (or, more specifically, embedded RDFa markup) and a human being, the criterion may be the following: list the elements in the markup that are percieved by the extension.
+
+The extension may use information defined by:
+	+ http://www.w3.org/1999/xhtml/vocab#
+		+ copyright
+		+ license
+	- http://creativecommons.org/ns#
+	- http://purl.org/dc/elements/1.1/#
+	- http://xmlns.com/foaf/0.1/#
+
+Currently the development process is focused on supporting more predcates from the list above, that would also lead to changing "-"/"±"s in the UI list to "+"s.
