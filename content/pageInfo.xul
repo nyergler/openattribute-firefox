@@ -61,8 +61,12 @@
 				addEventListener("command",function()
 				{
 					const doc = window.opener.content.document;
-					const objects = ccffext.objects.extract(doc.location.href);
+					const objects = ccffext.objects.extract(doc);
 
+					// Update the label showing the number of objects
+					numberLabel.setAttribute("value",ccffext.l10n.get("label.number.label",objects.length));
+
+					// Remove all previously added items from the list
 					for (let i = 0; i < items.length; ++i)
 					{
 						list.removeChild(items[i]);
@@ -70,6 +74,7 @@
 
 					items = [];
 
+					// Add new items to the list
 					for (let i = 0; i < objects.length; ++i)
 					{
 						const item = document.createElement("hbox");
@@ -105,6 +110,7 @@
 						sourceLine.appendChild(sourceValue);
 					}
 
+					// Eventually switch to the tab
 					showTab('ccffext'); // Activates a panel with the "ccffextPanel" id
 				},true);
 			}
