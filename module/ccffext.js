@@ -64,18 +64,20 @@ var ccffext =
 			if ("undefined" == typeof number)
 			{
 				// No plural forms, just get the string
-				return this.bundle.GetStringFromName(name);
+				return ccffext.l10n.bundle.GetStringFromName(name);
 			}
 			else
 			{
 				// Lazy-initialize the "getPlural" function
-				if 	("undefined" == typeof this.getPlural)
+				if 	("undefined" == typeof ccffext.l10n.getPlural)
 				{
-					this.getPlural = PluralForm.makeGetter(this.bundle.GetStringFromName("l10n.plural.rule"))[0];
+					ccffext.l10n.getPlural = PluralForm
+							.makeGetter(ccffext.l10n.bundle.GetStringFromName("l10n.plural.rule"))[0];
 				}
 
 				// Find appropriate plural form, substitute the placeholder
-				return this.getPlural(number,this.bundle.GetStringFromName(name)).replace("%d",number);
+				return ccffext.l10n.getPlural(number,ccffext.l10n.bundle.GetStringFromName(name))
+						.replace("%d",number);
 			}
 		}
 	},
@@ -101,7 +103,7 @@ var ccffext =
 		 */
 		contains : function(key)
 		{
-			return undefined != this.values[key];
+			return undefined != ccffext.cache.values[key];
 		},
 
 		/**
@@ -112,7 +114,7 @@ var ccffext =
 		 */
 		put : function(key,object)
 		{
-			this.values[key] = object;
+			ccffext.cache.values[key] = object;
 		},
 
 		/**
@@ -122,7 +124,7 @@ var ccffext =
 		 */
 		get : function(key)
 		{
-			return this.values[key];
+			return ccffext.cache.values[key];
 		}
 	},
 
@@ -142,20 +144,20 @@ var ccffext =
 		/**
 		 * Finds licensed objects in a page
 		 *
-		 * @param location Location of the page containing licensed objects
+		 * @param document The document containing licensed objects
 		 * @return array Array of objects
 		 */
-		extract : function(location)
+		extract : function(document)
 		{
 			var subjects = [];
 
-			for (let i = 0, statements = ccffext.cache.get(location).statements; i < statements.length; ++i)
+			for (let i = 0, statements = ccffext.cache.get(document.location.href).statements; i < statements.length; ++i)
 			{
-				for (let j in this.predicates)
+				for (let j in ccffext.objects.predicates)
 				{
-					for (let k = 0; k < this.predicates[j].length; ++k)
+					for (let k = 0; k < ccffext.objects.predicates[j].length; ++k)
 					{
-						if (statements[i].predicate.uri == j + this.predicates[j][k])
+						if (statements[i].predicate.uri == j + ccffext.objects.predicates[j][k])
 						{
 							subjects.push(statements[i].subject);
 						}
@@ -164,6 +166,27 @@ var ccffext =
 			}
 
 			return subjects.unique();
+		},
+
+		/**
+		 * Returns an array of two-element "predicate-object" pairs for the licenced object (RDFa subject)
+		 *
+		 * @param document The document containing licensed objects
+		 * @return subject The object (RDFa subject)
+		 */
+		getPairs : function(document,subject)
+		{
+			var pairs = [];
+
+			for (let i = 0, statements = ccffext.cache.get(document.location.href).statements; i < statements.length; ++i)
+			{
+				if (statements[i].subject.uri == subject.uri)
+				{
+					pairs.push([statements[i].predicate,statements[i].object]);
+				}
+			}
+
+			return pairs;
 		},
 
 		/**
@@ -184,7 +207,7 @@ var ccffext =
 
 				if (ccffext.cache.contains(location))
 				{
-					const objects = ccffext.objects.extract(location);
+					const objects = ccffext.objects.extract(document);
 
 					if (0 < objects.length && "function" == typeof callbackHas)
 					{
@@ -196,7 +219,6 @@ var ccffext =
 
 		/**
 		 * Returns a title for a licensed object.
-		 * TODO There must be a smart algorithm implemented, involving usage of additional RDFa properties.
 		 * For now only the case when the object refers to the current document is processed in a smart way
 		 *
 		 * @param document The analysed document
@@ -209,7 +231,6 @@ var ccffext =
 
 		/**
 		 * Returns a source for a licensed object.
-		 * TODO There must be a smart algorithm implemented, involving usage of additional RDFa properties
 		 *
 		 * @param document The analysed document
 		 * @param object The object
@@ -217,6 +238,55 @@ var ccffext =
 		getSource : function(document,object)
 		{
 			return object.uri;
+		},
+
+		/**
+		 * Returns information about the license
+		 *
+		 * @param document The analysed document
+		 * @param object The object
+		 * @param window The context window
+		 */
+		getLicense : function(document,object,window)
+		{
+			var license =
+			{
+				name : "Yandex OSS License",
+				uri : "http://ya.ru"
+			};
+
+			for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
+			{
+//				ccffext.log(pairs[i]);
+
+				var license =
+				{
+					name : undefined,
+					uri : undefined
+				};
+
+				if ((pairs[i][0].uri == "http://www.w3.org/1999/xhtml/vocab#copyright"
+						|| pairs[i][0].uri == "http://www.w3.org/1999/xhtml/vocab#license"))
+				{
+					license.uri = pairs[i][1].uri;
+					break;
+				}
+			}
+
+			if ("undefined" != typeof license.uri)
+			{
+				var xhr = new window.XMLHttpRequest();
+				xhr.open("GET","http://api.creativecommons.org/rest/1.5/details?license-uri=" + license.uri,false);
+				xhr.send(null);
+				if (4 == xhr.readyState && 200 == xhr.status)
+				{
+					ccffext.log(xhr.responseText);
+				}
+			}
+
+			license.name = license.uri;
+
+			return license;
 		}
 	},
 
@@ -248,10 +318,10 @@ var ccffext =
 			 */
 			init : function(document,callback)
 			{
-				this.icon = document.createElement("image");
-				this.container = document.getElementById("urlbar-icons");
+				ccffext.ui.icon.icon = document.createElement("image");
+				ccffext.ui.icon.container = document.getElementById("urlbar-icons");
 
-				with (this.icon)
+				with (ccffext.ui.icon.icon)
 				{
 					setAttribute("id","ccffext-icon");
 					addEventListener("click",callback,true);

@@ -108,6 +108,25 @@
 							window.open(source);
 						},true);
 						sourceLine.appendChild(sourceValue);
+
+						const licenseLine = document.createElement("hbox");
+						licenseLine.setAttribute("class","line");
+						topLine.appendChild(licenseLine);
+
+						const licenseTitle = document.createElement("label");
+						licenseTitle.setAttribute("class","line-title");
+						licenseTitle.setAttribute("value",ccffext.l10n.get("object.license.title.label"));
+						licenseLine.appendChild(licenseTitle);
+
+						const license = ccffext.objects.getLicense(doc,objects[i],window.opener.content);
+						const licenseValue = document.createElement("label");
+						licenseValue.setAttribute("class","anchor");
+						licenseValue.setAttribute("value",license.name);
+						licenseValue.addEventListener("click",function()
+						{
+							window.open(license.uri);
+						},true);
+						licenseLine.appendChild(licenseValue);
 					}
 
 					// Eventually switch to the tab

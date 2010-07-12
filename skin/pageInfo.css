@@ -66,7 +66,7 @@ vbox#ccffext-objects .item hbox.line
 */
 vbox#ccffext-objects .item hbox.line label.line-title
 {
-	width: 30%;
+	width: 100px;
 }
 
 /*
