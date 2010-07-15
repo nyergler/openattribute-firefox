@@ -239,16 +239,80 @@ var ccffext =
 
 		/**
 		 * Returns a title for a licensed object.
-		 * For now only the case when the object refers to the current document is processed in a smart way
 		 *
 		 * @param document The analysed document
 		 * @param object The object
 		 */
 		getTitle : function(document,object)
 		{
+			for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
+			{
+				if (pairs[i][0].uri == "http://purl.org/dc/terms/title")
+				{
+					return pairs[i][1];
+				}
+			}
+
 			return document.location.href == object.uri
 					? ccffext.l10n.get("object.title.current-page.label")
 					: object.uri;
+		},
+
+		/**
+		 * Returns a type for a licensed object
+		 *
+		 * @param document The analysed document
+		 * @param object The object
+		 */
+		getType : function(document,object)
+		{
+			for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
+			{
+				if (pairs[i][0].uri == "http://purl.org/dc/terms/type")
+				{
+					return pairs[i][1].uri.replace("http://purl.org/dc/dcmitype/","");
+				}
+			}
+
+			return undefined;
+		},
+
+		/**
+		 * Returns an author for a licensed object
+		 *
+		 * @param document The analysed document
+		 * @param object The object
+		 */
+		getAuthor : function(document,object)
+		{
+			for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
+			{
+				if (pairs[i][0].uri == "http://creativecommons.org/ns#attributionName")
+				{
+					return pairs[i][1];
+				}
+			}
+
+			return undefined;
+		},
+
+		/**
+		 * Returns an URI for an author for a licensed object
+		 *
+		 * @param document The analysed document
+		 * @param object The object
+		 */
+		getAuthorUri : function(document,object)
+		{
+			for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
+			{
+				if (pairs[i][0].uri == "http://creativecommons.org/ns#attributionURL")
+				{
+					return pairs[i][1];
+				}
+			}
+
+			return undefined;
 		},
 
 		/**
@@ -295,7 +359,7 @@ var ccffext =
 			if ("undefined" != typeof license.uri)
 			{
 				var xhr = new window.XMLHttpRequest();
-				let uri = "http://api.creativecommons.org/rest/1.5/details?license-uri=" + license.uri;
+				let uri = "http://api.creativecommons.org/rest/dev/details?license-uri=" + license.uri;
 
 				xhr.open("GET",uri,false);
 				xhr.send();

@@ -126,6 +126,53 @@
 						},true);
 						sourceLine.appendChild(sourceValue);
 
+						var type = ccffext.objects.getType(doc,objects[i]);
+						if ("undefined" != typeof type)
+						{
+							const typeLine = document.createElement("hbox");
+							typeLine.setAttribute("class","line");
+							leftPanel.appendChild(typeLine);
+
+							const typeTitle = document.createElement("label");
+							typeTitle.setAttribute("class","line-title");
+							typeTitle.setAttribute("value",ccffext.l10n.get("object.type.title.label"));
+							typeLine.appendChild(typeTitle);
+
+							const typeValue = document.createElement("label");
+							var line = ccffext.l10n.get("object.type."
+									+ type.toLowerCase().replace(/[^a-z]/g,"") + ".label");
+							typeValue.setAttribute("value",line.substring(0,1).toUpperCase() + line.substring(1));
+							typeLine.appendChild(typeValue);
+						}
+
+						var author = ccffext.objects.getAuthor(doc,objects[i]);
+						var authorUri = ccffext.objects.getAuthorUri(doc,objects[i]);
+						if ("undefined" != typeof author)
+						{
+							const authorLine = document.createElement("hbox");
+							authorLine.setAttribute("class","line");
+							leftPanel.appendChild(authorLine);
+
+							const authorTitle = document.createElement("label");
+							authorTitle.setAttribute("class","line-title");
+							authorTitle.setAttribute("value",ccffext.l10n.get("object.author.title.label"));
+							authorLine.appendChild(authorTitle);
+
+							const authorValue = document.createElement("label");
+							authorValue.setAttribute("value",author);
+							authorLine.appendChild(authorValue);
+
+							if ("undefined" != authorUri)
+							{
+								authorValue.setAttribute("class","anchor");
+								authorValue.setAttribute("uri",authorUri.uri);
+								authorValue.addEventListener("click",function(event)
+								{
+									window.open(this.getAttribute("uri"));
+								},true);
+							}
+						}
+
 						var license = ccffext.objects.getLicense(doc,objects[i],window.opener.content,RDFA,XH);
 						const licenseLine = document.createElement("hbox");
 						licenseLine.setAttribute("class","line primary");

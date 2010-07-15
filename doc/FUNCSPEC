@@ -18,8 +18,8 @@ Any software is made to provide ways to solve a specific problem of its end user
 	+ There should be a list displaying an entry for any of licensed objects
 		+ The name of the object should be displayed
 		± Some information about the object should be shown:
-			- The type of the object
-			- The information about object`s creator
+			+ The type of the object
+			+ The information about object`s creator
 			- The information about object`s rights holder
 			+ The hyperlink to the soure
 		± Some licensing information should be shown:
@@ -38,7 +38,7 @@ The extension may use information defined by:
 	+ http://www.w3.org/1999/xhtml/vocab#
 		+ copyright
 		+ license
-	± http://creativecommons.org/ns#
+	+ http://creativecommons.org/ns#
 		+ Reproduction
         + Distribution
         + DerivativeWorks
@@ -51,7 +51,11 @@ The extension may use information defined by:
 		+ Copyleft
 		+ LesserCopyleft
 		+ CommercialUse
-	- http://purl.org/dc/elements/1.1/#
+		+ attributionName
+		+ attributionURL
+	- http://purl.org/dc/terms/
+		+ title
+		+ type
 	- http://xmlns.com/foaf/0.1/#
 
 Currently the development process is focused on supporting more predcates from the list above, that would also lead to changing "-"/"±"s in the UI list to "+"s.
