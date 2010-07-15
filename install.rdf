@@ -17,7 +17,7 @@
 	        is "0", the minor increases every week (the "0" week starts 2010-05-24), the release increases as a new
 	        change is made publicly available
 	    -->
-	    <em:version>0.6.1</em:version>
+	    <em:version>0.7.0</em:version>
 
 	    <!--
 	        Extension  type.
