@@ -151,7 +151,8 @@ var ccffext =
 		{
 			var subjects = [];
 
-			for (let i = 0, statements = ccffext.cache.get(document.location.href).statements; i < statements.length; ++i)
+			let statements = statements = ccffext.cache.get(document.location.href).statements;
+			for (let i = 0; i < statements.length; ++i)
 			{
 				for (let j in ccffext.objects.predicates)
 				{
@@ -178,7 +179,8 @@ var ccffext =
 		{
 			var pairs = [];
 
-			for (let i = 0, statements = ccffext.cache.get(document.location.href).statements; i < statements.length; ++i)
+			let statements = statements = ccffext.cache.get(document.location.href).statements;
+			for (let i = 0; i < statements.length; ++i)
 			{
 				if (statements[i].subject.uri == subject.uri)
 				{
@@ -244,7 +246,9 @@ var ccffext =
 		 */
 		getTitle : function(document,object)
 		{
-			return document.location.href == object.uri ? ccffext.l10n.get("object.title.current-page.label") : object.uri;
+			return document.location.href == object.uri
+					? ccffext.l10n.get("object.title.current-page.label")
+					: object.uri;
 		},
 
 		/**
@@ -270,7 +274,8 @@ var ccffext =
 			var license =
 			{
 				name : undefined,
-				uri : undefined
+				uri : undefined,
+				permissions : []
 			};
 
 			for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
@@ -283,8 +288,6 @@ var ccffext =
 				}
 			}
 
-			ccffext.log("http://api.creativecommons.org/rest/1.5/details?license-uri=" + license.uri);
-
 			if ("undefined" != typeof license.uri)
 			{
 				var xhr = new window.XMLHttpRequest();
@@ -293,13 +296,20 @@ var ccffext =
 				xhr.send();
 				if (4 == xhr.readyState && 200 == xhr.status)
 				{				
-
 					ccffext.log(xhr.responseText);
 
 					var parser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
 							.createInstance(Components.interfaces.nsIDOMParser);
 					var doc = parser.parseFromString(xhr.responseText,"text/xml");
+
 					license.name = doc.getElementsByTagName("license-name")[0].textContent;
+
+					let perms = doc.getElementsByTagName("permits");
+					for (let i = 0; i < perms.length / 2; ++i)
+					{
+						license.permissions.push(perms[i].getAttribute("rdf:resource")
+								.replace("http://creativecommons.org/ns#",""));
+					}
 				}
 			}
 
@@ -357,9 +367,12 @@ var ccffext =
 			 */
 			show : function(document,objects)
 			{
-				ccffext.ui.icon.container.setAttribute("ccffext-icon","true");
-				ccffext.ui.icon.container.appendChild(ccffext.ui.icon.icon);
-				ccffext.ui.icon.icon.setAttribute("tooltiptext",ccffext.l10n.get("icon.title.label",objects.length));
+				with (ccffext.ui.icon)
+				{
+					container.setAttribute("ccffext-icon","true");
+					container.appendChild(ccffext.ui.icon.icon);
+					icon.setAttribute("tooltiptext",ccffext.l10n.get("icon.title.label",objects.length));
+				}
 			},
 
 			/**

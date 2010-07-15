@@ -56,7 +56,7 @@ vbox#ccffext-objects .item label.title
 /*
     A line of information of licensed object item
 */
-vbox#ccffext-objects .item hbox.line
+vbox#ccffext-objects .item .primary
 {
 	margin-top: 5px;
 }
@@ -64,7 +64,7 @@ vbox#ccffext-objects .item hbox.line
 /*
     A line of information of licensed object item
 */
-vbox#ccffext-objects .item hbox.line label.line-title
+vbox#ccffext-objects .item .line label.line-title
 {
 	width: 100px;
 }

@@ -83,6 +83,7 @@
 						list.appendChild(item);
 
 						const topLine = document.createElement("vbox");
+						topLine.setAttribute("class","line primary");
 						item.appendChild(topLine);
 
 						const title = document.createElement("label");
@@ -91,7 +92,7 @@
 						topLine.appendChild(title);
 
 						const sourceLine = document.createElement("hbox");
-						sourceLine.setAttribute("class","line");
+						sourceLine.setAttribute("class","line primary");
 						topLine.appendChild(sourceLine);
 
 						const sourceTitle = document.createElement("label");
@@ -109,8 +110,9 @@
 						},true);
 						sourceLine.appendChild(sourceValue);
 
+						var license = ccffext.objects.getLicense(doc,objects[i],window.opener.content,RDFA,XH);
 						const licenseLine = document.createElement("hbox");
-						licenseLine.setAttribute("class","line");
+						licenseLine.setAttribute("class","line primary");
 						topLine.appendChild(licenseLine);
 
 						const licenseTitle = document.createElement("label");
@@ -118,7 +120,6 @@
 						licenseTitle.setAttribute("value",ccffext.l10n.get("object.license.title.label"));
 						licenseLine.appendChild(licenseTitle);
 
-						var license = ccffext.objects.getLicense(doc,objects[i],window.opener.content,RDFA,XH);
 						const licenseValue = document.createElement("label");
 						licenseValue.setAttribute("class","anchor");
 						licenseValue.setAttribute("value",license.name);
@@ -127,6 +128,32 @@
 							window.open(license.uri);
 						},true);
 						licenseLine.appendChild(licenseValue);
+
+						const licensePermLine = document.createElement("hbox");
+						licensePermLine.setAttribute("class","line");
+						topLine.appendChild(licensePermLine);
+
+						const licensePermTitle = document.createElement("label");
+						licensePermTitle.setAttribute("class","line-title");
+						licensePermTitle.setAttribute("value",ccffext.l10n.get("object.license.permissions.title.label"));
+						licensePermLine.appendChild(licensePermTitle);
+
+						const licensePermValue = document.createElement("label");
+						licensePermValue.setAttribute("value",(function(permissions)
+						{
+							var strings = [];
+
+							for (let i = 0; i < permissions.length; ++i)
+							{
+								let name = permissions[i].toLowerCase().replace(/[^a-z]/g,"");
+//								ccffext.log(name);
+								strings.push(ccffext.l10n.get("object.license.permissions." + name + ".label"));
+							}
+
+							var line = strings.join(", ");
+							return line.substring(0,1).toUpperCase() + line.substring(1);
+						})(license.permissions));
+						licensePermLine.appendChild(licensePermValue);
 					}
 
 					// Eventually switch to the tab

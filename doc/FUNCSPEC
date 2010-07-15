@@ -27,7 +27,7 @@ Any software is made to provide ways to solve a specific problem of its end user
 			+ The name of the license
 			- Standard СС icon(s)
 			+ Hyperlink to the extended information about the license
-			- The summary of permissions, requirements and prohibitions
+			± The summary of permissions, requirements and prohibitions
 			- The way to obtain the attribution information (a context menu-enabled button)
 - Licensed objects` highlighting
 
@@ -39,7 +39,12 @@ The extension may use information defined by:
 	+ http://www.w3.org/1999/xhtml/vocab#
 		+ copyright
 		+ license
-	- http://creativecommons.org/ns#
+	± http://creativecommons.org/ns#
+		+ Reproduction
+        + Distribution
+        + DerivativeWorks
+        + HighIncomeNationUse
+        + Sharing
 	- http://purl.org/dc/elements/1.1/#
 	- http://xmlns.com/foaf/0.1/#
 
