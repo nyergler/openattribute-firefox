@@ -119,9 +119,10 @@
 						const sourceValue = document.createElement("label");
 						sourceValue.setAttribute("class","anchor");
 						sourceValue.setAttribute("value",source);
+						sourceValue.setAttribute("uri",source);
 						sourceValue.addEventListener("click",function()
 						{
-							window.open(source);
+							window.open(this.getAttribute("uri"));
 						},true);
 						sourceLine.appendChild(sourceValue);
 
@@ -138,9 +139,10 @@
 						const licenseValue = document.createElement("label");
 						licenseValue.setAttribute("class","anchor");
 						licenseValue.setAttribute("value",license.name);
-						licenseValue.addEventListener("click",function()
+						licenseValue.setAttribute("uri",license.uri);
+						licenseValue.addEventListener("click",function(event)
 						{
-							window.open(license.uri);
+							window.open(this.getAttribute("uri"));
 						},true);
 						licenseLine.appendChild(licenseValue);
 

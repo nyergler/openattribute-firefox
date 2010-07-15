@@ -296,12 +296,11 @@ var ccffext =
 			{
 				var xhr = new window.XMLHttpRequest();
 				let uri = "http://api.creativecommons.org/rest/1.5/details?license-uri=" + license.uri;
+
 				xhr.open("GET",uri,false);
 				xhr.send();
 				if (4 == xhr.readyState && 200 == xhr.status)
-				{				
-//					ccffext.log(xhr.responseText);
-
+				{
 					var parser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
 							.createInstance(Components.interfaces.nsIDOMParser);
 					var doc = parser.parseFromString(xhr.responseText,"text/xml");
