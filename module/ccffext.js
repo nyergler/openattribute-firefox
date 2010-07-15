@@ -276,7 +276,8 @@ var ccffext =
 				name : undefined,
 				uri : undefined,
 				permissions : [],
-				requirements : []
+				requirements : [],
+				prohibitions: []
 			};
 
 			for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
@@ -297,7 +298,7 @@ var ccffext =
 				xhr.send();
 				if (4 == xhr.readyState && 200 == xhr.status)
 				{				
-					ccffext.log(xhr.responseText);
+//					ccffext.log(xhr.responseText);
 
 					var parser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
 							.createInstance(Components.interfaces.nsIDOMParser);
@@ -316,6 +317,13 @@ var ccffext =
 					for (let i = 0; i < reqs.length / 2; ++i)
 					{
 						license.requirements.push(reqs[i].getAttribute("rdf:resource")
+								.replace("http://creativecommons.org/ns#",""));
+					}
+
+					let prohs = doc.getElementsByTagName("prohibits");
+					for (let i = 0; i < prohs.length / 2; ++i)
+					{
+						license.prohibitions.push(prohs[i].getAttribute("rdf:resource")
 								.replace("http://creativecommons.org/ns#",""));
 					}
 				}
