@@ -1,6 +1,5 @@
 Functional and UI specification
 -------------------------------
-Last update: 2010-07-11, YEKST.
 
 Any software is made to provide ways to solve a specific problem of its end user. The "end user" is not straightly meant to be a person, but in most cases she is. So, in case of application software, the specification of functionality may be done by listing the ways the software may solve its user`s problems. In case of a browser extension, these ways are cnnected to the UI the user sees. So, lets summarize what UI elements the extension should provide:
 
@@ -45,6 +44,12 @@ The extension may use information defined by:
         + DerivativeWorks
         + HighIncomeNationUse
         + Sharing
+		+ Notice
+		+ Attribution
+		+ ShareAlike
+		+ SourceCode
+		+ Copyleft
+		+ LesserCopyleft
 	- http://purl.org/dc/elements/1.1/#
 	- http://xmlns.com/foaf/0.1/#
 

@@ -275,7 +275,8 @@ var ccffext =
 			{
 				name : undefined,
 				uri : undefined,
-				permissions : []
+				permissions : [],
+				requirements : []
 			};
 
 			for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
@@ -308,6 +309,13 @@ var ccffext =
 					for (let i = 0; i < perms.length / 2; ++i)
 					{
 						license.permissions.push(perms[i].getAttribute("rdf:resource")
+								.replace("http://creativecommons.org/ns#",""));
+					}
+
+					let reqs = doc.getElementsByTagName("requires");
+					for (let i = 0; i < reqs.length / 2; ++i)
+					{
+						license.requirements.push(reqs[i].getAttribute("rdf:resource")
 								.replace("http://creativecommons.org/ns#",""));
 					}
 				}

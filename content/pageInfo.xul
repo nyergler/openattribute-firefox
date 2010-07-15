@@ -74,6 +74,20 @@
 
 					items = [];
 
+					var convertStrings = function(strings,part)
+					{
+						var converted = [];
+
+						for (let i = 0; i < strings.length; ++i)
+						{
+							let name = strings[i].toLowerCase().replace(/[^a-z]/g,"");
+							converted.push(ccffext.l10n.get("object.license." + part + "." + name + ".label"));
+						}
+
+						var line = converted.join(", ");
+						return line.substring(0,1).toUpperCase() + line.substring(1);
+					}
+
 					// Add new items to the list
 					for (let i = 0; i < objects.length; ++i)
 					{
@@ -135,25 +149,27 @@
 
 						const licensePermTitle = document.createElement("label");
 						licensePermTitle.setAttribute("class","line-title");
-						licensePermTitle.setAttribute("value",ccffext.l10n.get("object.license.permissions.title.label"));
+						licensePermTitle.setAttribute("value",
+						        ccffext.l10n.get("object.license.permissions.title.label"));
 						licensePermLine.appendChild(licensePermTitle);
 
 						const licensePermValue = document.createElement("label");
-						licensePermValue.setAttribute("value",(function(permissions)
-						{
-							var strings = [];
-
-							for (let i = 0; i < permissions.length; ++i)
-							{
-								let name = permissions[i].toLowerCase().replace(/[^a-z]/g,"");
-//								ccffext.log(name);
-								strings.push(ccffext.l10n.get("object.license.permissions." + name + ".label"));
-							}
-
-							var line = strings.join(", ");
-							return line.substring(0,1).toUpperCase() + line.substring(1);
-						})(license.permissions));
+						licensePermValue.setAttribute("value",convertStrings(license.permissions,"permissions"));
 						licensePermLine.appendChild(licensePermValue);
+
+						const licenseReqLine = document.createElement("hbox");
+						licenseReqLine.setAttribute("class","line");
+						topLine.appendChild(licenseReqLine);
+
+						const licenseReqTitle = document.createElement("label");
+						licenseReqTitle.setAttribute("class","line-title");
+						licenseReqTitle.setAttribute("value",
+						        ccffext.l10n.get("object.license.requirements.title.label"));
+						licenseReqLine.appendChild(licenseReqTitle);
+
+						const licenseReqValue = document.createElement("label");
+						licenseReqValue.setAttribute("value",convertStrings(license.requirements,"requirements"));
+						licenseReqLine.appendChild(licenseReqValue);
 					}
 
 					// Eventually switch to the tab
