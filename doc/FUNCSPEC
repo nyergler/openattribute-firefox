@@ -14,19 +14,19 @@ Any software is made to provide ways to solve a specific problem of its end user
 		- The context menu should provide a way to highlight licensed objects
 + The tab in the "Page Info" dialog
 	+ The tab image should also refer to CC and reflect the extension`s purpose
-	± There`re should be a checkbox to turn the highlighting on/off
-	± There`re should be a label showing the number of all licensed objects
-	+ There`re should be a list displaying an entry for any of licensed objects
+	± There should be a checkbox to turn the highlighting on/off
+	+ There should be a label showing the number of all licensed objects
+	+ There should be a list displaying an entry for any of licensed objects
 		+ The name of the object should be displayed
 		± Some information about the object should be shown:
 			- The type of the object
 			- The information about object`s creator
 			- The information about object`s rights holder
 			+ The hyperlink to the soure
-		- Some licensing information should be shown:
-			- The name of the license
+		± Some licensing information should be shown:
+			+ The name of the license
 			- Standard СС icon(s)
-			- Hyperlink to the extended information about the license
+			+ Hyperlink to the extended information about the license
 			- The summary of permissions, requirements and prohibitions
 			- The way to obtain the attribution information (a context menu-enabled button)
 - Licensed objects` highlighting

@@ -190,6 +190,24 @@ var ccffext =
 		},
 
 		/**
+		 * Parses RDFa data of the given document and stores it in the cache
+		 *
+		 * @param document The document to be parsed
+		 * @param RDFA RDFA object
+		 * @param XH XH object
+		 */
+		parse : function(location,document,RDFA,XH)
+		{
+			XH.transform(document.getElementsByTagName("body")[0]);
+			XH.transform(document.getElementsByTagName("head")[0]);
+
+			RDFA.reset();
+			RDFA.parse(document);
+
+			ccffext.cache.put(location,RDFA.triplestore);
+		},
+
+		/**
 		 * Checks if the cache contains the information for a document, calling a callback if not. Then calls a callback
 		 * if the document has any licensed objects
 		 */
@@ -247,24 +265,16 @@ var ccffext =
 		 * @param object The object
 		 * @param window The context window
 		 */
-		getLicense : function(document,object,window)
+		getLicense : function(document,object,window,RDFA,XH)
 		{
 			var license =
 			{
-				name : "Yandex OSS License",
-				uri : "http://ya.ru"
+				name : undefined,
+				uri : undefined
 			};
 
 			for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
 			{
-//				ccffext.log(pairs[i]);
-
-				var license =
-				{
-					name : undefined,
-					uri : undefined
-				};
-
 				if ((pairs[i][0].uri == "http://www.w3.org/1999/xhtml/vocab#copyright"
 						|| pairs[i][0].uri == "http://www.w3.org/1999/xhtml/vocab#license"))
 				{
@@ -273,18 +283,30 @@ var ccffext =
 				}
 			}
 
+			ccffext.log("http://api.creativecommons.org/rest/1.5/details?license-uri=" + license.uri);
+
 			if ("undefined" != typeof license.uri)
 			{
 				var xhr = new window.XMLHttpRequest();
-				xhr.open("GET","http://api.creativecommons.org/rest/1.5/details?license-uri=" + license.uri,false);
-				xhr.send(null);
+				let uri = "http://api.creativecommons.org/rest/1.5/details?license-uri=" + license.uri;
+				xhr.open("GET",uri,false);
+				xhr.send();
 				if (4 == xhr.readyState && 200 == xhr.status)
-				{
+				{				
+
 					ccffext.log(xhr.responseText);
+
+					var parser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
+							.createInstance(Components.interfaces.nsIDOMParser);
+					var doc = parser.parseFromString(xhr.responseText,"text/xml");
+					license.name = doc.getElementsByTagName("license-name")[0].textContent;
 				}
 			}
 
-			license.name = license.uri;
+			if ("undefined" == license.name)
+			{
+				license.name = license.uri;
+			}
 
 			return license;
 		}

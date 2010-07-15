@@ -56,13 +56,7 @@
 
 							ccffext.objects.callbackify(doc,ccffext.ui.icon.show,function(document,callbackDocument)
 							{
-								XH.transform(document.getElementsByTagName("body")[0]);
-								XH.transform(document.getElementsByTagName("head")[0]);
-
-								RDFA.reset();
-								RDFA.parse(document);
-
-								ccffext.cache.put(document.location.href,RDFA.triplestore);
+								ccffext.objects.parse(document.location.href,document,RDFA,XH);
 							});
 						}
 					}

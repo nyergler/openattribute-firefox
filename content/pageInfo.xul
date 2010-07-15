@@ -99,7 +99,7 @@
 						sourceTitle.setAttribute("value",ccffext.l10n.get("object.source.title.label"));
 						sourceLine.appendChild(sourceTitle);
 
-						const source = ccffext.objects.getSource(doc,objects[i]);
+						var source = ccffext.objects.getSource(doc,objects[i]);
 						const sourceValue = document.createElement("label");
 						sourceValue.setAttribute("class","anchor");
 						sourceValue.setAttribute("value",source);
@@ -118,7 +118,7 @@
 						licenseTitle.setAttribute("value",ccffext.l10n.get("object.license.title.label"));
 						licenseLine.appendChild(licenseTitle);
 
-						const license = ccffext.objects.getLicense(doc,objects[i],window.opener.content);
+						var license = ccffext.objects.getLicense(doc,objects[i],window.opener.content,RDFA,XH);
 						const licenseValue = document.createElement("label");
 						licenseValue.setAttribute("class","anchor");
 						licenseValue.setAttribute("value",license.name);
