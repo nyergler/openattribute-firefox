@@ -77,7 +77,7 @@
 					var convertStrings = function(strings,part)
 					{
 						var converted = [];
-						
+
 						for (let i = 0; i < strings.length; ++i)
 						{
 							let name = strings[i].toLowerCase().replace(/[^a-z]/g,"");
@@ -96,18 +96,19 @@
 						items.push(item);
 						list.appendChild(item);
 
-						const topLine = document.createElement("vbox");
-						topLine.setAttribute("class","line primary");
-						item.appendChild(topLine);
+						const leftPanel = document.createElement("vbox");
+						leftPanel.setAttribute("class","primary");
+						leftPanel.setAttribute("flex","1");
+						item.appendChild(leftPanel);
 
 						const title = document.createElement("label");
 						title.setAttribute("class","title");
 						title.setAttribute("value",ccffext.objects.getTitle(doc,objects[i]));
-						topLine.appendChild(title);
+						leftPanel.appendChild(title);
 
 						const sourceLine = document.createElement("hbox");
 						sourceLine.setAttribute("class","line primary");
-						topLine.appendChild(sourceLine);
+						leftPanel.appendChild(sourceLine);
 
 						const sourceTitle = document.createElement("label");
 						sourceTitle.setAttribute("class","line-title");
@@ -127,7 +128,7 @@
 						var license = ccffext.objects.getLicense(doc,objects[i],window.opener.content,RDFA,XH);
 						const licenseLine = document.createElement("hbox");
 						licenseLine.setAttribute("class","line primary");
-						topLine.appendChild(licenseLine);
+						leftPanel.appendChild(licenseLine);
 
 						const licenseTitle = document.createElement("label");
 						licenseTitle.setAttribute("class","line-title");
@@ -145,7 +146,7 @@
 
 						const licensePermLine = document.createElement("hbox");
 						licensePermLine.setAttribute("class","line");
-						topLine.appendChild(licensePermLine);
+						leftPanel.appendChild(licensePermLine);
 
 						const licensePermTitle = document.createElement("label");
 						licensePermTitle.setAttribute("class","line-title");
@@ -159,7 +160,7 @@
 
 						const licenseReqLine = document.createElement("hbox");
 						licenseReqLine.setAttribute("class","line");
-						topLine.appendChild(licenseReqLine);
+						leftPanel.appendChild(licenseReqLine);
 
 						const licenseReqTitle = document.createElement("label");
 						licenseReqTitle.setAttribute("class","line-title");
@@ -175,7 +176,7 @@
 						{
 							const licenseProhLine = document.createElement("hbox");
 							licenseProhLine.setAttribute("class","line");
-							topLine.appendChild(licenseProhLine);
+							leftPanel.appendChild(licenseProhLine);
 
 							const licenseProhTitle = document.createElement("label");
 							licenseProhTitle.setAttribute("class","line-title");
@@ -187,6 +188,44 @@
 							licenseProhValue.setAttribute("value",convertStrings(license.prohibitions,"prohibitions"));
 							licenseProhLine.appendChild(licenseProhValue);
 						}
+
+						const rightPanel = document.createElement("vbox");
+						item.appendChild(rightPanel);
+
+						const imagePlace = document.createElement("vbox");
+						imagePlace.setAttribute("flex","1");
+						rightPanel.appendChild(imagePlace);
+
+						const attribButton = document.createElement("button");
+						attribButton.setAttribute("label",ccffext.l10n.get("object.button.attribution.label"));
+						attribButton.setAttribute("accesskey",ccffext.l10n.get("object.button.attribution.key"));
+						attribButton.setAttribute("type","menu");
+						rightPanel.appendChild(attribButton)
+
+						const attribButtonPopup = document.createElement("menupopup");
+						attribButton.appendChild(attribButtonPopup);
+
+						const attribButtonHtml = document.createElement("menuitem");
+						attribButtonHtml.setAttribute("label",ccffext.l10n.get("object.button.attributionashtml.label"));
+						attribButtonHtml.setAttribute("accesskey",ccffext.l10n.get("object.button.attributionashtml.key"));
+						attribButtonHtml.addEventListener("click",function()
+						{
+							const clipboard = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
+									getService(Components.interfaces.nsIClipboardHelper);
+							clipboard.copyString(license.infoHtml);
+						},true);
+						attribButtonPopup.appendChild(attribButtonHtml);
+
+						const attribButtonText = document.createElement("menuitem");
+						attribButtonText.setAttribute("label",ccffext.l10n.get("object.button.attributionastext.label"));
+						attribButtonText.setAttribute("accesskey",ccffext.l10n.get("object.button.attributionastext.key"));
+						attribButtonText.addEventListener("click",function()
+						{
+							const clipboard = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
+									getService(Components.interfaces.nsIClipboardHelper);
+							clipboard.copyString(license.infoText);
+						},true);
+						attribButtonPopup.appendChild(attribButtonText);
 					}
 
 					// Eventually switch to the tab

@@ -277,7 +277,9 @@ var ccffext =
 				uri : undefined,
 				permissions : [],
 				requirements : [],
-				prohibitions: []
+				prohibitions: [],
+				infoHtml : "",
+				infoText : ""
 			};
 
 			for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
@@ -326,6 +328,9 @@ var ccffext =
 						license.prohibitions.push(prohs[i].getAttribute("rdf:resource")
 								.replace("http://creativecommons.org/ns#",""));
 					}
+
+					license.infoHtml = xhr.responseText.match(/<html>(.+)<\/html>/)[0];
+					license.infoText = doc.getElementsByTagName("html")[0].textContent;
 				}
 			}
 
