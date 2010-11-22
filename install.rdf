@@ -12,46 +12,38 @@
 
 	    <!--
 	        Extension version.
-
-	        The version number has the "major.minor.release" format. For the GSoC development period the major number
-	        is "0", the minor increases every week (the "0" week starts 2010-05-24), the release increases as a new
-	        change is made publicly available
 	    -->
 	    <em:version>0.7.0</em:version>
 
 	    <!--
 	        Extension  type.
 
-	        Here "2" means this is an extension, not a theme or anything else
+	        Here "2" means this is an extension, not a theme, etc.
 	    -->
 	    <em:type>2</em:type>
 
 	    <!-- Extension name -->
-	    <em:name>Creative Commons Firefox Extension</em:name>
+	    <em:name>Creative Commons License Information</em:name>
 
 	    <!-- Extension description -->
-	    <em:description>Attribution helper browser extension (GSoC 2010 project)</em:description>
+	    <em:description>Displays license and attribution information for Creative Commons licensed content.</em:description>
 
 	    <!-- Extension contributors -->
 	    <em:creator>Igor Lukanin (mail@igor.lukanin.name)</em:creator>
 
 	    <!--
 	        Extension homepage.
-
-	        During the development period, let`s point to the repository
 	    -->
-	    <em:homepageURL>http://code.creativecommons.org/viewgit/cc.ff_ext.git/</em:homepageURL>
+	    <em:homepageURL>http://wiki.creativecommons.org/MozCC</em:homepageURL>
 
 	    <!-- Shows what application is augmented using this extension -->
 	    <em:targetApplication>
 		    <Description>
 			    <!-- Firefox identifier -->
 			    <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-
 			    <!--
-			        Supported versions.
-
-			        During the early development period, only the latest versions of Firefox are supported
+			       Supported versions; see
+			       https://addons.mozilla.org/en-US/firefox/pages/appversions/
 			    -->
 			    <em:minVersion>3.6</em:minVersion>
 			    <em:maxVersion>3.6.*</em:maxVersion>
