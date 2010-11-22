@@ -359,6 +359,12 @@ var ccffext =
 			if ("undefined" != typeof license.uri &&
 			    license.uri.indexOf("http://creativecommons.org/") == 0)
 			{
+			    // This is a Creative Commons license;
+			    // make sure we're using the canonical URI
+			    if (license.uri.lastIndexOf("/") < license.uri.length - 1) {
+				// strip off the trailing bit
+				license.uri = license.uri.slice(0, license.uri.lastIndexOf("/") + 1);
+			    }
 
 				var xhr = new window.XMLHttpRequest();
 				let uri = "http://api.creativecommons.org/rest/dev/details?license-uri=" + license.uri;
