@@ -356,8 +356,10 @@ var ccffext =
 				}
 			}
 
-			if ("undefined" != typeof license.uri)
+			if ("undefined" != typeof license.uri &&
+			    license.uri.indexOf("http://creativecommons.org/") == 0)
 			{
+
 				var xhr = new window.XMLHttpRequest();
 				let uri = "http://api.creativecommons.org/rest/dev/details?license-uri=" + license.uri;
 
