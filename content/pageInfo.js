@@ -241,12 +241,11 @@
 		const attribButtonHtml = document.createElement("menuitem");
 		attribButtonHtml.setAttribute("label",ccffext.l10n.get("object.button.attributionashtml.label"));
 		attribButtonHtml.setAttribute("accesskey",ccffext.l10n.get("object.button.attributionashtml.key"));
-		attribButtonHtml.addEventListener("click",function()
-						  {
-						      const clipboard = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
-							  getService(Components.interfaces.nsIClipboardHelper);
-						      clipboard.copyString(license.infoHtml);
-						  },true);
+		attribButtonHtml.addEventListener("click",function() {
+		    const clipboard = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
+			getService(Components.interfaces.nsIClipboardHelper);
+		    clipboard.copyString(license.infoHtml);
+		},true);
 		attribButtonPopup.appendChild(attribButtonHtml);
 		
 		const attribButtonText = document.createElement("menuitem");
