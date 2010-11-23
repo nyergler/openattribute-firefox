@@ -403,8 +403,18 @@ var ccffext =
 						  .replace("http://creativecommons.org/ns#",""));
 		    }
 		    
-		    license.infoHtml = xhr.responseText.match(/<html>(.+)<\/html>/)[0];
-		    license.infoText = doc.getElementsByTagName("html")[0].textContent;
+		    // get the attribution HTML from the CC Scraper
+		    var xhr = new window.XMLHttpRequest();
+		    let uri = "http://scraper.creativecommons.org/apps/deed?url=" + encodeURIComponent(document.URL) + "&license_uri=" + license.uri;
+		    xhr.open("GET",uri,false);
+		    xhr.send();
+		    if (4 == xhr.readyState && 200 == xhr.status)
+		    {
+			var jsObject = JSON.parse(xhr.responseText);
+			license.infoHtml = jsObject['attribution']['marking'];
+		    }
+		    
+		    // license.infoText = doc.getElementsByTagName("html")[0].textContent;
 		}
 	    }
 	    
