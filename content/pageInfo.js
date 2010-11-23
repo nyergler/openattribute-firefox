@@ -176,52 +176,7 @@
 		    window.open(this.getAttribute("uri"));
 		},true);
 		licenseLine.appendChild(licenseValue);
-		
-		const licensePermLine = document.createElement("hbox");
-		licensePermLine.setAttribute("class","line");
-		leftPanel.appendChild(licensePermLine);
-		
-		const licensePermTitle = document.createElement("label");
-		licensePermTitle.setAttribute("class","line-title");
-		licensePermTitle.setAttribute("value",
-					      ccffext.l10n.get("object.license.permissions.title.label"));
-		licensePermLine.appendChild(licensePermTitle);
-
-		const licensePermValue = document.createElement("label");
-		licensePermValue.setAttribute("value",convertStrings(license.permissions,"permissions"));
-		licensePermLine.appendChild(licensePermValue);
-		
-		const licenseReqLine = document.createElement("hbox");
-		licenseReqLine.setAttribute("class","line");
-		leftPanel.appendChild(licenseReqLine);
-		
-		const licenseReqTitle = document.createElement("label");
-		licenseReqTitle.setAttribute("class","line-title");
-		licenseReqTitle.setAttribute("value",
-					     ccffext.l10n.get("object.license.requirements.title.label"));
-		licenseReqLine.appendChild(licenseReqTitle);
-		
-		const licenseReqValue = document.createElement("label");
-		licenseReqValue.setAttribute("value",convertStrings(license.requirements,"requirements"));
-		licenseReqLine.appendChild(licenseReqValue);
-		
-		if (0 < license.prohibitions.length)
-		{
-		    const licenseProhLine = document.createElement("hbox");
-		    licenseProhLine.setAttribute("class","line");
-		    leftPanel.appendChild(licenseProhLine);
-		    
-		    const licenseProhTitle = document.createElement("label");
-		    licenseProhTitle.setAttribute("class","line-title");
-		    licenseProhTitle.setAttribute("value",
-						  ccffext.l10n.get("object.license.prohibitions.title.label"));
-		    licenseProhLine.appendChild(licenseProhTitle);
-		    
-		    const licenseProhValue = document.createElement("label");
-		    licenseProhValue.setAttribute("value",convertStrings(license.prohibitions,"prohibitions"));
-		    licenseProhLine.appendChild(licenseProhValue);
-		}
-		
+				
 		const attribLine = document.createElement("vbox");
 		attribLine.setAttribute("class","line primary");
 		leftPanel.appendChild(attribLine);
