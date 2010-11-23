@@ -60,6 +60,10 @@ vbox#ccffext-objects .item .primary
 {
 	margin-top: 6px;
 }
+vbox#ccffext-objects .item .indented
+{
+	margin-left: 1em;
+}
 
 /*
     A line of information of licensed object item
@@ -67,6 +71,12 @@ vbox#ccffext-objects .item .primary
 vbox#ccffext-objects .item .line label.line-title
 {
 	width: 100px;
+}
+
+vbox#ccffext-objects .item textbox
+{
+	border: 1px solid #232;
+	padding: 0.25em;
 }
 
 /*

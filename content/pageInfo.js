@@ -222,42 +222,40 @@
 		    licenseProhLine.appendChild(licenseProhValue);
 		}
 		
-		const rightPanel = document.createElement("vbox");
-		item.appendChild(rightPanel);
+		const attribLine = document.createElement("vbox");
+		attribLine.setAttribute("class","line primary");
+		leftPanel.appendChild(attribLine);
+
+		const attribTitle = document.createElement("label");
+		attribTitle.setAttribute("class","line-title");
+		attribTitle.setAttribute("value",
+					 ccffext.l10n.get("object.attribution.label"));
+		attribLine.appendChild(attribTitle);
 		
-		const imagePlace = document.createElement("vbox");
-		imagePlace.setAttribute("flex","1");
-		rightPanel.appendChild(imagePlace);
+		const attribContainer = document.createElement("hbox");
+		attribContainer.setAttribute("class", "indented");
+		attribLine.appendChild(attribContainer);
 		
-		const attribButton = document.createElement("button");
-		attribButton.setAttribute("label",ccffext.l10n.get("object.button.attribution.label"));
-		attribButton.setAttribute("accesskey",ccffext.l10n.get("object.button.attribution.key"));
-		attribButton.setAttribute("type","menu");
-		rightPanel.appendChild(attribButton)
-		
-		const attribButtonPopup = document.createElement("menupopup");
-		attribButton.appendChild(attribButtonPopup);
-		
-		const attribButtonHtml = document.createElement("menuitem");
-		attribButtonHtml.setAttribute("label",ccffext.l10n.get("object.button.attributionashtml.label"));
-		attribButtonHtml.setAttribute("accesskey",ccffext.l10n.get("object.button.attributionashtml.key"));
-		attribButtonHtml.addEventListener("click",function() {
+		const attribText = document.createElement("textbox");
+		attribText.setAttribute("flex","1");
+		attribText.setAttribute("value",license.infoHtml);
+		attribText.addEventListener("focus", function(e) {
+		    attribText.select();
+		}, true);
+		attribContainer.appendChild(attribText);
+
+		const attribCopyButton = document.createElement("button");
+		attribCopyButton.setAttribute("label",
+					      ccffext.l10n.get("copy"));
+		attribCopyButton.setAttribute("accesskey",
+					      ccffext.l10n.get("object.button.attributionashtml.key"));
+		attribCopyButton.addEventListener("click",function() {
 		    const clipboard = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
 			getService(Components.interfaces.nsIClipboardHelper);
 		    clipboard.copyString(license.infoHtml);
 		},true);
-		attribButtonPopup.appendChild(attribButtonHtml);
 		
-		const attribButtonText = document.createElement("menuitem");
-		attribButtonText.setAttribute("label",ccffext.l10n.get("object.button.attributionastext.label"));
-		attribButtonText.setAttribute("accesskey",ccffext.l10n.get("object.button.attributionastext.key"));
-		attribButtonText.addEventListener("click",function()
-						  {
-						      const clipboard = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
-							  getService(Components.interfaces.nsIClipboardHelper);
-						      clipboard.copyString(license.infoText);
-						  },true);
-		attribButtonPopup.appendChild(attribButtonText);
+		attribContainer.appendChild(attribCopyButton);
 	    }
 	    
 	    // Eventually switch to the tab
