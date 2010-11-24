@@ -14,7 +14,14 @@
   <!-- Control the main browser window behavior -->
   <script type="text/javascript"
 	  src="chrome://ccffext/content/browser.js"></script>
+
+  <!-- CC urlbar icon -->
+  <hbox id="urlbar-icons">
+    <image id="ccffext-icon"
+	   onclick="gCcHandler.handleIconClick(event)" />
+  </hbox>
   
+  <!-- CC License popup -->
   <popupset id="mainPopupSet">
     <!-- Popup for site license information -->
     <panel id="ccffext-popup" position="after_start" 

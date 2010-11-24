@@ -451,76 +451,7 @@ var ccffext =
 	    return license;
 	}
     },
-    
-    /**
-     * UI-related code
-     */
-    ui :
-    {
-	/**
-	 * The location bar icon-related code
-	 */
-	icon :
-	{
-	    /**
-	     * A XUL object represention the icon
-	     */
-	    icon : undefined,
-
-	    /**
-	     * A XUL object that should hold the icon
-	     */
-	    container : undefined,
-
-	    /**
-	     * Initializes the container for the icon and the icon itself
-	     *
-	     * @param document DOM document for the container and the icon
-	     * @param callback A callback function that is called when clicking on the icon
-	     */
-	    init : function(document,callback)
-	    {
-		ccffext.ui.icon.icon = document.createElement("image");
-		ccffext.ui.icon.container = document.getElementById("urlbar-icons");
-		
-		with (ccffext.ui.icon.icon)
-		{
-		    setAttribute("id","ccffext-icon");
-		    addEventListener("click",callback,true);
-		}
-	    },
-	    
-	    /**
-	     * Shows the icon. The icon is put to the container using DOM
-	     *
-	     * @param document DOM document for the container and the icon
-	     */
-	    show : function(document,objects)
-	    {
-		with (ccffext.ui.icon)
-		{
-		    container.setAttribute("ccffext-icon","true");
-		    container.appendChild(ccffext.ui.icon.icon);
-		    icon.setAttribute("tooltiptext",ccffext.l10n.get("icon.title.label",objects.length));
-		}
-	    },
-	    
-	    /**
-	     * Hides the icon. The icon is removed from the container using DOM
-	     *
-	     * @param document DOM document for the container and the icon
-	     */
-	    hide : function()
-	    {
-		if (ccffext.ui.icon.container.hasAttribute("ccffext-icon"))
-		{
-		    ccffext.ui.icon.container.removeAttribute("ccffext-icon");
-		    ccffext.ui.icon.container.removeChild(ccffext.ui.icon.icon);
-		}
-	    }
-	}
-    },
-    
+        
     /**
      * Utility function that writes a message to the JavaScript console
      *
