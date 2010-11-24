@@ -211,6 +211,31 @@ var ccffext =
 	    
 	    ccffext.cache.put(location,RDFA.triplestore);
 	},
+
+	/**
+	 * Checks if the cache contains license information for a document.
+	 * If so, return true.
+	 */
+	licenseCached : function(document)
+	{
+	    const location = document.location.href;
+	    
+	    // For all pages, except for system ones 
+	    // like "about:blank", "about:config" and so on
+	    if (location.match(/^about\:/i)) return false;
+
+	    if (! ccffext.cache.contains(location)) return false;
+
+	    if (ccffext.cache.contains(location)) {
+		const objects = ccffext.objects.extract(document);
+		    
+		if (0 < objects.length) return true;
+
+	    }
+
+	    return false;
+
+	},
 	
 	/**
 	 * Checks if the cache contains the information for a document, calling a callback if not. Then calls a callback
