@@ -4,12 +4,47 @@
 <?xml-stylesheet type="text/css" href="chrome://ccffext/skin/browser.css"?>
 
 <!-- Setup UI augmentations -->
-<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<!-- Bootstrap scripts -->
-	<script type="text/javascript" 
-		src="resource://ccffext/bootstrap.js"></script>
+<overlay id="ccffext_browser"
+	 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<!-- Control the main browser window behavior -->
-	<script type="text/javascript"
-		src="chrome://ccffext/content/browser.js"></script>
+  <!-- Bootstrap scripts -->
+  <script type="text/javascript" 
+	  src="resource://ccffext/bootstrap.js"></script>
+
+  <!-- Control the main browser window behavior -->
+  <script type="text/javascript"
+	  src="chrome://ccffext/content/browser.js"></script>
+  
+  <popupset id="mainPopupSet">
+    <!-- Popup for site license information -->
+    <panel id="ccffext-popup" position="after_start" 
+	   hidden="true" noautofocus="true"
+	   onpopupshown="document.getElementById('ccffext-popup-more-info-button').focus();"
+	   level="top">
+      <hbox id="ccffext-popup-container" align="top">
+        <image id="ccffext-popup-icon"/>
+        <vbox id="identity-popup-content-box">
+	  <label id="ccffext-popup-work-title"
+                 class="identity-popup-label"
+                 value="Hello, world"/>
+	  <label id="ccffext-popup-attribution-link"
+                 class="identity-popup-label anchor"
+                 value="Hello, world"
+		 />
+	  <label id="ccffext-popup-license-link"
+                 class="identity-popup-label anchor"
+                 value="Hello, world"  />
+	  <textbox id="ccffext-popup-attrib-html"></textbox>
+	</vbox>
+      </hbox>
+      <hbox pack="end">
+        <button id="ccffext-popup-more-info-button"
+                label="More Information..."
+                onblur="ccffext.ui.popup.hide();"
+                oncommand="ccffext.ui.popup.moreInfo(event);"/>
+      </hbox>
+      <box id="ccffext-popup-license-band" flex="1" />
+    </panel>
+  </popupset>
+
 </overlay>

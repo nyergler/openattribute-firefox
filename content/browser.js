@@ -2,9 +2,16 @@
 * Create an icon for the location bar
 **/
 
-ccffext.ui.icon.init(document,function() {
+ccffext.ui.icon.init(document,function(e) {
     // Open a tab in the "Page Info" dialog
-    BrowserPageInfo(null,'ccffext-tab'); 
+    // BrowserPageInfo(null,'ccffext-tab'); 
+    popup = document.getElementById('ccffext-popup');
+    popup.hidden = false;
+
+    var position = (getComputedStyle(gNavToolbox, "").direction == "rtl") ? 'after_end' : 'after_start';
+
+    popup.openPopup(ccffext.ui.icon.icon, position);
+
 });
 
 /**
