@@ -280,6 +280,13 @@ var ccffext =
 		    return pairs[i][1];
 		}
 	    }
+	    for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
+	    {
+		if (pairs[i][0].uri == "http://purl.org/dc/elements/1.1/title")
+		{
+		    return pairs[i][1];
+		}
+	    }
 	    
 	    return document.location.href == object.uri
 		? ccffext.l10n.get("object.title.current-page.label")
