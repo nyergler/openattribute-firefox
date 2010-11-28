@@ -9,9 +9,66 @@ var gCcHandler = {
 	return document.getElementById('ccffext-popup');
     },
 
+    get _popup_work_title () {
+	return document.getElementById('ccffext-popup-work-title');
+    },
+
+    get _popup_attribution () {
+	return document.getElementById('ccffext-popup-attribution-link');
+    },
+
+    get _popup_license () {
+	return document.getElementById('ccffext-popup-license-link');
+    },
+
+    get _popup_attrib_html () {
+	return document.getElementById('ccffext-popup-attrib-html');
+    },
+
     // Popup Handlers
     handleIconClick : function(e) {
 
+	// update the popup with the license information
+	var doc_subject = {uri:content.document.location.href};
+
+	// -- title
+	this._popup_work_title.value = ccffext.objects.getTitle(
+	    content.document, doc_subject);
+
+	// -- attribution link
+	this._popup_attribution.value = ccffext.objects.getAuthor(
+	    content.document, doc_subject);
+	this._popup_attribution.setAttribute(
+	    'href', 
+	    ccffext.objects.getAuthorUri(content.document, doc_subject).uri
+	);
+
+	if (typeof this._popup_attribution.getAttribute("href") == "string") {
+	    this._popup_attribution.setAttribute(
+		"class", "identity-popup-label text-link");
+	} else {
+	    this._popup_attribution.setAttribute(
+		"class", "identity-popup-label");
+	}
+
+	// -- license link
+	var license = ccffext.objects.getLicense(
+	    content.document, doc_subject, window, RDFA, XH);
+	this._popup_license.value = license.name;
+	this._popup_license.setAttribute('href', license.uri);
+
+	if (typeof this._popup_license.getAttribute("href") == "string") {
+	    this._popup_license.setAttribute(
+		"class", "identity-popup-label text-link");
+	} else {
+	    this._popup_license.setAttribute(
+		"class", "identity-popup-label");
+	}
+
+	// -- copy and paste HTML
+	this._popup_attrib_html.value = license.infoHtml;
+
+	// show the popup
 	this._popup.hidden = false;
 
 	var position = (getComputedStyle(gNavToolbox, "").direction == "rtl") ? 'after_end' : 'after_start';
@@ -24,7 +81,7 @@ var gCcHandler = {
     },
 
     hidePopup : function() {
-	document.getElementById('ccffext-popup').hidePopup();
+	// document.getElementById('ccffext-popup').hidePopup();
     },
 
     // URL Bar manipulators

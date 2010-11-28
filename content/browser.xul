@@ -35,20 +35,22 @@
                  class="identity-popup-label"
                  value="Hello, world"/>
 	  <label id="ccffext-popup-attribution-link"
-                 class="identity-popup-label anchor"
-                 value="Hello, world"
+                 class="identity-popup-label"
+                 value=""
+		 href=""
 		 />
 	  <label id="ccffext-popup-license-link"
-                 class="identity-popup-label anchor"
-                 value="Hello, world"  />
+                 class="identity-popup-label"
+                 value="" 
+		 href="" />
 	  <textbox id="ccffext-popup-attrib-html"></textbox>
 	</vbox>
       </hbox>
       <hbox pack="end">
         <button id="ccffext-popup-more-info-button"
                 label="More Information..."
-                onblur="ccffext.ui.popup.hide();"
-                oncommand="ccffext.ui.popup.moreInfo(event);"/>
+                onblur="gCcHandler.hidePopup();"
+                oncommand="gCcHandler.handleMoreInfo(event);"/>
       </hbox>
       <box id="ccffext-popup-license-band" flex="1" />
     </panel>
