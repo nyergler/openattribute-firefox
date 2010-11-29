@@ -139,10 +139,10 @@ var ccffext =
 	/**
 	 * Top-level predicates that mark licensed objects
 	 **/
-	predicates :
-	{
-	    "http://www.w3.org/1999/xhtml/vocab#" : ["copyright","license"]
-	},
+	predicates : ["http://www.w3.org/1999/xhtml/vocab#license",
+		      "http://creativecommons.org/ns#license",
+		      "http://purl.org/dc/terms/license"
+		     ],
 
 	/**
 	 * Finds licensed objects in a page
@@ -152,23 +152,13 @@ var ccffext =
 	 */
 	extract : function(document)
 	{
-	    var subjects = [];
 	    
-	    let statements = statements = ccffext.cache.get(document.location.href).statements;
-	    for (let i = 0; i < statements.length; ++i)
-	    {
-		for (let j in ccffext.objects.predicates)
-		{
-		    for (let k = 0; k < ccffext.objects.predicates[j].length; ++k)
-		    {
-			if (statements[i].predicate.uri == j + ccffext.objects.predicates[j][k])
-			{
-			    subjects.push(statements[i].subject);
-			}
-		    }
-		}
-	    }
-	    
+	    // get the set of statements extracted from the location
+	    let statements = ccffext.cache.get(document.location.href).statements;
+	    // get an array of subjects which have a license predicate
+	    var subjects = [s.subject for each (s in statements) 
+			    if (ccffext.objects.predicates.indexOf(s.predicate.uri) > -1)];
+
 	    return subjects.unique();
 	},
 	
@@ -391,12 +381,12 @@ var ccffext =
 	// Return the license for the specified object
 	getLicense : function(document, object) {
 
-	    for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
+	    for each (let pair in ccffext.objects.getPairs(document,object))
 	    {
-		if ((pairs[i][0].uri == "http://www.w3.org/1999/xhtml/vocab#copyright"
-		     || pairs[i][0].uri == "http://www.w3.org/1999/xhtml/vocab#license"))
+		for each (let p in ccffext.objects.predicates)
 		{
-		    return pairs[i][1];
+		    if (pair[0].uri == p)
+			return pair[1];
 		}
 	    }
 
