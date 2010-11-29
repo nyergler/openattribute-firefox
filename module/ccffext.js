@@ -370,6 +370,13 @@ var ccffext =
 	 */
 	getLicense : function(document,object,window,RDFA,XH)
 	{
+
+	    if (window == null) {
+		// get a handle to the active window
+		Components.utils.import("resource://gre/modules/Services.jsm");
+		window = Services.ww.activeWindow;
+	    }
+
 	    var license =
 		{
 		    name : undefined,
