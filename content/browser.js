@@ -100,6 +100,17 @@ var gCcHandler = {
 	gCcHandler._icon.setAttribute("tooltiptext",
 				  ccffext.l10n.get("icon.title.label",
 						   objects.length));
+    },
+
+    showIconIfLicensed : function(document) {
+	if (document instanceof HTMLDocument &&
+	    ccffext.objects.licenseCached(document))
+	{
+	    // Show the icon back if the document is cached and contains licensed objects
+	    this.showIcon(document);
+	} else {
+	    this.hideIcon();
+	}
     }
 
 };
@@ -113,18 +124,9 @@ window.addEventListener("load",function() {
     gBrowser.addProgressListener({
 	onLocationChange : function(progress,request,uri) {
 	    // A tab is opened, closed, or switched to
-	    
-	    // Hide the location bar icon
-	    gCcHandler.hideIcon();
-	    
-	    const doc = progress.DOMWindow.document;
-	    
-	    if (doc instanceof HTMLDocument &&
-		ccffext.objects.licenseCached(doc))
-	    {
-		// Show the icon back if the document is cached and contains licensed objects
-		gCcHandler.showIcon(doc);
-	    }
+
+	    // Show the location bar icon if license information is present
+	    gCcHandler.showIconIfLicensed(progress.DOMWindow.document);
 	},
 	
 	onStateChange : function(progress,request,flag,status) {
@@ -138,11 +140,18 @@ window.addEventListener("load",function() {
 		{
 		    // Parse the information and put it to cache.
 		    // Show the icon back if the document contains licensed objects
-		    if (ccffext.objects.licenseCached(doc)) {
-			gCcHandler.showIcon(doc);
-		    } else {
-			ccffext.objects.parse(doc.location.href,doc,RDFA,XH);
-		    }
+		    ccffext.objects.callbackify(
+			doc,
+			function(doc) {
+			    // license cached
+			    gCcHandler.showIcon(doc);
+			},
+			function(doc) {
+			    // license not cached
+			    ccffext.objects.parse(doc.location.href, doc,
+						  RDFA, XH);
+			});
+
 		}
 	    }
 	},
