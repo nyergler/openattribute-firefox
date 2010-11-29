@@ -66,7 +66,12 @@ var gCcHandler = {
 	}
 
 	// -- copy and paste HTML
-	this._popup_attrib_html.value = license.infoHtml;
+	this._popup_attrib_html.value = "";
+	ccffext.objects.getAttributionHtml(
+	    content.document, doc_subject,
+	    function(document, object, attrib_html) {
+		gCcHandler._popup_attrib_html.value = attrib_html;
+	    });
 
 	// show the popup
 	this._popup.hidden = false;

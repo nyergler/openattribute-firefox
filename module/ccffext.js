@@ -360,6 +360,33 @@ var ccffext =
 	{
 	    return object.uri;
 	},
+
+	getAttributionHtml : function(document, object, callback) {
+
+	    // get a handle to the active window
+	    Components.utils.import("resource://gre/modules/Services.jsm");
+	    window = Services.ww.activeWindow;
+
+	    license_uri = ccffext.objects.getLicense(document, object).uri;
+	    
+	    var xhr = new window.XMLHttpRequest();
+	    let uri = "http://scraper.creativecommons.org/apps/deed?url=" + encodeURIComponent(object.uri) + "&license_uri=" + license_uri;
+
+	    xhr.open("GET",uri,true);
+
+	    xhr.onreadystatechange = function (aEvt) {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+		    var jsObject = JSON.parse(xhr.responseText);
+		    var attrib_html = jsObject['attribution']['marking'];
+
+		    callback(document, object, attrib_html);
+		}
+	    };
+
+	    // send the request
+	    xhr.send(null);
+
+	}, // getAtttributionHtml
 	
 	/**
 	 * Returns information about the license
@@ -442,18 +469,6 @@ var ccffext =
 						  .replace("http://creativecommons.org/ns#",""));
 		    }
 		    
-		    // get the attribution HTML from the CC Scraper
-		    var xhr = new window.XMLHttpRequest();
-		    let uri = "http://scraper.creativecommons.org/apps/deed?url=" + encodeURIComponent(document.URL) + "&license_uri=" + license.uri;
-		    xhr.open("GET",uri,false);
-		    xhr.send();
-		    if (4 == xhr.readyState && 200 == xhr.status)
-		    {
-			var jsObject = JSON.parse(xhr.responseText);
-			license.infoHtml = jsObject['attribution']['marking'];
-		    }
-		    
-		    // license.infoText = doc.getElementsByTagName("html")[0].textContent;
 		}
 	    }
 	    
