@@ -387,22 +387,36 @@ var ccffext =
 	    xhr.send(null);
 
 	}, // getAtttributionHtml
-	
+
+	// Return the license for the specified object
+	getLicense : function(document, object) {
+
+	    for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
+	    {
+		if ((pairs[i][0].uri == "http://www.w3.org/1999/xhtml/vocab#copyright"
+		     || pairs[i][0].uri == "http://www.w3.org/1999/xhtml/vocab#license"))
+		{
+		    return pairs[i][1];
+		}
+	    }
+
+	    return undefined;
+	},
+
 	/**
 	 * Returns information about the license
 	 *
 	 * @param document The analysed document
 	 * @param object The object
-	 * @param window The context window
+	 * @param callback Callback when the license details have been retrieved;
+	 *        This is called with the signature (document, object, license).
 	 */
-	getLicense : function(document,object,window,RDFA,XH)
+	getLicenseDetails : function(document,object, callback)
 	{
 
-	    if (window == null) {
-		// get a handle to the active window
-		Components.utils.import("resource://gre/modules/Services.jsm");
-		window = Services.ww.activeWindow;
-	    }
+	    // get a handle to the active window
+	    Components.utils.import("resource://gre/modules/Services.jsm");
+	    window = Services.ww.activeWindow;
 
 	    var license =
 		{
@@ -411,19 +425,9 @@ var ccffext =
 		    permissions : [],
 		    requirements : [],
 		    prohibitions: [],
-		    infoHtml : "",
-		    infoText : ""
 		};
 	    
-	    for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
-	    {
-		if ((pairs[i][0].uri == "http://www.w3.org/1999/xhtml/vocab#copyright"
-		     || pairs[i][0].uri == "http://www.w3.org/1999/xhtml/vocab#license"))
-		{
-		    license.uri = pairs[i][1].uri;
-		    break;
-		}
-	    }
+	    license.uri = license.name = ccffext.objects.getLicense(document, object).uri;
 	    
 	    if ("undefined" != typeof license.uri &&
 		license.uri.indexOf("http://creativecommons.org/") == 0)
@@ -438,10 +442,11 @@ var ccffext =
 		var xhr = new window.XMLHttpRequest();
 		let uri = "http://api.creativecommons.org/rest/dev/details?license-uri=" + license.uri;
 		
-		xhr.open("GET",uri,false);
-		xhr.send();
-		if (4 == xhr.readyState && 200 == xhr.status)
-		{
+		xhr.open("GET",uri,true);
+
+		xhr.onreadystatechange = function (aEvt) {
+		    if (xhr.readyState == 4 && xhr.status == 200) {
+
 		    var parser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
 			.createInstance(Components.interfaces.nsIDOMParser);
 		    var doc = parser.parseFromString(xhr.responseText,"text/xml");
@@ -468,13 +473,18 @@ var ccffext =
 			license.prohibitions.push(prohs[i].getAttribute("rdf:resource")
 						  .replace("http://creativecommons.org/ns#",""));
 		    }
-		    
-		}
-	    }
-	    
-	    if ("undefined" == license.name)
-	    {
-		license.name = license.uri;
+		   
+			// call the callback when done
+			callback (document, object, license);
+		    } 
+		    else {
+			// pass
+		    }
+		};
+
+		// send the request
+		xhr.send(null);
+
 	    }
 	    
 	    return license;

@@ -158,7 +158,8 @@
 		    }
 		}
 		
-		var license = ccffext.objects.getLicense(doc,objects[i],window.opener.content,RDFA,XH);
+		var license = ccffext.objects.getLicenseDetails(doc,objects[i]);
+
 		const licenseLine = document.createElement("hbox");
 		licenseLine.setAttribute("class","line primary");
 		leftPanel.appendChild(licenseLine);

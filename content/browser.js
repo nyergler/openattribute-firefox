@@ -52,18 +52,17 @@ var gCcHandler = {
 	}
 
 	// -- license link
-	var license = ccffext.objects.getLicense(
-	    content.document, doc_subject, window, RDFA, XH);
-	this._popup_license.value = license.name;
+	var license = ccffext.objects.getLicense(content.document, doc_subject);
+
+	this._popup_license.value = license.uri;
 	this._popup_license.setAttribute('href', license.uri);
 
-	if (typeof this._popup_license.getAttribute("href") == "string") {
-	    this._popup_license.setAttribute(
-		"class", "identity-popup-label text-link");
-	} else {
-	    this._popup_license.setAttribute(
-		"class", "identity-popup-label");
-	}
+	// ---- get the license details and update the popup when ready
+	ccffext.objects.getLicenseDetails(
+	    content.document, doc_subject,
+	    function(document, object, license) {
+		gCcHandler._popup_license.value = license.name;
+	    });
 
 	// -- copy and paste HTML
 	this._popup_attrib_html.value = "";
