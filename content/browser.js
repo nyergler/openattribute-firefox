@@ -36,19 +36,36 @@ var gCcHandler = {
 	    content.document, doc_subject);
 
 	// -- attribution link
-	this._popup_attribution.value = ccffext.objects.getAuthor(
-	    content.document, doc_subject);
-	this._popup_attribution.setAttribute(
-	    'href', 
-	    ccffext.objects.getAuthorUri(content.document, doc_subject).uri
-	);
+	let author = ccffext.objects.getAuthor(content.document, doc_subject);
+	let author_uri = ccffext.objects.getAuthorUri(content.document, doc_subject);
 
-	if (typeof this._popup_attribution.getAttribute("href") == "string") {
-	    this._popup_attribution.setAttribute(
-		"class", "identity-popup-label text-link");
+	if ("undefined" != typeof author || 
+	    "undefined" != typeof author_uri) {
+
+	    // at least one has been provided
+	    this._popup_attribution.hidden = false;
+
+	    if ("undefined" == typeof author && 
+		"undefined" != typeof author_uri)
+		author = author_uri;
+	    
+	    if ("undefined" != typeof author) {
+		// attribution name was supplied
+		this._popup_attribution.value = author;
+	    }
+
+	    if ("undefined" != typeof author_uri) {
+		this._popup_attribution.setAttribute('href', author_uri.uri);
+		this._popup_attribution.setAttribute(
+		    "class", "identity-popup-label text-link");
+	    } else {
+		// no attribution URL
+		this._popup_attribution.setAttribute(
+		    "class", "identity-popup-label");
+	    }
 	} else {
-	    this._popup_attribution.setAttribute(
-		"class", "identity-popup-label");
+	    // no attribution metadata
+	    this._popup_attribution.hidden = true;
 	}
 
 	// -- license link
