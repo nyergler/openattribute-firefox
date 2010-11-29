@@ -40,7 +40,7 @@
 		 href=""
 		 />
 	  <label id="ccffext-popup-license-link"
-                 class="identity-popup-label"
+                 class="identity-popup-label text-link"
                  value="" 
 		 href="" />
 	  <textbox id="ccffext-popup-attrib-html"></textbox>
