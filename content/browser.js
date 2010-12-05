@@ -31,68 +31,71 @@ var gCcHandler = {
 	// update the popup with the license information
 	var doc_subject = {uri:content.document.location.href};
 
-	// -- title
-	this._popup_work_title.value = ccffext.objects.getTitle(
-	    content.document, doc_subject);
-
-	// -- attribution link
-	let author = ccffext.objects.getAuthor(content.document, doc_subject);
-	let author_uri = ccffext.objects.getAuthorUri(content.document, doc_subject);
-
-	if ("undefined" != typeof author || 
-	    "undefined" != typeof author_uri) {
-
-	    // at least one has been provided
-	    this._popup_attribution.hidden = false;
-
-	    if ("undefined" == typeof author && 
-		"undefined" != typeof author_uri)
-		author = author_uri;
-	    
-	    if ("undefined" != typeof author) {
-		// attribution name was supplied
-		this._popup_attribution.value = author;
-	    }
-
-	    if ("undefined" != typeof author_uri) {
-		this._popup_attribution.setAttribute('href', author_uri.uri);
-		this._popup_attribution.setAttribute(
-		    "class", "identity-popup-label text-link");
-	    } else {
-		// no attribution URL
-		this._popup_attribution.setAttribute(
-		    "class", "identity-popup-label");
-	    }
-	} else {
-	    // no attribution metadata
-	    this._popup_attribution.hidden = true;
-	}
-
 	// -- license link
 	var license = ccffext.objects.getLicense(content.document, doc_subject);
 
-	this._popup_license.value = license.uri;
-	this._popup_license.setAttribute('href', license.uri);
+	if ("undefined" != typeof license) {
+	    this._popup_license.value = license.uri;
+	    this._popup_license.setAttribute('href', license.uri);
 
-	// ---- get the license details and update the popup when ready
-	ccffext.objects.getLicenseDetails(
-	    content.document, doc_subject,
-	    function(document, object, license) {
-		gCcHandler._popup_license.value = license.name;
-	    });
+	    // ---- get the license details and update the popup when ready
+	    ccffext.objects.getLicenseDetails(
+		content.document, doc_subject,
+		function(document, object, license) {
+		    gCcHandler._popup_license.value = license.name;
+		});
 
-	// -- copy and paste HTML
-	this._popup_attrib_html.value = "";		    
-	gCcHandler._popup_attrib_html.hidden = true;
+	    // -- title
+	    this._popup_work_title.value = ccffext.objects.getTitle(
+		content.document, doc_subject);
 
-	ccffext.objects.getAttributionHtml(
-	    content.document, doc_subject,
-	    function(document, object, attrib_html) {
-		if (attrib_html) {
-		    gCcHandler._popup_attrib_html.value = attrib_html;
-		    gCcHandler._popup_attrib_html.hidden = false;
-		} 
-	    });
+	    // -- attribution link
+	    let author = ccffext.objects.getAuthor(content.document, doc_subject);
+	    let author_uri = ccffext.objects.getAuthorUri(content.document, doc_subject);
+	    
+	    if ("undefined" != typeof author || 
+		"undefined" != typeof author_uri) {
+		
+		// at least one has been provided
+		this._popup_attribution.hidden = false;
+		
+		if ("undefined" == typeof author && 
+		    "undefined" != typeof author_uri)
+		    author = author_uri;
+		
+		if ("undefined" != typeof author) {
+		    // attribution name was supplied
+		    this._popup_attribution.value = author;
+		}
+		
+		if ("undefined" != typeof author_uri) {
+		    this._popup_attribution.setAttribute('href', author_uri.uri);
+		    this._popup_attribution.setAttribute(
+			"class", "identity-popup-label text-link");
+		} else {
+		    // no attribution URL
+		    this._popup_attribution.setAttribute(
+			"class", "identity-popup-label");
+		}
+	    } else {
+		// no attribution metadata
+		this._popup_attribution.hidden = true;
+	    }
+	    
+	    // -- copy and paste HTML
+	    this._popup_attrib_html.value = "";		    
+	    gCcHandler._popup_attrib_html.hidden = true;
+	    
+	    ccffext.objects.getAttributionHtml(
+		content.document, doc_subject,
+		function(document, object, attrib_html) {
+		    if (attrib_html) {
+			gCcHandler._popup_attrib_html.value = attrib_html;
+			gCcHandler._popup_attrib_html.hidden = false;
+		    } 
+		});
+	    
+	}; // if license is not undefined
 
 	// show the popup
 	this._popup.hidden = false;
