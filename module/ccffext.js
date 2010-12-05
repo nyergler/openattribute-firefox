@@ -185,6 +185,29 @@ var ccffext =
 	},
 
 	/**
+	 * Return the first object for the given subject and predicate.
+	 * 
+	 * Predicates is an array of predicates to search for, in order
+	 * of preference.
+	 * 
+	 **/
+	getValue : function(document, subject, predicates) {
+
+	    for each (let p in predicates) {
+		for (let i = 0, 
+		     pairs = ccffext.objects.getPairs(document,subject); 
+		     i < pairs.length; ++i) {
+		    if (pairs[i][0].uri == p) {
+			return pairs[i][1];
+		    }
+		}
+	    }
+	    
+	    return undefined;
+
+	}, // getValue
+
+	/**
 	 * Parses RDFa data of the given document and stores it in the cache
 	 *
 	 * @param document The document to be parsed
