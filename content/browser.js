@@ -82,11 +82,16 @@ var gCcHandler = {
 	    });
 
 	// -- copy and paste HTML
-	this._popup_attrib_html.value = "";
+	this._popup_attrib_html.value = "";		    
+	gCcHandler._popup_attrib_html.hidden = true;
+
 	ccffext.objects.getAttributionHtml(
 	    content.document, doc_subject,
 	    function(document, object, attrib_html) {
-		gCcHandler._popup_attrib_html.value = attrib_html;
+		if (attrib_html) {
+		    gCcHandler._popup_attrib_html.value = attrib_html;
+		    gCcHandler._popup_attrib_html.hidden = false;
+		} 
 	    });
 
 	// show the popup
