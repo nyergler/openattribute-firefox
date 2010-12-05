@@ -286,20 +286,13 @@ var ccffext =
 	 */
 	getTitle : function(document,object)
 	{
-	    for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
-	    {
-		if (pairs[i][0].uri == "http://purl.org/dc/terms/title")
-		{
-		    return pairs[i][1];
-		}
-	    }
-	    for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
-	    {
-		if (pairs[i][0].uri == "http://purl.org/dc/elements/1.1/title")
-		{
-		    return pairs[i][1];
-		}
-	    }
+
+	    var title = ccffext.objects.getValue(
+		document, object,
+		["http://purl.org/dc/terms/title",
+		 "http://purl.org/dc/elements/1.1/title"]);
+
+	    if (typeof title != "undefined") return title;
 	    
 	    return document.location.href == object.uri
 		? ccffext.l10n.get("object.title.current-page.label")
@@ -314,14 +307,14 @@ var ccffext =
 	 */
 	getType : function(document,object)
 	{
-	    for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
-	    {
-		if (pairs[i][0].uri == "http://purl.org/dc/terms/type")
-		{
-		    return pairs[i][1].uri.replace("http://purl.org/dc/dcmitype/","");
-		}
-	    }
-	    
+	    var type = ccffext.objects.getValue(
+		document, object, 
+		["http://purl.org/dc/terms/type",
+		 "http://purl.org/dc/elements/1.1/type"]);
+
+	    if (undefined != typeof type) 
+		return type.uri.replace("http://purl.org/dc/dcmitype/","");
+
 	    return undefined;
 	},
 
@@ -333,15 +326,9 @@ var ccffext =
 	 */
 	getAuthor : function(document,object)
 	{
-	    for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
-	    {
-		if (pairs[i][0].uri == "http://creativecommons.org/ns#attributionName")
-		{
-		    return pairs[i][1];
-		}
-	    }
-	    
-	    return undefined;
+	    return ccffext.objects.getValue(
+		document, object, 
+		["http://creativecommons.org/ns#attributionName"]);
 	},
 	
 	/**
@@ -352,15 +339,9 @@ var ccffext =
 	 */
 	getAuthorUri : function(document,object)
 	{
-	    for (let i = 0, pairs = ccffext.objects.getPairs(document,object); i < pairs.length; ++i)
-	    {
-		if (pairs[i][0].uri == "http://creativecommons.org/ns#attributionURL")
-		{
-		    return pairs[i][1];
-		}
-	    }
-	    
-	    return undefined;
+	    return ccffext.objects.getValue(
+		document, object, 
+		["http://creativecommons.org/ns#attributionURL"]);
 	},
 	
 	/**
@@ -404,16 +385,9 @@ var ccffext =
 	// Return the license for the specified object
 	getLicense : function(document, object) {
 
-	    for each (let pair in ccffext.objects.getPairs(document,object))
-	    {
-		for each (let p in ccffext.objects.predicates)
-		{
-		    if (pair[0].uri == p)
-			return pair[1];
-		}
-	    }
+	    return ccffext.objects.getValue(
+		document, object, ccffext.objects.predicates);
 
-	    return undefined;
 	},
 
 	/**
