@@ -384,6 +384,8 @@ var ccffext =
 		{
 		    name : undefined,
 		    uri : undefined,
+		    code : undefined,
+		    color : undefined,
 		    permissions : [],
 		    requirements : [],
 		    prohibitions: [],
@@ -400,7 +402,37 @@ var ccffext =
 		    // strip off the trailing bit
 		    license.uri = license.uri.slice(0, license.uri.lastIndexOf("/") + 1);
 		}
-		
+
+		// extract the license code
+		var re_license_code = /http:\/\/creativecommons\.org\/(licenses|publicdomain)\/([a-z\-\+]+)\/.*/
+		license.code = license.uri.match(re_license_code)[2];
+
+		// determine the license "color"
+		switch (license.code) {
+		case "by":
+		case "by-sa":
+		case "mark":
+		case "zero":
+		case "publicdomain":
+		    license.color = "green";
+		    break;
+
+		case "by-nc":
+		case "by-nd":
+		case "by-nc-nd":
+		case "by-nc-sa":
+		case "sampling+":
+		case "nc-sampling+":
+		    license.color = "yellow";
+		    break;
+
+		case "sampling":
+		case "devnations":
+		    license.color = red;
+		    break;
+		}
+
+		// retrieve additional details from the CC API
 		var xhr = new window.XMLHttpRequest();
 		let uri = "http://api.creativecommons.org/rest/dev/details?license-uri=" + license.uri;
 		
@@ -446,7 +478,6 @@ var ccffext =
 
 		// send the request
 		xhr.send(null);
-
 	    }
 	    
 	    return license;
