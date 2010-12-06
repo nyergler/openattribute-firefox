@@ -1,0 +1,12 @@
+Creative Commons Firefox Add-on
+===============================
+
+The Creative Commons Firefox Add-on (CC-FX) adds support for
+displaying license and attribution information for works as you
+browse. If the page or items on the page are licensed, a CC icon will
+appear in the URL bar, which can be clicked to display the author and
+license information (if available).
+
+This add-on is the successor to
+[MozCC](http://wiki.creativecommons.org/MozCC) and was initially
+developed with support from Google Summer of Code.
