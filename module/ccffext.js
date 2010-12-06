@@ -287,7 +287,7 @@ var ccffext =
 		["http://purl.org/dc/terms/type",
 		 "http://purl.org/dc/elements/1.1/type"]);
 
-	    if (undefined != typeof type) 
+	    if ("undefined" != typeof type) 
 		return type.uri.replace("http://purl.org/dc/dcmitype/","");
 
 	    return undefined;
