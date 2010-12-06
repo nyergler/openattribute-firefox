@@ -29,7 +29,8 @@
 	    <em:description>Displays license and attribution information for Creative Commons licensed content.</em:description>
 
 	    <!-- Extension contributors -->
-	    <em:creator>Igor Lukanin (mail@igor.lukanin.name)</em:creator>
+	    <em:creator>Creative Commons (webmaster@creativecommons.org)</em:creator>
+	    <em:developer>Igor Lukanin (mail@igor.lukanin.name)</em:developer>
 	    <em:developer>Nathan Yergler (nathan@yergler.net)</em:developer>
 
 	    <!--
