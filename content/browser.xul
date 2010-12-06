@@ -33,17 +33,18 @@
         <vbox id="identity-popup-content-box">
 	  <label id="ccffext-popup-work-title"
                  class="identity-popup-label"
-                 value="Hello, world"/>
+                 value="" />
 	  <label id="ccffext-popup-attribution-link"
                  class="identity-popup-label"
                  value=""
-		 href=""
-		 />
+		 href="" />
 	  <label id="ccffext-popup-license-link"
                  class="identity-popup-label text-link"
                  value="" 
 		 href="" />
 	  <textbox id="ccffext-popup-attrib-html"></textbox>
+	  <label id="ccffext-popup-licensed-objects"
+		 class="identity-popup-label" value="" />
 	</vbox>
       </hbox>
       <hbox pack="end">

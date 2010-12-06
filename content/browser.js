@@ -25,10 +25,15 @@ var gCcHandler = {
 	return document.getElementById('ccffext-popup-attrib-html');
     },
 
+    get _popup_num_licensed_objects () {
+	return document.getElementById('ccffext-popup-licensed-objects');
+    },
+
     resetPopup : function() {
 	// hide popup elements which may or may not be shown for this page
 	this._popup_license.hidden = true;
 	this._popup_work_title.hidden = true;
+	this._popup_num_licensed_objects.hidden = true;
 	this._popup_attribution.hidden = true;
 	this._popup_attrib_html.value = "";		    
 	this._popup_attrib_html.hidden = true;
@@ -42,10 +47,14 @@ var gCcHandler = {
 	// update the popup with the license information
 	var doc_subject = {uri:content.document.location.href};
 
-	// -- license link
+	// -- license
 	var license = ccffext.objects.getLicense(content.document, doc_subject);
+	var is_doc_licensed = false;
 
 	if ("undefined" != typeof license) {
+	    // document is licensed
+	    is_doc_licensed = true;
+
 	    this._popup_license.hidden = false;
 	    this._popup_license.value = license.uri;
 	    this._popup_license.setAttribute('href', license.uri);
@@ -102,7 +111,16 @@ var gCcHandler = {
 		    } 
 		});
 	    
-	}; // if license is not undefined
+	} // if license is not undefined
+
+	// how many licensed objects described by this page, excluding the page
+	var count = ccffext.objects.extract(content.document).length -
+	    (is_doc_licensed?1:0);
+	if (count > 0) {
+	    this._popup_num_licensed_objects.value = 
+		ccffext.l10n.get("icon.title.label", count);
+	    this._popup_num_licensed_objects.hidden = false;
+	}
 
 	// show the popup
 	this._popup.hidden = false;
