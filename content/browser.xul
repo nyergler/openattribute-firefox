@@ -17,7 +17,7 @@
 
   <!-- CC urlbar icon -->
   <hbox id="urlbar-icons">
-    <image id="ccffext-icon"
+    <image id="ccffext-icon" hidden="true"
 	   onclick="gCcHandler.handleIconClick(event)" />
   </hbox>
   

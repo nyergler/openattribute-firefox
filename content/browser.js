@@ -25,8 +25,19 @@ var gCcHandler = {
 	return document.getElementById('ccffext-popup-attrib-html');
     },
 
+    resetPopup : function() {
+	// hide popup elements which may or may not be shown for this page
+	this._popup_license.hidden = true;
+	this._popup_work_title.hidden = true;
+	this._popup_attribution.hidden = true;
+	this._popup_attrib_html.value = "";		    
+	this._popup_attrib_html.hidden = true;
+    },
+
     // Popup Handlers
     handleIconClick : function(e) {
+
+	this.resetPopup();
 
 	// update the popup with the license information
 	var doc_subject = {uri:content.document.location.href};
@@ -35,6 +46,7 @@ var gCcHandler = {
 	var license = ccffext.objects.getLicense(content.document, doc_subject);
 
 	if ("undefined" != typeof license) {
+	    this._popup_license.hidden = false;
 	    this._popup_license.value = license.uri;
 	    this._popup_license.setAttribute('href', license.uri);
 
@@ -46,6 +58,7 @@ var gCcHandler = {
 		});
 
 	    // -- title
+	    this._popup_work_title.hidden = false;
 	    this._popup_work_title.value = ccffext.objects.getTitle(
 		content.document, doc_subject);
 
@@ -77,15 +90,9 @@ var gCcHandler = {
 		    this._popup_attribution.setAttribute(
 			"class", "identity-popup-label");
 		}
-	    } else {
-		// no attribution metadata
-		this._popup_attribution.hidden = true;
-	    }
-	    
+	    } 
+
 	    // -- copy and paste HTML
-	    this._popup_attrib_html.value = "";		    
-	    gCcHandler._popup_attrib_html.hidden = true;
-	    
 	    ccffext.objects.getAttributionHtml(
 		content.document, doc_subject,
 		function(document, object, attrib_html) {
