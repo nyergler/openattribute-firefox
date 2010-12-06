@@ -21,6 +21,10 @@ var gCcHandler = {
 	return document.getElementById('ccffext-popup-license-link');
     },
 
+    get _popup_license_band () {
+	return document.getElementById('ccffext-popup-license-band');
+    },
+
     get _popup_attrib_html () {
 	return document.getElementById('ccffext-popup-attrib-html');
     },
@@ -37,6 +41,8 @@ var gCcHandler = {
 	this._popup_attribution.hidden = true;
 	this._popup_attrib_html.value = "";		    
 	this._popup_attrib_html.hidden = true;
+	this._popup_license_band.setAttribute(
+	    "class", "band-reset");
     },
 
     // Popup Handlers
@@ -64,6 +70,8 @@ var gCcHandler = {
 		content.document, doc_subject,
 		function(document, object, license) {
 		    gCcHandler._popup_license.value = license.name;
+		    gCcHandler._popup_license_band.setAttribute(
+			"class", "band-" + license.color);
 		});
 
 	    // -- title

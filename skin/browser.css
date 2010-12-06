@@ -23,3 +23,22 @@ image#ccffext-popup-icon {
 #ccffext-popup-license-band {
     height: 25px;
 }
+
+.band-reset {
+    display: none;
+}
+
+.band-green {
+    display: block;
+    background-color: green;
+}
+
+.band-yellow {
+    display: block;
+    background-color: yellow;
+}
+
+.band-red {
+    display: block;
+    background-color: red;
+}
