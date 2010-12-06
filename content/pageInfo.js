@@ -21,7 +21,7 @@
     highlightBox.setAttribute("id","ccffext-highlight");
     highlightBox.setAttribute("label",ccffext.l10n.get("checkbox.highlight.label"));
     highlightBox.setAttribute("checked","true"); // By default, the objects are highlighted
-    topLine.appendChild(highlightBox);
+    // topLine.appendChild(highlightBox);
     
     // List of licensed objects
     const list = document.createElement("vbox");
@@ -194,10 +194,15 @@
 		
 		const attribText = document.createElement("textbox");
 		attribText.setAttribute("flex","1");
-		attribText.setAttribute("value",license.infoHtml);
 		attribText.addEventListener("focus", function(e) {
 		    attribText.select();
 		}, true);
+		ccffext.objects.getAttributionHtml(
+		    doc, objects[i],
+		    function(document, object, attrib_html) {
+			if (attrib_html) {
+			    attribText.setAttribute("value", attrib_html);
+			}});
 		attribContainer.appendChild(attribText);
 
 		const attribCopyButton = document.createElement("button");
