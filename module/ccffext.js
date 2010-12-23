@@ -332,13 +332,13 @@ var ccffext =
 
 	getAttributionHtml : function(document, object, callback) {
 
-	    // get a handle to the active window
-	    Components.utils.import("resource://gre/modules/Services.jsm");
-	    window = Services.ww.activeWindow;
-
+	    // get the license URI for this object
 	    license_uri = ccffext.objects.getLicense(document, object).uri;
 	    
-	    var xhr = new window.XMLHttpRequest();
+	    var xhr = Components
+		.classes["@mozilla.org/xmlextras/xmlhttprequest;1"]
+                .createInstance(Components.interfaces.nsIXMLHttpRequest);
+
 	    let uri = "http://scraper.creativecommons.org/apps/deed?url=" + encodeURIComponent(object.uri) + "&license_uri=" + license_uri;
 
 	    xhr.open("GET",uri,true);
@@ -375,10 +375,6 @@ var ccffext =
 	 */
 	getLicenseDetails : function(document,object, callback)
 	{
-
-	    // get a handle to the active window
-	    Components.utils.import("resource://gre/modules/Services.jsm");
-	    window = Services.ww.activeWindow;
 
 	    var license =
 		{
@@ -433,7 +429,10 @@ var ccffext =
 		}
 
 		// retrieve additional details from the CC API
-		var xhr = new window.XMLHttpRequest();
+		var xhr = Components
+		    .classes["@mozilla.org/xmlextras/xmlhttprequest;1"]
+                    .createInstance(Components.interfaces.nsIXMLHttpRequest);
+
 		let uri = "http://api.creativecommons.org/rest/dev/details?license-uri=" + license.uri;
 		
 		xhr.open("GET",uri,true);
