@@ -23,7 +23,7 @@
 	    <em:type>2</em:type>
 
 	    <!-- Extension name -->
-	    <em:name>Creative Commons License Information</em:name>
+	    <em:name>OpenAttribute</em:name>
 
 	    <!-- Extension description -->
 	    <em:description>Displays license and attribution information for Creative Commons licensed content.</em:description>
