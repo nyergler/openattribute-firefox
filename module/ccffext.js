@@ -381,10 +381,7 @@ var ccffext =
 		    name : undefined,
 		    uri : undefined,
 		    code : undefined,
-		    color : undefined,
-		    permissions : [],
-		    requirements : [],
-		    prohibitions: [],
+		    color : undefined
 		};
 	    
 	    license.uri = license.name = ccffext.objects.getLicense(document, object).uri;
@@ -446,26 +443,6 @@ var ccffext =
 		    
 		    license.name = doc.getElementsByTagName("license-name")[0].textContent;
 		    
-		    let perms = doc.getElementsByTagName("permits");
-		    for (let i = 0; i < perms.length / 2; ++i)
-		    {
-			license.permissions.push(perms[i].getAttribute("rdf:resource")
-						 .replace("http://creativecommons.org/ns#",""));
-		    }
-		    
-		    let reqs = doc.getElementsByTagName("requires");
-		    for (let i = 0; i < reqs.length / 2; ++i)
-		    {
-			license.requirements.push(reqs[i].getAttribute("rdf:resource")
-						  .replace("http://creativecommons.org/ns#",""));
-		    }
-		    
-		    let prohs = doc.getElementsByTagName("prohibits");
-		    for (let i = 0; i < prohs.length / 2; ++i)
-		    {
-			license.prohibitions.push(prohs[i].getAttribute("rdf:resource")
-						  .replace("http://creativecommons.org/ns#",""));
-		    }
 		   
 			// call the callback when done
 			callback (document, object, license);
