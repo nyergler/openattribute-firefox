@@ -54,6 +54,9 @@
                 oncommand="gCcHandler.handleMoreInfo(event);"/>
       </hbox>
       <box id="ccffext-popup-license-band" flex="1" />
+      <browser id="ccffext-license-frame" name="ccffext-license-frame"
+	       type="content" height="0" />
+      
     </panel>
   </popupset>
 

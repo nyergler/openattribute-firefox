@@ -42,3 +42,7 @@ image#ccffext-popup-icon {
     display: block;
     background-color: red;
 }
+
+#ccffext-license-frame {
+    display: none;
+}

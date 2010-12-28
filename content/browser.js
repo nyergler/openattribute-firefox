@@ -33,6 +33,10 @@ var gCcHandler = {
 	return document.getElementById('ccffext-popup-licensed-objects');
     },
 
+    get _license_frame () {
+	return document.getElementById('ccffext-license-frame');
+    },
+
     resetPopup : function() {
 	// hide popup elements which may or may not be shown for this page
 	this._popup_license.hidden = true;
