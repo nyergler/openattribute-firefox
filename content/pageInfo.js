@@ -158,8 +158,6 @@
 		    }
 		}
 		
-		var license = ccffext.objects.getLicenseDetails(doc,objects[i]);
-
 		const licenseLine = document.createElement("hbox");
 		licenseLine.setAttribute("class","line primary");
 		leftPanel.appendChild(licenseLine);
@@ -171,12 +169,18 @@
 		
 		const licenseValue = document.createElement("label");
 		licenseValue.setAttribute("class","anchor");
-		licenseValue.setAttribute("value",license.name);
-		licenseValue.setAttribute("uri",license.uri);
 		licenseValue.addEventListener("click",function(event) {
 		    window.open(this.getAttribute("uri"));
 		},true);
 		licenseLine.appendChild(licenseValue);
+
+		ccffext.objects.getLicenseDetails(
+		    doc,objects[i],
+		    function(doc, obj, license) {
+			licenseValue.setAttribute("value",license.name);
+			licenseValue.setAttribute("uri",license.uri);
+		    });
+
 				
 		const attribLine = document.createElement("vbox");
 		attribLine.setAttribute("class","line primary");
