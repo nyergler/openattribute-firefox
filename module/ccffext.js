@@ -373,7 +373,7 @@ var ccffext =
 	 * @param callback Callback when the license details have been retrieved;
 	 *        This is called with the signature (document, object, license).
 	 */
-	getLicenseDetails : function(document,object, callback)
+	getLicenseDetails : function(document,object, callback, license_frame)
 	{
 
 	    var license =

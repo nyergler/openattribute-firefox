@@ -76,7 +76,8 @@ var gCcHandler = {
 		    gCcHandler._popup_license.value = license.name;
 		    gCcHandler._popup_license_band.setAttribute(
 			"class", "band-" + license.color);
-		});
+		},
+		this._license_frame);
 
 	    // -- title
 	    this._popup_work_title.hidden = false;
