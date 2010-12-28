@@ -185,8 +185,7 @@ var gCcHandler = {
 		},
 		function(document) {
 		    // license not cached
-		    ccffext.objects.parse(document.location.href, document,
-					  RDFA, XH);
+		    ccffext.objects.parse(document.location.href, document);
 		});
 	}
     }

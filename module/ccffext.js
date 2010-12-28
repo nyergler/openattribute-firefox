@@ -27,6 +27,9 @@ Array.prototype.unique = function()
 // Support for l10n of plurals
 Components.utils.import("resource://gre/modules/PluralForm.jsm");
 
+// RDFa parser
+Components.utils.import("resource://ccffext/rdfa.js");
+
 /**
  * Main extension object.
  * Behaves as a namespace for all code
@@ -214,7 +217,7 @@ var ccffext =
 	 * @param RDFA RDFA object
 	 * @param XH XH object
 	 */
-	parse : function(location,document,RDFA,XH)
+	parse : function(location,document)
 	{
 	    XH.transform(document.getElementsByTagName("body")[0]);
 	    XH.transform(document.getElementsByTagName("head")[0]);
