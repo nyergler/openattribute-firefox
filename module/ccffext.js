@@ -427,40 +427,67 @@ var ccffext =
 		    license.color = red;
 		    break;
 		}
-
-		// retrieve additional details from the CC API
-		var xhr = Components
-		    .classes["@mozilla.org/xmlextras/xmlhttprequest;1"]
-                    .createInstance(Components.interfaces.nsIXMLHttpRequest);
-
-		let uri = "http://api.creativecommons.org/rest/dev/details?license-uri=" + license.uri;
-		
-		xhr.open("GET",uri,true);
-
-		xhr.onreadystatechange = function (aEvt) {
-		    if (xhr.readyState == 4 && xhr.status == 200) {
-
-		    var parser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
-			.createInstance(Components.interfaces.nsIDOMParser);
-		    var doc = parser.parseFromString(xhr.responseText,"text/xml");
-		    
-		    license.name = doc.getElementsByTagName("license-name")[0].textContent;
-		    
-		   
-			// call the callback when done
-			callback (document, object, license);
-		    } 
-		    else {
-			// pass
-		    }
-		};
-
-		// send the request
-		xhr.send(null);
 	    }
-	    
+
+	    // retrieve the license document to introspect for RDFa
+	    if ("undefined" != typeof license_frame) {
+
+		// see if we need to configure this license_frame
+		if (!license_frame.hasAttribute("ccffext_configured")) {
+		    license_frame.webNavigation.allowAuth = true;
+		    license_frame.webNavigation.allowImages = false;
+		    license_frame.webNavigation.allowJavascript = false;
+		    license_frame.webNavigation.allowMetaRedirects = true;
+		    license_frame.webNavigation.allowPlugins = false;
+		    license_frame.webNavigation.allowSubframes = false;
+
+		    license_frame.addEventListener(
+			"DOMContentLoaded", 
+			function (e) {
+			    var doc = e.originalTarget;
+			    var url = doc.location.href;
+			    
+			    // parse the license document for RDFa
+			    XH.transform(doc.getElementsByTagName("body")[0]);
+			    XH.transform(doc.getElementsByTagName("head")[0]);
+			    
+			    RDFA.reset();
+			    RDFA.parse(doc);
+			    
+			    ccffext.cache.put(url,RDFA.triplestore);
+			    
+			    // see if we have the license name
+			    license.name = ccffext.objects.getValue(
+				doc, {'uri':url}, 
+				["http://purl.org/dc/terms/title",
+				 "http://purl.org/dc/elements/1.1/title"]);
+			    
+			    if ("string" == typeof license.name) {
+				license.name = license.name.trim();
+			    }
+			    
+			    // call the callback when done
+			    callback (document, object, license);
+			    
+			}, true);
+		    
+		    license_frame.setAttribute("ccffext_configured", true);
+		}; // configure license_frame
+
+		license_frame.webNavigation.loadURI(
+		    license.uri,
+		    Components.interfaces.nsIWebNavigation, null, null, null);
+
+	    } // if a license frame was provided 
+	    else {
+		// make sure the call back happens, 
+		// even if we can't load the license
+		callback (document, object, license);
+	    }
+
 	    return license;
-	}
+
+	} // getLicenseDetails
     },
         
     /**
