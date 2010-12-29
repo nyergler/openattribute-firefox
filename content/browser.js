@@ -127,8 +127,8 @@ var gCcHandler = {
 	} // if license is not undefined
 
 	// how many licensed objects described by this page, excluding the page
-	var count = ccffext.objects.extract(content.document).length -
-	    (is_doc_licensed?1:0);
+	var count = ccffext.objects.getLicensedSubjects(content.document).
+	    length - (is_doc_licensed?1:0);
 	if (count > 0) {
 	    this._popup_num_licensed_objects.value = 
 		ccffext.l10n.get("icon.title.label", count);
@@ -157,7 +157,7 @@ var gCcHandler = {
     },
     
     showIcon : function(document) {
-	const objects = ccffext.objects.extract(document);
+	const objects = ccffext.objects.getLicensedSubjects(document);
 
 	this._icon.hidden = false;
 	gCcHandler._icon.setAttribute("tooltiptext",

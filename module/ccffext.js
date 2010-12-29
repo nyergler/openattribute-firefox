@@ -153,7 +153,7 @@ var ccffext =
 	 * @param document The document containing licensed objects
 	 * @return array Array of objects
 	 */
-	extract : function(document)
+	getLicensedSubjects : function(document)
 	{
 	    
 	    // get the set of statements extracted from the location
@@ -246,7 +246,7 @@ var ccffext =
 		
 		if (ccffext.cache.contains(location))
 		{
-		    const objects = ccffext.objects.extract(document);
+		    const objects = ccffext.objects.getLicensedSubjects(document);
 		    
 		    if (0 < objects.length && "function" == typeof callbackHas)
 		    {

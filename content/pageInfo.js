@@ -47,7 +47,7 @@
 	
 	addEventListener("command",function() {
 	    const doc = window.opener.content.document;
-	    const objects = ccffext.objects.extract(doc);
+	    const objects = ccffext.objects.getLicensedSubjects(doc);
 
 	    // Update the label showing the number of objects
 	    numberLabel.setAttribute("value",
