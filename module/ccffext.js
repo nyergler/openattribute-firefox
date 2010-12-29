@@ -148,16 +148,16 @@ var ccffext =
 		     ],
 
 	/**
-	 * Finds licensed objects in a page
+	 * Returns a list of subjects with license assertions from a document.
 	 *
-	 * @param document The document containing licensed objects
+	 * @param doc_uri The URI of the document containing the license assertions.
 	 * @return array Array of objects
 	 */
-	getLicensedSubjects : function(document)
+	getLicensedSubjects : function(doc_uri)
 	{
 	    
 	    // get the set of statements extracted from the location
-	    let statements = ccffext.cache.get(document.location.href).statements;
+	    let statements = ccffext.cache.get(doc_uri).statements;
 	    // get an array of subjects which have a license predicate
 	    var subjects = [s.subject for each (s in statements) 
 			    if (ccffext.objects.predicates.indexOf(s.predicate.uri) > -1)];
@@ -166,16 +166,17 @@ var ccffext =
 	},
 	
 	/**
-	 * Returns an array of two-element "predicate-object" pairs for the licenced object (RDFa subject)
+	 * Returns an array of "predicate-object" pairs for the specified subject
 	 *
-	 * @param document The document containing licensed objects
-	 * @return subject The object (RDFa subject)
+	 * @param doc_uri The URI of the document containing the assertions.
+	 * @param subject The subject object to return predicate-object pairs for.
+	 * @return array An array of two element (predicate, object) arrays.
 	 */
-	getPredObjPairs : function(document,subject)
+	getPredObjPairs : function(doc_uri,subject)
 	{
 	    var pairs = [];
 	    
-	    let statements = statements = ccffext.cache.get(document.location.href).statements;
+	    let statements = ccffext.cache.get(doc_uri).statements;
 	    for (let i = 0; i < statements.length; ++i)
 	    {
 		if (statements[i].subject.uri == subject.uri)
@@ -190,15 +191,17 @@ var ccffext =
 	/**
 	 * Return the first object for the given subject and predicate.
 	 * 
-	 * Predicates is an array of predicates to search for, in order
-	 * of preference.
-	 * 
+	 * @param doc_uri The URI of the document containing the assertions.
+	 * @param subject The subject object to match.
+	 * @predicates array Predicates to search for, in order of preference.
+	 * @return array An array of two element (predicate, object) arrays.
+	 *
 	 **/
-	getValue : function(document, subject, predicates) {
+	getValue : function(doc_uri, subject, predicates) {
 
 	    for each (let p in predicates) {
 		for (let i = 0, 
-		     pairs = ccffext.objects.getPredObjPairs(document,subject); 
+		     pairs = ccffext.objects.getPredObjPairs(doc_uri,subject); 
 		     i < pairs.length; ++i) {
 		    if (pairs[i][0].uri == p) {
 			return pairs[i][1];
@@ -245,7 +248,7 @@ var ccffext =
 		
 		if (ccffext.cache.contains(location))
 		{
-		    const objects = ccffext.objects.getLicensedSubjects(document);
+		    const objects = ccffext.objects.getLicensedSubjects(location);
 		    
 		    if (0 < objects.length && "function" == typeof callbackHas)
 		    {
@@ -256,40 +259,48 @@ var ccffext =
 	},
 	
 	/**
-	 * Returns a title for a licensed object.
+	 * Returns a title for a licensed subject.
 	 *
-	 * @param document The analysed document
-	 * @param object The object
+	 * @param doc_uri URI of the document to search assertions from.
+	 * @param subject The subject to return the title of
 	 */
-	getTitle : function(document,object)
+	getTitle : function(doc_uri, subject)
 	{
 	    return ccffext.objects.getValue(
-		document, object,
+		doc_uri, subject,
 		["http://purl.org/dc/terms/title",
 		 "http://purl.org/dc/elements/1.1/title"]);
 	},
 	
-	getDisplayTitle : function(document, object) {
+	/**
+	 * Returns the display title for a licensed subject. If no
+	 * title is available, and the subject URI is the same as the
+	 * document URI, return a localized string for "this page".
+	 *
+	 * @param doc_uri URI of the document to search assertions from.
+	 * @param subject The subject to return the title of
+	 */
+	getDisplayTitle : function(doc_uri, subject) {
 
-	    var title = ccffext.objects.getTitle(document, object);
+	    var title = ccffext.objects.getTitle(doc_uri, subject);
 
 	    if (typeof title != "undefined") return title;
 	    
-	    return document.location.href == object.uri
+	    return doc_uri == subject.uri
 		? ccffext.l10n.get("object.title.current-page.label")
-		: object.uri;
+		: subject.uri;
 	}, // getDisplayTitle
 
 	/**
 	 * Returns a type for a licensed object
 	 *
-	 * @param document The analysed document
+	 * @param doc_uri URI of the document to search assertions from.
 	 * @param object The object
 	 */
-	getType : function(document,object)
+	getType : function(doc_uri,object)
 	{
 	    var type = ccffext.objects.getValue(
-		document, object, 
+		doc_uri, object, 
 		["http://purl.org/dc/terms/type",
 		 "http://purl.org/dc/elements/1.1/type"]);
 
@@ -302,52 +313,58 @@ var ccffext =
 	/**
 	 * Returns an author for a licensed object
 	 *
-	 * @param document The analysed document
+	 * @param doc_uri URI of the document to search assertions from.
 	 * @param object The object
 	 */
-	getAuthor : function(document,object)
+	getAuthor : function(doc_uri,object)
 	{
 	    return ccffext.objects.getValue(
-		document, object, 
+		doc_uri, object, 
 		["http://creativecommons.org/ns#attributionName"]);
 	},
 	
 	/**
 	 * Returns an URI for an author for a licensed object
 	 *
-	 * @param document The analysed document
+	 * @param doc_uri URI of the document to search assertions from.
 	 * @param object The object
 	 */
-	getAuthorUri : function(document,object)
+	getAuthorUri : function(doc_uri,object)
 	{
 	    return ccffext.objects.getValue(
-		document, object, 
+		doc_uri, object, 
 		["http://creativecommons.org/ns#attributionURL"]);
 	},
 	
 	/**
 	 * Returns a source for a licensed object.
 	 *
-	 * @param document The analysed document
+	 * @param doc_uri URI of the document to search assertions from.
 	 * @param object The object
 	 */
-	getSource : function(document,object)
+	getSource : function(doc_uri, object)
 	{
 	    return object.uri;
 	},
 
-	getAttributionHtml : function(document, object, callback) {
+	/**
+	 * Returns a source for a licensed object.
+	 *
+	 * @param doc_uri URI of the document to search assertions from.
+	 * @param object The object
+	 */
+	getAttributionHtml : function(doc_uri, object, callback) {
 
 	    // get the license and other bits of information for this object
-	    license_uri = ccffext.objects.getLicense(document, object).uri;
+	    license_uri = ccffext.objects.getLicense(doc_uri, object).uri;
 
-	    title = ccffext.objects.getTitle(document, object);
+	    title = ccffext.objects.getTitle(doc_uri, object);
 
 	    identifier_name = null;
 	    identifier_url = null;
 
-	    attrib_name = ccffext.objects.getAuthor(document, object);
-	    attrib_url = ccffext.objects.getAuthorUri(document, object);
+	    attrib_name = ccffext.objects.getAuthor(doc_uri, object);
+	    attrib_url = ccffext.objects.getAuthorUri(doc_uri, object);
 	    
 	    // create the pieces for the attribution HTML
 	    attrib_pieces = new Array();
@@ -414,27 +431,27 @@ var ccffext =
 
 	    attrib_html = attrib_html + ">" + attrib_pieces.join(" / ") + "</div>";
 
-	    callback(document, object, attrib_html);
+	    callback(doc_uri, object, attrib_html);
 
 	}, // getAtttributionHtml
 
 	// Return the license for the specified object
-	getLicense : function(document, object) {
+	getLicense : function(doc_uri, object) {
 
 	    return ccffext.objects.getValue(
-		document, object, ccffext.objects.predicates);
+		doc_uri, object, ccffext.objects.predicates);
 
 	},
 
 	/**
 	 * Returns information about the license
 	 *
-	 * @param document The analysed document
+	 * @param doc_uri The URI of the document containing the assertions
 	 * @param object The object
 	 * @param callback Callback when the license details have been retrieved;
-	 *        This is called with the signature (document, object, license).
+	 *        This is called with the signature (doc_uri, object, license).
 	 */
-	getLicenseDetails : function(document,object, callback, license_frame)
+	getLicenseDetails : function(doc_uri, object, callback, license_frame)
 	{
 
 	    var license =
@@ -445,7 +462,7 @@ var ccffext =
 		    color : undefined
 		};
 	    
-	    license.uri = license.name = ccffext.objects.getLicense(document, object).uri;
+	    license.uri = license.name = ccffext.objects.getLicense(doc_uri, object).uri;
 	    
 	    if ("undefined" != typeof license.uri &&
 		license.uri.indexOf("http://creativecommons.org/") == 0)
@@ -511,7 +528,7 @@ var ccffext =
 			    
 			    // see if we have the license name
 			    license.name = ccffext.objects.getValue(
-				doc, {'uri':url}, 
+				url, {'uri':url}, 
 				["http://purl.org/dc/terms/title",
 				 "http://purl.org/dc/elements/1.1/title"]);
 			    
@@ -520,7 +537,7 @@ var ccffext =
 			    }
 			    
 			    // call the callback when done
-			    callback (document, object, license);
+			    callback (doc_uri, object, license);
 			    
 			}, true);
 		    
@@ -535,7 +552,7 @@ var ccffext =
 	    else {
 		// make sure the call back happens, 
 		// even if we can't load the license
-		callback (document, object, license);
+		callback (doc_uri, object, license);
 	    }
 
 	    return license;

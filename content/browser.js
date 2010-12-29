@@ -58,7 +58,8 @@ var gCcHandler = {
 	var doc_subject = {uri:content.document.location.href};
 
 	// -- license
-	var license = ccffext.objects.getLicense(content.document, doc_subject);
+	var license = ccffext.objects.getLicense(
+	    content.document.location.href, doc_subject);
 	var is_doc_licensed = false;
 
 	if ("undefined" != typeof license) {
@@ -71,7 +72,7 @@ var gCcHandler = {
 
 	    // ---- get the license details and update the popup when ready
 	    ccffext.objects.getLicenseDetails(
-		content.document, doc_subject,
+		content.document.location.href, doc_subject,
 		function(document, object, license) {
 		    gCcHandler._popup_license.value = license.name;
 		    gCcHandler._popup_license_band.setAttribute(
@@ -82,11 +83,13 @@ var gCcHandler = {
 	    // -- title
 	    this._popup_work_title.hidden = false;
 	    this._popup_work_title.value = ccffext.objects.getDisplayTitle(
-		content.document, doc_subject);
+		content.document.location.href, doc_subject);
 
 	    // -- attribution link
-	    let author = ccffext.objects.getAuthor(content.document, doc_subject);
-	    let author_uri = ccffext.objects.getAuthorUri(content.document, doc_subject);
+	    let author = ccffext.objects.getAuthor(
+		content.document.location.href, doc_subject);
+	    let author_uri = ccffext.objects.getAuthorUri(
+		content.document.location.href, doc_subject);
 	    
 	    if ("undefined" != typeof author || 
 		"undefined" != typeof author_uri) {
@@ -104,7 +107,8 @@ var gCcHandler = {
 		}
 		
 		if ("undefined" != typeof author_uri) {
-		    this._popup_attribution.setAttribute('href', author_uri.uri);
+		    this._popup_attribution.setAttribute('href', 
+							 author_uri.uri);
 		    this._popup_attribution.setAttribute(
 			"class", "identity-popup-label text-link");
 		} else {
@@ -116,8 +120,8 @@ var gCcHandler = {
 
 	    // -- copy and paste HTML
 	    ccffext.objects.getAttributionHtml(
-		content.document, doc_subject,
-		function(document, object, attrib_html) {
+		content.document.location.href, doc_subject,
+		function(doc_uri, object, attrib_html) {
 		    if (attrib_html) {
 			gCcHandler._popup_attrib_html.value = attrib_html;
 			gCcHandler._popup_attrib_html.hidden = false;
@@ -127,8 +131,8 @@ var gCcHandler = {
 	} // if license is not undefined
 
 	// how many licensed objects described by this page, excluding the page
-	var count = ccffext.objects.getLicensedSubjects(content.document).
-	    length - (is_doc_licensed?1:0);
+	var count = ccffext.objects.getLicensedSubjects(
+	    content.document.location.href).length - (is_doc_licensed?1:0);
 	if (count > 0) {
 	    this._popup_num_licensed_objects.value = 
 		ccffext.l10n.get("icon.title.label", count);
@@ -157,7 +161,8 @@ var gCcHandler = {
     },
     
     showIcon : function(document) {
-	const objects = ccffext.objects.getLicensedSubjects(document);
+	const objects = ccffext.objects.getLicensedSubjects(
+	    document.location.href);
 
 	this._icon.hidden = false;
 	gCcHandler._icon.setAttribute("tooltiptext",

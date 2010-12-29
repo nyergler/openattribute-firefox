@@ -47,7 +47,8 @@
 	
 	addEventListener("command",function() {
 	    const doc = window.opener.content.document;
-	    const objects = ccffext.objects.getLicensedSubjects(doc);
+	    const objects = ccffext.objects.getLicensedSubjects(
+		doc.location.href);
 
 	    // Update the label showing the number of objects
 	    numberLabel.setAttribute("value",
@@ -90,7 +91,8 @@
 		
 		const title = document.createElement("label");
 		title.setAttribute("class","title");
-		title.setAttribute("value",ccffext.objects.getDisplayTitle(doc,objects[i]));
+		title.setAttribute("value",ccffext.objects.getDisplayTitle(
+		    doc.location.href, objects[i]));
 		leftPanel.appendChild(title);
 		
 		const sourceLine = document.createElement("hbox");
@@ -102,7 +104,8 @@
 		sourceTitle.setAttribute("value",ccffext.l10n.get("object.source.title.label"));
 		sourceLine.appendChild(sourceTitle);
 		
-		var source = ccffext.objects.getSource(doc,objects[i]);
+		var source = ccffext.objects.getSource(
+		    doc.location.href, objects[i]);
 		const sourceValue = document.createElement("label");
 		sourceValue.setAttribute("class","anchor");
 		sourceValue.setAttribute("value",source);
@@ -112,7 +115,8 @@
 		},true);
 		sourceLine.appendChild(sourceValue);
 		
-		var type = ccffext.objects.getType(doc,objects[i]);
+		var type = ccffext.objects.getType(
+		    doc.location.href, objects[i]);
 		if ("undefined" != typeof type)
 		{
 		    const typeLine = document.createElement("hbox");
@@ -131,8 +135,10 @@
 		    typeLine.appendChild(typeValue);
 		}
 		
-		var author = ccffext.objects.getAuthor(doc,objects[i]);
-		var authorUri = ccffext.objects.getAuthorUri(doc,objects[i]);
+		var author = ccffext.objects.getAuthor(
+		    doc.location.href, objects[i]);
+		var authorUri = ccffext.objects.getAuthorUri(
+		    doc.location.href, objects[i]);
 		if ("undefined" != typeof author)
 		{
 		    const authorLine = document.createElement("hbox");
@@ -175,8 +181,8 @@
 		licenseLine.appendChild(licenseValue);
 
 		ccffext.objects.getLicenseDetails(
-		    doc,objects[i],
-		    function(doc, obj, license) {
+		    doc.location.href, objects[i],
+		    function(doc_uri, obj, license) {
 			licenseValue.setAttribute("value",license.name);
 			licenseValue.setAttribute("uri",license.uri);
 		    });
@@ -202,7 +208,7 @@
 		    attribText.select();
 		}, true);
 		ccffext.objects.getAttributionHtml(
-		    doc, objects[i],
+		    doc.location.href, objects[i],
 		    function(document, object, attrib_html) {
 			if (attrib_html) {
 			    attribText.setAttribute("value", attrib_html);
