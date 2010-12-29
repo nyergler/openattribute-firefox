@@ -213,11 +213,10 @@ var ccffext =
 	/**
 	 * Parses RDFa data of the given document and stores it in the cache
 	 *
+	 * @param location A string containing the URL of the document.
 	 * @param document The document to be parsed
-	 * @param RDFA RDFA object
-	 * @param XH XH object
 	 */
-	parse : function(location,document)
+	parse : function(location, document)
 	{
 	    XH.transform(document.getElementsByTagName("body")[0]);
 	    XH.transform(document.getElementsByTagName("head")[0]);
