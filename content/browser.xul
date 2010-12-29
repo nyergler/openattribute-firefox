@@ -50,7 +50,6 @@
       <hbox pack="end">
         <button id="ccffext-popup-more-info-button"
                 label="More Information..."
-                onblur="gCcHandler.hidePopup();"
                 oncommand="gCcHandler.handleMoreInfo(event);"/>
       </hbox>
       <box id="ccffext-popup-license-band" flex="1" />
