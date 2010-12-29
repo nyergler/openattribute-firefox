@@ -550,6 +550,18 @@ var ccffext =
 
 	    } // if a license frame was provided 
 	    else {
+
+		// no license frame was provided, 
+		// see if we can retrieve the details from the RDF store
+		license.name = ccffext.objects.getValue(
+		    license.uri, {'uri':license.uri}, 
+		    ["http://purl.org/dc/terms/title",
+		     "http://purl.org/dc/elements/1.1/title"]);
+		
+		if ("string" == typeof license.name) {
+		    license.name = license.name.trim();
+		}
+		
 		// make sure the call back happens, 
 		// even if we can't load the license
 		callback (doc_uri, object, license);
