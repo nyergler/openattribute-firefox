@@ -171,7 +171,7 @@ var ccffext =
 	 * @param document The document containing licensed objects
 	 * @return subject The object (RDFa subject)
 	 */
-	getPairs : function(document,subject)
+	getPredObjPairs : function(document,subject)
 	{
 	    var pairs = [];
 	    
@@ -198,7 +198,7 @@ var ccffext =
 
 	    for each (let p in predicates) {
 		for (let i = 0, 
-		     pairs = ccffext.objects.getPairs(document,subject); 
+		     pairs = ccffext.objects.getPredObjPairs(document,subject); 
 		     i < pairs.length; ++i) {
 		    if (pairs[i][0].uri == p) {
 			return pairs[i][1];
