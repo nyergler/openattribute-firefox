@@ -335,28 +335,83 @@ var ccffext =
 
 	getAttributionHtml : function(document, object, callback) {
 
-	    // get the license URI for this object
+	    // get the license and other bits of information for this object
 	    license_uri = ccffext.objects.getLicense(document, object).uri;
+
+	    title = ccffext.objects.getTitle(document, object);
+
+	    identifier_name = null;
+	    identifier_url = null;
+
+	    attrib_name = ccffext.objects.getAuthor(document, object);
+	    attrib_url = ccffext.objects.getAuthorUri(document, object);
 	    
-	    var xhr = Components
-		.classes["@mozilla.org/xmlextras/xmlhttprequest;1"]
-                .createInstance(Components.interfaces.nsIXMLHttpRequest);
+	    // create the pieces for the attribution HTML
+	    attrib_pieces = new Array();
+	    attrib_ns = new Object();
 
-	    let uri = "http://scraper.creativecommons.org/apps/deed?url=" + encodeURIComponent(object.uri) + "&license_uri=" + license_uri;
+	    // -- title
+	    if (title) {
+		attrib_pieces.push(
+		    '<span property="dct:title">' + title + '</span>'
+		);
+		attrib_ns["dct"] = "http://purl.org/dc/terms/";
+	    }
 
-	    xhr.open("GET",uri,true);
+	    // -- attrib name/URL
+	    if ("undefined" != typeof attrib_name || 
+		"undefined" != typeof attrib_url) {
+		// we have at least one of the name + URL
+		if ("undefined" == typeof attrib_url) {
+		    // no attribution URL
+		    attrib_pieces.push(
+			'<span property="cc:attributionName">' + 
+			    attrib_name + '</span>'
+		    );
 
-	    xhr.onreadystatechange = function (aEvt) {
-		if (xhr.readyState == 4 && xhr.status == 200) {
-		    var jsObject = JSON.parse(xhr.responseText);
-		    var attrib_html = jsObject['attribution']['marking'];
+		} else // we have the attribution URL; see if we have the name
+		    if ("undefined" == typeof attrib_name) {
 
-		    callback(document, object, attrib_html);
-		}
-	    };
+			// w/o attrib_name we include the URL as the link text
+			// but do not annotate it as the attribution name
+			attrib_pieces.push(
+			    '<a rel="cc:attributionURL" ' + 
+				'href="' + attrib_url.uri + '">' + 
+				attrib_url.uri +
+				'</a>'
+			);
+			
+		    } else {
 
-	    // send the request
-	    xhr.send(null);
+			attrib_pieces.push(
+			    '<a rel="cc:attributionURL" ' + 
+				'property="cc:attributionName" ' + 
+				'href="' + attrib_url.uri + '">' + 
+				attrib_name + '</a>'
+			);
+		    }
+
+		attrib_ns["cc"] = "http://creativecommons.org/ns#";
+	    } // attribution name/url
+
+	    // -- identifier / publisher
+	    // -- XXX this is currently unimplemented, needed for PDM support
+
+	    // -- license
+	    // XXX need to get the license name/short name
+	    attrib_pieces.push(
+		'<a rel="license" href="' + license_uri + '">' +
+		    license_uri + '</a>');
+
+	    // assemble the final HTML from the pieces
+	    attrib_html = '<div about="' + object.uri + '"';
+	    for (var ns in attrib_ns) {
+		attrib_html = attrib_html + ' xmlns:' + ns + '="' + attrib_ns[ns] + '"';
+	    }
+
+	    attrib_html = attrib_html + ">" + attrib_pieces.join(" / ") + "</div>";
+
+	    callback(document, object, attrib_html);
 
 	}, // getAtttributionHtml
 
