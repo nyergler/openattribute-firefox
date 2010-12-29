@@ -264,19 +264,23 @@ var ccffext =
 	 */
 	getTitle : function(document,object)
 	{
-
-	    var title = ccffext.objects.getValue(
+	    return ccffext.objects.getValue(
 		document, object,
 		["http://purl.org/dc/terms/title",
 		 "http://purl.org/dc/elements/1.1/title"]);
+	},
+	
+	getDisplayTitle : function(document, object) {
+
+	    var title = ccffext.objects.getTitle(document, object);
 
 	    if (typeof title != "undefined") return title;
 	    
 	    return document.location.href == object.uri
 		? ccffext.l10n.get("object.title.current-page.label")
 		: object.uri;
-	},
-	
+	}, // getDisplayTitle
+
 	/**
 	 * Returns a type for a licensed object
 	 *

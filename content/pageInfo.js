@@ -90,7 +90,7 @@
 		
 		const title = document.createElement("label");
 		title.setAttribute("class","title");
-		title.setAttribute("value",ccffext.objects.getTitle(doc,objects[i]));
+		title.setAttribute("value",ccffext.objects.getDisplayTitle(doc,objects[i]));
 		leftPanel.appendChild(title);
 		
 		const sourceLine = document.createElement("hbox");

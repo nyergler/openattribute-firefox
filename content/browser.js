@@ -81,7 +81,7 @@ var gCcHandler = {
 
 	    // -- title
 	    this._popup_work_title.hidden = false;
-	    this._popup_work_title.value = ccffext.objects.getTitle(
+	    this._popup_work_title.value = ccffext.objects.getDisplayTitle(
 		content.document, doc_subject);
 
 	    // -- attribution link
