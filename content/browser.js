@@ -148,11 +148,12 @@ var gCcHandler = {
     },
 
     handleMoreInfo : function(e) {
+	gCcHandler.hidePopup();
 	BrowserPageInfo(null,'ccffext-tab'); 
     },
 
     hidePopup : function() {
-	// document.getElementById('ccffext-popup').hidePopup();
+	document.getElementById('ccffext-popup').hidePopup();
     },
 
     // URL Bar manipulators
