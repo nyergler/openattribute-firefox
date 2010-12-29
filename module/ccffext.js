@@ -503,17 +503,12 @@ var ccffext =
 		    license_frame.addEventListener(
 			"DOMContentLoaded", 
 			function (e) {
+
 			    var doc = e.originalTarget;
 			    var url = doc.location.href;
 			    
 			    // parse the license document for RDFa
-			    XH.transform(doc.getElementsByTagName("body")[0]);
-			    XH.transform(doc.getElementsByTagName("head")[0]);
-			    
-			    RDFA.reset();
-			    RDFA.parse(doc);
-			    
-			    ccffext.cache.put(url,RDFA.triplestore);
+			    ccffext.objects.parse(url, doc);
 			    
 			    // see if we have the license name
 			    license.name = ccffext.objects.getValue(
