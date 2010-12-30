@@ -564,7 +564,8 @@ var ccffext =
 		
 		// make sure the call back happens, 
 		// even if we can't load the license
-		callback (doc_uri, object, license);
+		if ("undefined" != typeof callback) 
+		    callback (doc_uri, object, license);
 	    }
 
 	    return license;
