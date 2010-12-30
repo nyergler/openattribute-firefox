@@ -77,6 +77,15 @@ var gCcHandler = {
 		    gCcHandler._popup_license.value = license.name;
 		    gCcHandler._popup_license_band.setAttribute(
 			"class", "band-" + license.color);
+
+		    // -- show the copy and paste HTML
+		    // --   this is handled in the callback so we are certain
+		    // --   the license document has been dereferenced and
+		    // --   parsed
+		    gCcHandler._popup_attrib_html.value = 
+			ccffext.objects.getAttributionHtml(
+			    content.document.location.href, doc_subject);
+		    gCcHandler._popup_attrib_html.hidden = false;
 		},
 		this._license_frame);
 
@@ -117,16 +126,6 @@ var gCcHandler = {
 			"class", "identity-popup-label");
 		}
 	    } 
-
-	    // -- copy and paste HTML
-	    ccffext.objects.getAttributionHtml(
-		content.document.location.href, doc_subject,
-		function(doc_uri, object, attrib_html) {
-		    if (attrib_html) {
-			gCcHandler._popup_attrib_html.value = attrib_html;
-			gCcHandler._popup_attrib_html.hidden = false;
-		    } 
-		});
 	    
 	} // if license is not undefined
 
