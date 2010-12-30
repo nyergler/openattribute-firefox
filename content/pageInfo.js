@@ -207,12 +207,10 @@
 		attribText.addEventListener("focus", function(e) {
 		    attribText.select();
 		}, true);
-		ccffext.objects.getAttributionHtml(
-		    doc.location.href, objects[i],
-		    function(document, object, attrib_html) {
-			if (attrib_html) {
-			    attribText.setAttribute("value", attrib_html);
-			}});
+		attribText.setAttribute(
+		    "value", 
+		    ccffext.objects.getAttributionHtml(
+			doc.location.href, objects[i]));
 		attribContainer.appendChild(attribText);
 
 		const attribCopyButton = document.createElement("button");

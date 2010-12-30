@@ -353,7 +353,7 @@ var ccffext =
 	 * @param doc_uri URI of the document to search assertions from.
 	 * @param object The object
 	 */
-	getAttributionHtml : function(doc_uri, object, callback) {
+	getAttributionHtml : function(doc_uri, object) {
 
 	    // get the license and other bits of information for this object
 	    license_uri = ccffext.objects.getLicense(doc_uri, object).uri;
@@ -431,7 +431,7 @@ var ccffext =
 
 	    attrib_html = attrib_html + ">" + attrib_pieces.join(" / ") + "</div>";
 
-	    callback(doc_uri, object, attrib_html);
+	    return attrib_html;
 
 	}, // getAtttributionHtml
 
