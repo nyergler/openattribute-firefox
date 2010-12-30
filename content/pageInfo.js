@@ -223,7 +223,7 @@
 		attribCopyButton.addEventListener("click",function() {
 		    const clipboard = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
 			getService(Components.interfaces.nsIClipboardHelper);
-		    clipboard.copyString(license.infoHtml);
+		    clipboard.copyString(attribText.getAttribute("value"));
 		},true);
 		
 		attribContainer.appendChild(attribCopyButton);
