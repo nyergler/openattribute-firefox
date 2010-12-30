@@ -356,7 +356,7 @@ var ccffext =
 	getAttributionHtml : function(doc_uri, object) {
 
 	    // get the license and other bits of information for this object
-	    license_uri = ccffext.objects.getLicense(doc_uri, object).uri;
+	    license = ccffext.objects.getLicenseDetails(doc_uri, object);
 
 	    title = ccffext.objects.getTitle(doc_uri, object);
 
@@ -418,10 +418,9 @@ var ccffext =
 	    // -- XXX this is currently unimplemented, needed for PDM support
 
 	    // -- license
-	    // XXX need to get the license name/short name
 	    attrib_pieces.push(
-		'<a rel="license" href="' + license_uri + '">' +
-		    license_uri + '</a>');
+		'<a rel="license" href="' + license.uri + '">' +
+		    license.name + '</a>');
 
 	    // assemble the final HTML from the pieces
 	    attrib_html = '<div about="' + object.uri + '"';
