@@ -532,10 +532,12 @@ var ccffext =
 				["http://purl.org/dc/terms/title",
 				 "http://purl.org/dc/elements/1.1/title"]);
 			    
-			    if ("string" == typeof license.name) {
+			    if ("object" == typeof license.name) 
+				license.name = license.name.toString();
+
+			    if ("string" == typeof license.name) 
 				license.name = license.name.trim();
-			    }
-			    
+
 			    // call the callback when done
 			    callback (doc_uri, object, license);
 			    
@@ -557,10 +559,12 @@ var ccffext =
 		    license.uri, {'uri':license.uri}, 
 		    ["http://purl.org/dc/terms/title",
 		     "http://purl.org/dc/elements/1.1/title"]);
+			    
+		if ("object" == typeof license.name) 
+		    license.name = license.name.toString();
 		
-		if ("string" == typeof license.name) {
+		if ("string" == typeof license.name) 
 		    license.name = license.name.trim();
-		}
 		
 		// make sure the call back happens, 
 		// even if we can't load the license
