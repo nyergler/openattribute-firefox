@@ -42,7 +42,8 @@
                  class="identity-popup-label text-link"
                  value="" 
 		 href="" />
-	  <textbox id="ccffext-popup-attrib-html"></textbox>
+	  <textbox id="ccffext-popup-attrib-html"
+		   onfocus="this.select()"></textbox>
 	  <label id="ccffext-popup-licensed-objects"
 		 class="identity-popup-label" value="" />
 	</vbox>
