@@ -46,6 +46,7 @@
 	setAttribute("accesskey",ccffext.l10n.get("tab.title.key"));
 	
 	addEventListener("command",function() {
+
 	    const doc = window.opener.content.document;
 	    const objects = ccffext.objects.getLicensedSubjects(
 		doc.location.href);
@@ -179,14 +180,6 @@
 		    window.open(this.getAttribute("uri"));
 		},true);
 		licenseLine.appendChild(licenseValue);
-
-		ccffext.objects.getLicenseDetails(
-		    doc.location.href, objects[i],
-		    function(doc_uri, obj, license) {
-			licenseValue.setAttribute("value",license.name);
-			licenseValue.setAttribute("uri",license.uri);
-		    });
-
 				
 		const attribLine = document.createElement("vbox");
 		attribLine.setAttribute("class","line primary");
@@ -207,11 +200,17 @@
 		attribText.addEventListener("focus", function(e) {
 		    attribText.select();
 		}, true);
-		attribText.setAttribute(
-		    "value", 
-		    ccffext.objects.getAttributionHtml(
-			doc.location.href, objects[i]));
 		attribContainer.appendChild(attribText);
+
+		ccffext.objects.getLicenseDetails(
+		    doc.location.href, objects[i],
+		    function(doc_uri, obj, license) {
+			licenseValue.setAttribute("value",license.name);
+			licenseValue.setAttribute("uri",license.uri);
+			attribText.setAttribute(
+			    "value", 
+			    ccffext.objects.getAttributionHtml(doc_uri, obj));
+		    }, window.opener.gCcHandler._license_frame);
 
 		const attribCopyButton = document.createElement("button");
 		attribCopyButton.setAttribute("label",
