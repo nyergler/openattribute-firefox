@@ -450,7 +450,7 @@ var ccffext =
 	 * @param callback Callback when the license details have been retrieved;
 	 *        This is called with the signature (doc_uri, object, license).
 	 */
-	getLicenseDetails : function(doc_uri, object, callback, license_frame)
+	getLicenseDetails : function(doc_uri, object, callback, licenseloader)
 	{
 
 	    var license =
@@ -504,50 +504,26 @@ var ccffext =
 	    }
 
 	    // retrieve the license document to introspect for RDFa
-	    if ("undefined" != typeof license_frame) {
+	    if ("undefined" != typeof licenseloader) {
 
-		// see if we need to configure this license_frame
-		if (!license_frame.hasAttribute("ccffext_configured")) {
-		    license_frame.webNavigation.allowAuth = true;
-		    license_frame.webNavigation.allowImages = false;
-		    license_frame.webNavigation.allowJavascript = false;
-		    license_frame.webNavigation.allowMetaRedirects = true;
-		    license_frame.webNavigation.allowPlugins = false;
-		    license_frame.webNavigation.allowSubframes = false;
-
-		    license_frame.addEventListener(
-			"DOMContentLoaded", 
-			function (e) {
-
-			    var doc = e.originalTarget;
-			    var url = doc.location.href;
-			    
-			    // parse the license document for RDFa
-			    ccffext.objects.parse(url, doc);
-			    
-			    // see if we have the license name
-			    license.name = ccffext.objects.getValue(
-				url, {'uri':url}, 
-				["http://purl.org/dc/terms/title",
-				 "http://purl.org/dc/elements/1.1/title"]);
-			    
-			    if ("object" == typeof license.name) 
-				license.name = license.name.toString();
-
-			    if ("string" == typeof license.name) 
-				license.name = license.name.trim();
-
-			    // call the callback when done
-			    callback (doc_uri, object, license);
-			    
-			}, true);
-		    
-		    license_frame.setAttribute("ccffext_configured", true);
-		}; // configure license_frame
-
-		license_frame.webNavigation.loadURI(
+		licenseloader.load_license(
 		    license.uri,
-		    Components.interfaces.nsIWebNavigation, null, null, null);
+		    function(url) {
+			// see if we have the license name
+			license.name = ccffext.objects.getValue(
+			    url, {'uri':url}, 
+			    ["http://purl.org/dc/terms/title",
+			     "http://purl.org/dc/elements/1.1/title"]);
+			    
+			if ("object" == typeof license.name) 
+			    license.name = license.name.toString();
+
+			if ("string" == typeof license.name) 
+			    license.name = license.name.trim();
+
+			// call the callback when done
+			callback (doc_uri, object, license);
+		    });
 
 	    } // if a license frame was provided 
 	    else {
