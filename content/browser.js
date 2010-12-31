@@ -91,7 +91,7 @@ var gCcHandler = {
 			    content.document.location.href, doc_subject);
 		    gCcHandler._popup_attrib_html.hidden = false;
 		},
-		licenseloader);
+		licenseloader, []);
 
 	    // -- title
 	    this._popup_work_title.hidden = false;

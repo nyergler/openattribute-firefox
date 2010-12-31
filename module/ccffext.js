@@ -448,9 +448,11 @@ var ccffext =
 	 * @param doc_uri The URI of the document containing the assertions
 	 * @param object The object
 	 * @param callback Callback when the license details have been retrieved;
+	 * @param cb_args An array to be passed into the callback
+	 * 
 	 *        This is called with the signature (doc_uri, object, license).
 	 */
-	getLicenseDetails : function(doc_uri, object, callback, licenseloader)
+	getLicenseDetails : function(doc_uri, object, callback, licenseloader, cb_args)
 	{
 
 	    var license =
@@ -522,7 +524,7 @@ var ccffext =
 			    license.name = license.name.trim();
 
 			// call the callback when done
-			callback (doc_uri, object, license);
+			callback (doc_uri, object, license, cb_args);
 		    });
 
 	    } // if a license frame was provided 

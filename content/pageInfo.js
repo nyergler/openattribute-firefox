@@ -174,7 +174,7 @@
 		licenseTitle.setAttribute("value",ccffext.l10n.get("object.license.title.label"));
 		licenseLine.appendChild(licenseTitle);
 		
-		const licenseValue = document.createElement("label");
+		var licenseValue = document.createElement("label");
 		licenseValue.setAttribute("class","anchor");
 		licenseValue.addEventListener("click",function(event) {
 		    window.open(this.getAttribute("uri"));
@@ -195,7 +195,7 @@
 		attribContainer.setAttribute("class", "indented");
 		attribLine.appendChild(attribContainer);
 		
-		const attribText = document.createElement("textbox");
+		var attribText = document.createElement("textbox");
 		attribText.setAttribute("flex","1");
 		attribText.addEventListener("focus", function(e) {
 		    attribText.select();
@@ -204,13 +204,13 @@
 
 		ccffext.objects.getLicenseDetails(
 		    doc.location.href, objects[i],
-		    function(doc_uri, obj, license) {
-			licenseValue.setAttribute("value",license.name);
-			licenseValue.setAttribute("uri",license.uri);
-			attribText.setAttribute(
+		    function(doc_uri, obj, license, args) {
+			args[0].setAttribute("value",license.name);
+			args[0].setAttribute("uri",license.uri);
+			args[1].setAttribute(
 			    "value", 
 			    ccffext.objects.getAttributionHtml(doc_uri, obj));
-		    }, window.opener.gCcHandler._license_frame);
+		    }, licenseloader, [licenseValue, attribText]);
 
 		const attribCopyButton = document.createElement("button");
 		attribCopyButton.setAttribute("label",
