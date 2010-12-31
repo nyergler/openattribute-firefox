@@ -5,6 +5,7 @@
  * @see https://developer.mozilla.org/en/Components.utils.import
  */
 {
-	Components.utils.import("resource://ccffext/rdfa.js"); // RDFa parser
-	Components.utils.import("resource://ccffext/ccffext.js"); // Main extension code module
+    Components.utils.import("resource://ccffext/rdfa.js");
+    Components.utils.import("resource://ccffext/ccffext.js"); 
+    Components.utils.import("resource://ccffext/license.js"); 
 }

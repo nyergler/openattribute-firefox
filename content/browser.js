@@ -231,4 +231,6 @@ window.addEventListener("load",function() {
 	
     });
 
+    licenseloader.init(gCcHandler._license_frame_browser);
+
 },false);
