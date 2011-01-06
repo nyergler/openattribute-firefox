@@ -28,24 +28,22 @@
 	   hidden="true" noautofocus="true"
 	   onpopupshown="document.getElementById('ccffext-popup-more-info-button').focus();"
 	   level="top">
-      <hbox id="ccffext-popup-container" align="top">
+      <hbox id="ccffext-popup-container" align="top" flex="1">
         <image id="ccffext-popup-icon"/>
-        <vbox id="identity-popup-content-box">
+        <vbox id="ccffexet-popup-content-box" flex="1">
 	  <label id="ccffext-popup-work-title"
-                 class="identity-popup-label"
                  value="" />
 	  <label id="ccffext-popup-attribution-link"
-                 class="identity-popup-label"
                  value=""
 		 href="" />
 	  <label id="ccffext-popup-license-link"
-                 class="identity-popup-label text-link"
+                 class="text-link"
                  value="" 
 		 href="" />
 	  <textbox id="ccffext-popup-attrib-html"
 		   onfocus="this.select()"></textbox>
 	  <label id="ccffext-popup-licensed-objects"
-		 class="identity-popup-label" value="" />
+		 value="" />
 	</vbox>
       </hbox>
       <hbox pack="end">
@@ -55,7 +53,7 @@
       </hbox>
       <box id="ccffext-popup-license-band" flex="1" />
       <browser id="ccffext-license-frame" name="ccffext-license-frame"
-	       type="content" height="0" />
+	       type="content" height="0" width="0" />
       
     </panel>
   </popupset>

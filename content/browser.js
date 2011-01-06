@@ -123,11 +123,11 @@ var gCcHandler = {
 		    this._popup_attribution.setAttribute('href', 
 							 author_uri.uri);
 		    this._popup_attribution.setAttribute(
-			"class", "identity-popup-label text-link");
+			"class", "text-link");
 		} else {
 		    // no attribution URL
 		    this._popup_attribution.setAttribute(
-			"class", "identity-popup-label");
+			"class", "");
 		}
 	    } 
 	    

@@ -15,9 +15,12 @@ image#ccffext-popup-icon {
     list-style-image: url("chrome://ccffext/content/media/cc.png");
 }
 
+#ccffext-popup {
+    width: 350px;
+}
+
 #ccffext-popup-container {
     padding: 10px;
-    min-width: 280px;
 }
 
 #ccffext-popup-license-band {
