@@ -238,18 +238,15 @@ var ccffext =
 
 		    // this document has licensed objects; 
 		    // get the list of uncached licenses to retrieve
-		    var licenses = [
-			ccffext.objects.getLicense(location, subject)
-			for each (subject in objects) 
-			if ("undefined" !== typeof subject)].unique();
-
-		    var uncached = [
-			l.uri for each (l in licenses)
+		    // and pass each to the license loader
+		    [l.uri for each (l in [
+			    ccffext.objects.getLicense(location, subject)
+			    for each (subject in objects) 
+			    if ("undefined" !== typeof subject)].unique() )
 			if ("undefined" !== typeof l &&
-			    !ccffext.cache.contains(l.uri))];
+			    !ccffext.cache.contains(l.uri))]
 
-		    // retrieve the licenses if they are not already cached
-		    uncached.forEach(licenseloader.load_license);
+			.forEach(licenses.load);
 
 		});
 
