@@ -26,12 +26,20 @@ var licenseloader = {
 	    licenseloader.license_frame = license_frame;
 	    // license_frame.setAttribute("ccffext_configured", "true");
 	}
+
+	licenseloader.working = false;
 				
     }, // init
 
     load_license : function (license_uri, callback) {
-	licenseloader.queue.push([license_uri, callback]);
+	// refuse to queue something we won't be able to handle
+	if ("string" == typeof license_uri) {
+	    licenseloader.queue.push([license_uri, callback]);
+	}
+
+	// and check the queue...
 	licenseloader._check_queue();
+
     }, // load_license
 
     _onDomLoaded : function (e) {
