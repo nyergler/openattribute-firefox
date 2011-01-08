@@ -210,7 +210,7 @@
 			args[1].setAttribute(
 			    "value", 
 			    ccffext.objects.getAttributionHtml(doc_uri, obj));
-		    }, licenseloader, [licenseValue, attribText]);
+		    }, licenses, [licenseValue, attribText]);
 
 		const attribCopyButton = document.createElement("button");
 		attribCopyButton.setAttribute("label",

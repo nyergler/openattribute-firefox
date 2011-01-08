@@ -553,7 +553,7 @@ var ccffext =
 	    // retrieve the license document to introspect for RDFa
 	    if ("undefined" != typeof licenseloader) {
 
-		licenseloader.load_license(
+		licenseloader.load(
 		    license.uri,
 		    function(url) {
 			// see if we have the license name

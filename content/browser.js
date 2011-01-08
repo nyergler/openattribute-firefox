@@ -33,12 +33,8 @@ var gCcHandler = {
 	return document.getElementById('ccffext-popup-licensed-objects');
     },
 
-    get _license_frame_browser () {
+    get _license_browser () {
 	return document.getElementById('ccffext-license-frame');
-    },
-
-    get _license_frame () {
-	return licenseloader;
     },
 
     resetPopup : function() {
@@ -91,7 +87,7 @@ var gCcHandler = {
 			    content.document.location.href, doc_subject);
 		    gCcHandler._popup_attrib_html.hidden = false;
 		},
-		licenseloader, []);
+		licenses, []);
 
 	    // -- title
 	    this._popup_work_title.hidden = false;
@@ -238,6 +234,6 @@ window.addEventListener("load",function() {
 	
     });
 
-    licenseloader.init(gCcHandler._license_frame_browser);
+    licenses.init(gCcHandler._license_browser);
 
 },false);
