@@ -218,7 +218,10 @@ window.addEventListener("load",function() {
 
 	    // A tab is opened, closed, or switched to
 	    // Show the location bar icon if license information is present
-	    gCcHandler.showIconIfLicenseInfo(progress.DOMWindow.document);
+
+	    // XXX disabling; this is called before the browser fully 
+	    // -- loads the document, causing errors in the parse process
+	    // gCcHandler.showIconIfLicenseInfo(progress.DOMWindow.document);
 
 	},
 	
