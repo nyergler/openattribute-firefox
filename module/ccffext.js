@@ -505,6 +505,26 @@ var ccffext =
 		}
 	    }
 
+	    if (ccffext.cache.contains(license.uri)) {
+		// this license has already been loaded
+		// retrieve the details from the RDF store
+		license.name = ccffext.objects.getValue(
+		    license.uri, {'uri':license.uri}, 
+		    ["http://purl.org/dc/terms/title",
+		     "http://purl.org/dc/elements/1.1/title"]);
+			    
+		if ("object" == typeof license.name) 
+		    license.name = license.name.toString();
+		
+		if ("string" == typeof license.name) 
+		    license.name = license.name.trim();
+		
+		// make sure the call back happens, 
+		// even if we can't load the license
+		if ("undefined" != typeof callback) 
+		    callback (doc_uri, object, license, cb_args);
+	    } else 
+
 	    // retrieve the license document to introspect for RDFa
 	    if ("undefined" != typeof licenseloader) {
 
@@ -528,27 +548,13 @@ var ccffext =
 		    });
 
 	    } // if a license frame was provided 
-	    else {
+	    else 
 
-		// no license frame was provided, 
-		// see if we can retrieve the details from the RDF store
-		license.name = ccffext.objects.getValue(
-		    license.uri, {'uri':license.uri}, 
-		    ["http://purl.org/dc/terms/title",
-		     "http://purl.org/dc/elements/1.1/title"]);
-			    
-		if ("object" == typeof license.name) 
-		    license.name = license.name.toString();
-		
-		if ("string" == typeof license.name) 
-		    license.name = license.name.trim();
-		
 		// make sure the call back happens, 
 		// even if we can't load the license
 		if ("undefined" != typeof callback) 
-		    callback (doc_uri, object, license);
-	    }
-
+		    callback (doc_uri, object, license, cb_args);
+	    
 	    return license;
 
 	} // getLicenseDetails
