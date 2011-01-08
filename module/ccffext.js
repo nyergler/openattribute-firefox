@@ -227,7 +227,32 @@ var ccffext =
 	    RDFA.reset();
 	    RDFA.parse(document);
 	    
-	    ccffext.cache.put(location,RDFA.triplestore);
+	    ccffext.cache.put(location, RDFA.triplestore);
+
+	    // see if the document contains license information
+	    ccffext.objects.callbackify(
+		document, 
+		function (doc, objects) {
+
+		    Components.utils.import("resource://ccffext/license.js");
+
+		    // this document has licensed objects; 
+		    // get the list of uncached licenses to retrieve
+		    var licenses = [
+			ccffext.objects.getLicense(location, subject)
+			for each (subject in objects) 
+			if ("undefined" !== typeof subject)].unique();
+
+		    var uncached = [
+			l.uri for each (l in licenses)
+			if ("undefined" !== typeof l &&
+			    !ccffext.cache.contains(l.uri))];
+
+		    // retrieve the licenses if they are not already cached
+		    uncached.forEach(licenseloader.load_license);
+
+		});
+
 	},
 	
 	/**
