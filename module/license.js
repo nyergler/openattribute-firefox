@@ -51,7 +51,8 @@ var licenseloader = {
 	    100, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
 
 	// call the callback when done
-	licenseloader._current_callback (url);
+	if ("function" == typeof licenseloader._current_callback)
+	    licenseloader._current_callback (url);
 
     }, // _onDomLoaded
 
