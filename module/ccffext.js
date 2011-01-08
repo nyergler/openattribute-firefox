@@ -377,8 +377,11 @@ var ccffext =
 	 */
 	getAttributionHtml : function(doc_uri, object) {
 
+	    Components.utils.import("resource://ccffext/license.js");
+
 	    // get the license and other bits of information for this object
-	    license = ccffext.objects.getLicenseDetails(doc_uri, object);
+	    license = licenses.getLicenseInfo(
+		ccffext.objects.getLicense(doc_uri, object).uri);
 
 	    title = ccffext.objects.getTitle(doc_uri, object);
 
@@ -463,123 +466,6 @@ var ccffext =
 		doc_uri, object, ccffext.objects.predicates);
 
 	},
-
-	/**
-	 * Returns information about the license
-	 *
-	 * @param doc_uri The URI of the document containing the assertions
-	 * @param object The object
-	 * @param callback Callback when the license details have been retrieved;
-	 * @param cb_args An array to be passed into the callback
-	 * 
-	 *        This is called with the signature (doc_uri, object, license).
-	 */
-	getLicenseDetails : function(doc_uri, object, callback, licenseloader, cb_args)
-	{
-
-	    var license =
-		{
-		    name : undefined,
-		    uri : undefined,
-		    code : undefined,
-		    color : undefined
-		};
-	    
-	    license.uri = license.name = ccffext.objects.getLicense(doc_uri, object).uri;
-	    
-	    if ("undefined" != typeof license.uri &&
-		license.uri.indexOf("http://creativecommons.org/") == 0)
-	    {
-		// This is a Creative Commons license;
-		// make sure we're using the canonical URI
-		if (license.uri.lastIndexOf("/") < license.uri.length - 1) {
-		    // strip off the trailing bit
-		    license.uri = license.uri.slice(0, license.uri.lastIndexOf("/") + 1);
-		}
-
-		// extract the license code
-		var re_license_code = /http:\/\/creativecommons\.org\/(licenses|publicdomain)\/([a-z\-\+]+)\/.*/
-		license.code = license.uri.match(re_license_code)[2];
-
-		// determine the license "color"
-		switch (license.code) {
-		case "by":
-		case "by-sa":
-		case "mark":
-		case "zero":
-		case "publicdomain":
-		    license.color = "green";
-		    break;
-
-		case "by-nc":
-		case "by-nd":
-		case "by-nc-nd":
-		case "by-nc-sa":
-		case "sampling+":
-		case "nc-sampling+":
-		    license.color = "yellow";
-		    break;
-
-		case "sampling":
-		case "devnations":
-		    license.color = red;
-		    break;
-		}
-	    }
-
-	    if (ccffext.cache.contains(license.uri)) {
-		// this license has already been loaded
-		// retrieve the details from the RDF store
-		license.name = ccffext.objects.getValue(
-		    license.uri, {'uri':license.uri}, 
-		    ["http://purl.org/dc/terms/title",
-		     "http://purl.org/dc/elements/1.1/title"]);
-			    
-		if ("object" == typeof license.name) 
-		    license.name = license.name.toString();
-		
-		if ("string" == typeof license.name) 
-		    license.name = license.name.trim();
-		
-		// make sure the call back happens, 
-		// even if we can't load the license
-		if ("undefined" != typeof callback) 
-		    callback (doc_uri, object, license, cb_args);
-	    } else 
-
-	    // retrieve the license document to introspect for RDFa
-	    if ("undefined" != typeof licenseloader) {
-
-		licenseloader.load(
-		    license.uri,
-		    function(url) {
-			// see if we have the license name
-			license.name = ccffext.objects.getValue(
-			    url, {'uri':url}, 
-			    ["http://purl.org/dc/terms/title",
-			     "http://purl.org/dc/elements/1.1/title"]);
-			    
-			if ("object" == typeof license.name) 
-			    license.name = license.name.toString();
-
-			if ("string" == typeof license.name) 
-			    license.name = license.name.trim();
-
-			// call the callback when done
-			callback (doc_uri, object, license, cb_args);
-		    });
-
-	    } // if a license frame was provided 
-	    else 
-
-		// make sure the call back happens, 
-		// even if we can't load the license
-		if ("undefined" != typeof callback) 
-		    callback (doc_uri, object, license, cb_args);
-	    
-	    return license;
-
-	} // getLicenseDetails
     },
         
     /**

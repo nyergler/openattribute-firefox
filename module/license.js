@@ -38,11 +38,144 @@ var licenses = new function Licenses() {
 	// and check the queue...
 	check_queue();
 
-    } // load
+    }; // load
 
     this.notify = function (timer) {
 	check_queue();
     }
+
+    this.normalizeLicenseUri = function (license_uri) {
+
+	if ("string" == typeof license_uri &&
+	    license_uri.indexOf("http://creativecommons.org/") == 0) {
+	    // This is a Creative Commons license;
+	    // make sure we're using the canonical URI
+	    if (license_uri.lastIndexOf("/") < license_uri.length - 1) {
+		// strip off the trailing bit
+		license_uri = license_uri.slice(0, license_uri.lastIndexOf("/") + 1);
+	    }
+	}
+
+	return license_uri;
+
+    } // normalizeLicenseUri
+
+    /**
+     * Returns information about the license
+     *
+     * @param license_uri The URI of the license to load
+     * @param callback Callback when the license details have been retrieved;
+     * @param cb_args An array to be passed into the callback
+     * 
+     *        This is called with the signature (license, cb_args).
+     **/
+    this.getLicenseInfo = function(license_uri, callback, cb_args) {
+
+	var license = {
+	    name : undefined,
+	    uri : undefined,
+	    identifier : undefined,
+	    code: undefined,
+	    color : undefined
+	};
+	    
+	license.uri = license.name = that.normalizeLicenseUri(license_uri);
+
+	if (ccffext.cache.contains(license.uri)) {
+	    // this license has already been loaded
+	    // retrieve the details from the RDF store
+	    populateLicenseObject(license);
+
+	    // call the callback
+	    if ("undefined" != typeof callback) {
+		callback (license, cb_args);
+	    }
+	} else 
+
+	// retrieve the license document to introspect for RDFa
+	if ("undefined" != typeof license_frame) {
+
+	    // the have a browser reference, retrieve the license
+	    that.load(license.uri,
+		      function(url) {
+			  populateLicenseObject(license);
+
+			  // call the callback when done
+			  callback (license, cb_args);
+		      });
+
+	} // if a license browser is available
+	else 
+
+	    // make sure the call back happens, 
+	    // even if we can't load the license
+	    if ("undefined" != typeof callback) {
+		callback (license, cb_args);
+	    }
+	    
+	return license;
+
+    } // getLicenseDetails
+
+    function populateLicenseObject(license) {
+
+	license.name = ccffext.objects.getValue(
+	    license.uri, {'uri':license.uri}, 
+	    ["http://purl.org/dc/terms/title",
+	     "http://purl.org/dc/elements/1.1/title"]);
+			    
+	if ("object" == typeof license.name) 
+	    license.name = license.name.toString();
+		
+	if ("string" == typeof license.name) 
+	    license.name = license.name.trim();
+
+	license.identifier = ccffext.objects.getValue(
+	    license.uri, {'uri':license.uri},
+	    ["http://purl.org/dc/terms/identifier",
+	     "http://purl.org/dc/elements/1.1/identifier"]);
+
+	if ("object" == typeof license.identifier) 
+	    license.identifier = license.identifier.toString();
+		
+	if ("string" == typeof license.identifier) 
+	    license.identifier = license.identifier.trim();
+
+	if (license.uri.indexOf("http://creativecommons.org/") == 0) {
+
+	    var re_license_code = /http:\/\/creativecommons\.org\/(licenses|publicdomain)\/([a-z\-\+]+)\/.*/;
+	    license.code = license.uri.match(re_license_code)[2];
+	} else {
+	    license.code = license.identifier;
+	}
+
+	// determine the license "color"
+	// this is currently CC-specific
+	switch (license.code) {
+	case "by":
+	case "by-sa":
+	case "mark":
+	case "zero":
+	case "publicdomain":
+	    license.color = "green";
+	    break;
+	    
+	case "by-nc":
+	case "by-nd":
+	case "by-nc-nd":
+	case "by-nc-sa":
+	case "sampling+":
+	case "nc-sampling+":
+	    license.color = "yellow";
+	    break;
+	    
+	case "sampling":
+	case "devnations":
+	    license.color = "red";
+	    break;
+	} // switch on license code
+	
+    } // populateLicenseObject
 
     function _onDomLoaded (e) {
 	

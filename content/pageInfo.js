@@ -202,15 +202,17 @@
 		}, true);
 		attribContainer.appendChild(attribText);
 
-		ccffext.objects.getLicenseDetails(
-		    doc.location.href, objects[i],
-		    function(doc_uri, obj, license, args) {
+		licenses.getLicenseInfo(
+		    ccffext.objects.getLicense(doc.location.href,
+					       objects[i]).uri,
+		    function(license) {
 			args[0].setAttribute("value",license.name);
 			args[0].setAttribute("uri",license.uri);
 			args[1].setAttribute(
 			    "value", 
-			    ccffext.objects.getAttributionHtml(doc_uri, obj));
-		    }, licenses, [licenseValue, attribText]);
+			    ccffext.objects.getAttributionHtml(args[2], args[3]));
+		    }, [licenseValue, attribText, doc.location.href, 
+			objects[i]]);
 
 		const attribCopyButton = document.createElement("button");
 		attribCopyButton.setAttribute("label",

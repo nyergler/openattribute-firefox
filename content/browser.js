@@ -71,9 +71,10 @@ var gCcHandler = {
 	    this._popup_license.setAttribute('href', license.uri);
 
 	    // ---- get the license details and update the popup when ready
-	    ccffext.objects.getLicenseDetails(
-		content.document.location.href, doc_subject,
-		function(document, object, license) {
+	    licenses.getLicenseInfo(
+		ccffext.objects.getLicense(content.document.location.href,
+					   doc_subject).uri,
+		function(license) {
 		    gCcHandler._popup_license.value = license.name;
 		    gCcHandler._popup_license_band.setAttribute(
 			"class", "band-" + license.color);
@@ -86,8 +87,7 @@ var gCcHandler = {
 			ccffext.objects.getAttributionHtml(
 			    content.document.location.href, doc_subject);
 		    gCcHandler._popup_attrib_html.hidden = false;
-		},
-		licenses, []);
+		}, []);
 
 	    // -- title
 	    this._popup_work_title.hidden = false;
