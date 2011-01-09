@@ -210,6 +210,14 @@ var licenses = new function Licenses() {
 		return;
 	    }
 
+	    // make sure we're initialized
+	    if (license_frame === null) {
+		timer.initWithCallback(
+		    that,
+		    250, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+		return;
+	    };
+
 	    working = true;
 	    var license_uri;
 
