@@ -40,16 +40,22 @@
                  class="text-link"
                  value="" 
 		 href="" />
-	  <textbox id="ccffext-popup-attrib-html"
-		   onfocus="this.select()"></textbox>
 	  <label id="ccffext-popup-licensed-objects"
 		 value="" />
+	  <hbox>
+	    <button type="menu" label="Copy Attribution">
+	      <menupopup>
+		<menuitem label="as HTML" 
+			  oncommand="gCcHandler.handleCopyHtml(event);"/>
+		<menuitem label="as Plain Text" 
+			  oncommand="gCcHandler.handleCopyText(event);"/>
+	      </menupopup>
+	    </button>
+            <button id="ccffext-popup-more-info-button"
+                    label="More Information"
+                    oncommand="gCcHandler.handleMoreInfo(event);"/>
+	  </hbox>
 	</vbox>
-      </hbox>
-      <hbox pack="end">
-        <button id="ccffext-popup-more-info-button"
-                label="More Information..."
-                oncommand="gCcHandler.handleMoreInfo(event);"/>
       </hbox>
       <box id="ccffext-popup-license-band" flex="1" />
       <browser id="ccffext-license-frame" name="ccffext-license-frame"

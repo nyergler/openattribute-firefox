@@ -25,10 +25,6 @@ var gCcHandler = {
 	return document.getElementById('ccffext-popup-license-band');
     },
 
-    get _popup_attrib_html () {
-	return document.getElementById('ccffext-popup-attrib-html');
-    },
-
     get _popup_num_licensed_objects () {
 	return document.getElementById('ccffext-popup-licensed-objects');
     },
@@ -43,8 +39,6 @@ var gCcHandler = {
 	this._popup_work_title.hidden = true;
 	this._popup_num_licensed_objects.hidden = true;
 	this._popup_attribution.hidden = true;
-	this._popup_attrib_html.value = "";		    
-	this._popup_attrib_html.hidden = true;
 	this._popup_license_band.setAttribute(
 	    "class", "band-reset");
     },
@@ -78,15 +72,6 @@ var gCcHandler = {
 		    gCcHandler._popup_license.value = license.name;
 		    gCcHandler._popup_license_band.setAttribute(
 			"class", "band-" + license.color);
-
-		    // -- show the copy and paste HTML
-		    // --   this is handled in the callback so we are certain
-		    // --   the license document has been dereferenced and
-		    // --   parsed
-		    gCcHandler._popup_attrib_html.value = 
-			ccffext.objects.getAttributionHtml(
-			    content.document.location.href, doc_subject);
-		    gCcHandler._popup_attrib_html.hidden = false;
 		}, []);
 
 	    // -- title
@@ -149,6 +134,30 @@ var gCcHandler = {
     handleMoreInfo : function(e) {
 	gCcHandler.hidePopup();
 	BrowserPageInfo(null,'ccffext-tab'); 
+    },
+
+    handleCopyHtml : function(e) {
+	const clipboard = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
+	    getService(Components.interfaces.nsIClipboardHelper);
+	clipboard.copyString(
+	    ccffext.objects.getAttributionHtml(
+		content.document.location.href, 
+		{'uri':content.document.location.href}));
+
+	// close the popup
+	gCcHandler.hidePopup();
+    },
+
+    handleCopyText : function(e) {
+	const clipboard = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
+	    getService(Components.interfaces.nsIClipboardHelper);
+	clipboard.copyString(
+	    ccffext.objects.getAttributionText(
+		content.document.location.href, 
+		{'uri':content.document.location.href}));
+
+	// close the popup
+	gCcHandler.hidePopup();
     },
 
     hidePopup : function() {
