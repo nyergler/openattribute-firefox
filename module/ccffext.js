@@ -445,7 +445,8 @@ var ccffext =
 	    // -- license
 	    attrib_pieces.push(
 		'<a rel="license" href="' + license.uri + '">' +
-		    license.name + '</a>');
+		    (license.identifier ? license.identifier : license.name) + 
+		    '</a>');
 
 	    // assemble the final HTML from the pieces
 	    attrib_html = '<div about="' + object.uri + '"';
