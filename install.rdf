@@ -37,6 +37,8 @@
 	        Extension homepage.
 	    -->
 	    <em:homepageURL>http://wiki.creativecommons.org/MozCC</em:homepageURL>
+	    <em:iconURL>chrome://ccffext/skin/icon32.png</em:iconURL>
+	    <em:icon64URL>chrome://ccffext/skin/icon64.png</em:icon64URL>
 
 	    <!-- Shows what application is augmented using this extension -->
 	    <em:targetApplication>
