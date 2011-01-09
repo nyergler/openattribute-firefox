@@ -185,23 +185,71 @@
 		attribLine.setAttribute("class","line primary");
 		leftPanel.appendChild(attribLine);
 
+		const attribTitleContainer = document.createElement("hbox");
+		attribTitleContainer.setAttribute("class", "aligncenter");
+		attribLine.appendChild(attribTitleContainer);
+
 		const attribTitle = document.createElement("label");
 		attribTitle.setAttribute("class","line-title");
 		attribTitle.setAttribute("value",
 					 ccffext.l10n.get("object.attribution.label"));
-		attribLine.appendChild(attribTitle);
+		attribTitleContainer.appendChild(attribTitle);
 		
+		const attribFormat = document.createElement("menulist");
+		const attribFormatMenu = document.createElement("menupopup");
+		const attribFormatHtml = document.createElement("menuitem");
+		attribFormatHtml.setAttribute("label", "HTML");
+		attribFormatHtml.setAttribute("value", "html");
+		attribFormatMenu.appendChild(attribFormatHtml);
+
+		const attribFormatText = document.createElement("menuitem");
+		attribFormatText.setAttribute("label", "Plain Text");
+		attribFormatText.setAttribute("value", "text");
+		attribFormatMenu.appendChild(attribFormatText);
+
+		attribFormat.appendChild(attribFormatMenu);
+
+		attribTitleContainer.appendChild(attribFormat);
+
 		const attribContainer = document.createElement("hbox");
 		attribContainer.setAttribute("class", "indented");
+		attribContainer.setAttribute("align", "start");
 		attribLine.appendChild(attribContainer);
 		
 		var attribText = document.createElement("textbox");
 		attribText.setAttribute("flex","1");
 		attribText.setAttribute("multiline", "true");
+		attribText.setAttribute("readonly", "true");
 		attribText.addEventListener("focus", function(e) {
-		    attribText.select();
+		    e.currentTarget.select();
 		}, true);
 		attribContainer.appendChild(attribText);
+
+		function formatListener(textbox, doc_uri, object) {
+		    function onSelect(e) {
+			switch (e.currentTarget.selectedItem.value) {
+			case "html":
+			    textbox.setAttribute(
+				"value", 
+				ccffext.objects.getAttributionHtml(
+				    doc_uri, object));
+			    break;
+			case "text":
+			    textbox.setAttribute(
+				"value", 
+				ccffext.objects.getAttributionText(
+				    doc_uri, object));
+			    break;
+			}
+		    }
+		  
+		    return onSelect;
+		}
+
+		attribFormat.addEventListener(
+		    "select", 
+		    formatListener(attribText, doc.location.href, objects[i]), 
+		    true);
 
 		licenses.getLicenseInfo(
 		    ccffext.objects.getLicense(doc.location.href,
@@ -220,11 +268,16 @@
 					      ccffext.l10n.get("copy"));
 		attribCopyButton.setAttribute("accesskey",
 					      ccffext.l10n.get("object.button.attributionashtml.key"));
-		attribCopyButton.addEventListener("click",function() {
-		    const clipboard = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
-			getService(Components.interfaces.nsIClipboardHelper);
-		    clipboard.copyString(attribText.getAttribute("value"));
-		},true);
+		attribCopyButton.addEventListener(
+		    "click",
+		    function(textbox) {
+			function clickHandler(event) {
+			    const clipboard = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
+				getService(Components.interfaces.nsIClipboardHelper);
+			    clipboard.copyString(textbox.getAttribute("value"));
+			}
+			return clickHandler;
+		    }(attribText), true);
 		
 		attribContainer.appendChild(attribCopyButton);
 	    }

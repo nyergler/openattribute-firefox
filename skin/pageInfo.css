@@ -88,3 +88,12 @@ label.anchor
 	cursor: pointer;
 	text-decoration: underline;
 }
+
+button {
+    -moz-box-align: center;
+    -moz-box-pack: start;
+}
+
+.aligncenter {
+    -moz-box-align: center;
+}
