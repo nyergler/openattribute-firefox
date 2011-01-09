@@ -205,7 +205,7 @@
 		licenses.getLicenseInfo(
 		    ccffext.objects.getLicense(doc.location.href,
 					       objects[i]).uri,
-		    function(license) {
+		    function(license, args) {
 			args[0].setAttribute("value",license.name);
 			args[0].setAttribute("uri",license.uri);
 			args[1].setAttribute(
