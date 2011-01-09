@@ -32,7 +32,7 @@ var licenses = new function Licenses() {
     this.load = function (license_uri, callback) {
 	// refuse to queue something we won't be able to handle
 	if ("string" == typeof license_uri) {
-	    queue.push([license_uri, callback]);
+	    queue.push([that.normalizeLicenseUri(license_uri), callback]);
 	}
 
 	// and check the queue...
