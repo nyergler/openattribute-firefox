@@ -6,7 +6,7 @@ var licenses = new function Licenses() {
 
     var timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
     var license_frame = null, queue = new Array(), working = false, current_callback = null;
-    that = this;
+    var that = this;
 
     this.init = function (browser) {
 
@@ -19,7 +19,7 @@ var licenses = new function Licenses() {
 	
 	// attach the event listener which will handle parsing licenses
 	browser.addEventListener(
-	    "DOMContentLoaded", _onDomLoaded, true);
+	    "DOMContentLoaded", onDomLoaded, true);
 	
 	// store a reference to the browser
 	license_frame = browser;
@@ -27,7 +27,7 @@ var licenses = new function Licenses() {
 	// reset the internal state flag
 	working = false;
 				
-    } // init
+    }; // init
 
     this.load = function (license_uri, callback) {
 	// refuse to queue something we won't be able to handle
@@ -42,7 +42,7 @@ var licenses = new function Licenses() {
 
     this.notify = function (timer) {
 	check_queue();
-    }
+    };
 
     this.normalizeLicenseUri = function (license_uri) {
 
@@ -58,7 +58,7 @@ var licenses = new function Licenses() {
 
 	return license_uri;
 
-    } // normalizeLicenseUri
+    }; // normalizeLicenseUri
 
     /**
      * Returns information about the license
@@ -115,7 +115,7 @@ var licenses = new function Licenses() {
 	    
 	return license;
 
-    } // getLicenseDetails
+    }; // getLicenseInfo
 
     function populateLicenseObject(license) {
 
@@ -173,11 +173,11 @@ var licenses = new function Licenses() {
 	case "devnations":
 	    license.color = "red";
 	    break;
-	} // switch on license code
+	}; // switch on license code
 	
-    } // populateLicenseObject
+    }; // populateLicenseObject
 
-    function _onDomLoaded (e) {
+    function onDomLoaded (e) {
 	
 	var doc = e.originalTarget;
 	var url = doc.location.href;
@@ -197,7 +197,7 @@ var licenses = new function Licenses() {
 	if ("function" == typeof _current_callback)
 	    _current_callback (url);
 
-    } // _onDomLoaded
+    }; // onDomLoaded
 
     var check_queue = function () {
 
@@ -220,12 +220,12 @@ var licenses = new function Licenses() {
 
 	}	   
 
-    } // check_queue
+    }; // check_queue
 
     this.log = function(message)
     {
 	Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService)
 	    .logStringMessage(message);
-    }
+    };
 };
 
