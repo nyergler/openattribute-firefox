@@ -197,6 +197,7 @@
 		
 		var attribText = document.createElement("textbox");
 		attribText.setAttribute("flex","1");
+		attribText.setAttribute("multiline", "true");
 		attribText.addEventListener("focus", function(e) {
 		    attribText.select();
 		}, true);
