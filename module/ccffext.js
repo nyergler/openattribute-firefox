@@ -460,6 +460,67 @@ var ccffext =
 
 	}, // getAtttributionHtml
 
+	getAttributionText : function (doc_uri, object) {
+
+	    Components.utils.import("resource://ccffext/license.js");
+
+	    // get the license and other bits of information for this object
+	    license = licenses.getLicenseInfo(
+		ccffext.objects.getLicense(doc_uri, object).uri);
+
+	    title = ccffext.objects.getTitle(doc_uri, object);
+
+	    identifier_name = null;
+	    identifier_url = null;
+
+	    attrib_name = ccffext.objects.getAuthor(doc_uri, object);
+	    attrib_url = ccffext.objects.getAuthorUri(doc_uri, object);
+	    
+	    // create the pieces for the attribution HTML
+	    attrib_pieces = new Array();
+
+	    // -- title
+	    if (title) {
+		attrib_pieces.push(title);
+	    }
+
+	    // -- attrib name/URL
+	    if ("undefined" != typeof attrib_name || 
+		"undefined" != typeof attrib_url) {
+		// we have at least one of the name + URL
+		if ("undefined" == typeof attrib_url) {
+		    // no attribution URL
+		    attrib_pieces.push(attrib_name);
+
+		} else // we have the attribution URL; see if we have the name
+		    if ("undefined" == typeof attrib_name) {
+
+			// w/o attrib_name we include the URL as the link text
+			// but do not annotate it as the attribution name
+			attrib_pieces.push("(" + attrib_url.uri + ")");
+			
+		    } else {
+
+			attrib_pieces.push(
+			    attrib_name + " (" + attrib_url.uri + ")");
+		    }
+
+	    } // attribution name/url
+
+	    // -- identifier / publisher
+	    // -- XXX this is currently unimplemented, needed for PDM support
+
+	    // -- license
+	    attrib_pieces.push(
+		(license.identifier ? license.identifier : license.name) +
+		    " (" + license.uri + ")");
+
+	    // assemble the final text from the pieces
+	    attrib_text = attrib_pieces.join(" / ");
+
+	    return attrib_text;
+	}, // getAttributionText
+
 	// Return the license for the specified object
 	getLicense : function(doc_uri, object) {
 
