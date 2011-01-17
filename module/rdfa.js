@@ -1,4 +1,4 @@
-var EXPORTED_SYMBOLS = ["RDFA","XH"];
+var EXPORTED_SYMBOLS = ["RDFA","XH", "RDFSymbol", "RDFLiteral", "Util"];
 
 /**
  *  RDFA in Javascript
