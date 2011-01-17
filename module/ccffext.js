@@ -250,6 +250,14 @@ var ccffext =
 
 		});
 
+	    // Apply any site-specific hacks 
+	    // -- these hacks are applied for high value adopters, who
+	    // -- for whatever reason have adopted, ahem, imperfectly.
+	    Components.utils.import("resource://ccffext/hacks/hacks.js");
+	    for each (hack in ccffext_site_hacks.match(location)) {
+		hack(ccffext.cache.get(location), location, document);
+	    }
+
 	},
 	
 	/**
