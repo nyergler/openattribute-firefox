@@ -15,4 +15,5 @@ resource ccffext module/
 
 # Changes to the UI: the main window is altered, as well as the "Page Info" frame
 overlay chrome://browser/content/browser.xul chrome://ccffext/content/browser.xul
+overlay chrome://browser/content/browser.xul chrome://ccffext/content/firstscreen.xul
 overlay chrome://browser/content/pageinfo/pageInfo.xul chrome://ccffext/content/pageInfo.xul
