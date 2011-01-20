@@ -465,12 +465,12 @@ var ccffext =
 		    '</a>');
 
 	    // assemble the final HTML from the pieces
-	    attrib_html = '<div about="' + object.uri + '"';
+	    attrib_html = '<span about="' + object.uri + '"';
 	    for (var ns in attrib_ns) {
 		attrib_html = attrib_html + ' xmlns:' + ns + '="' + attrib_ns[ns] + '"';
 	    }
 
-	    attrib_html = attrib_html + ">" + attrib_pieces.join(" / ") + "</div>";
+	    attrib_html = attrib_html + ">" + attrib_pieces.join(" / ") + "</span>";
 
 	    return attrib_html;
 
