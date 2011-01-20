@@ -37,13 +37,15 @@ var ccffext_site_hacks = new function Hacks() {
 	    }
 	}
 
-	return null;
+	return undefined;
 
     };
 
 };
 
 // register site hacks here
+
+// Flickr
 ccffext_site_hacks.register(
     "flickr", /^https?\:\/\/(www\.)?flickr\.com\/.*/,
     function(triples, location, document) {
