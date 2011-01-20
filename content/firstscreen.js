@@ -4,42 +4,48 @@ Prefs = Prefs.getBranch("extensions.ccffext.");
 var Overlay = {
 	
   init: function(){ 
-  
-    var ver = -1, firstrun = true;
 
-    var gExtensionManager = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager);
-    var current = gExtensionManager.getItemForID("ccffext@code.creativecommons.org").version;
 
-    try{
-	
-		ver = Prefs.getCharPref("version");
-		firstrun = Prefs.getBoolPref("firstrun");
-		
-		
-    }catch(e){
-      //nothing
-    }finally{
-		
-	  Prefs.setBoolPref("firstrun",false);
-      Prefs.setCharPref("version",current);
-	  
+      var ver = -1, firstrun = true;
+
+      try{
+	  firstrun = Prefs.getBoolPref("firstrun");
+      }catch(e){
+	  //nothing
+      }finally{
+
 	  if (firstrun) {
-	  
-	  	window.setTimeout(function(){
+
+	      window.setTimeout(function(){
+		  var nb = gBrowser.getNotificationBox();
+
+		  var buttons = [{
+		      'label':'More information',
+		      'accessKey':'I',
+		      callback: function(n, btn) {
+			  nb.removeTransientNotifications();
+
+			  gBrowser.selectedTab = gBrowser.addTab("http://openattribute.com/first-run");
+			  return true;
+		      }
+		  }];
+				
+		  nb.appendNotification(
+		      "You've installed OpenAttribute, an add-on that helps you find CC licensed works and properly attribute them.",
+		      'installed-oa',
+		      'chrome://ccffext/skin/icon32.png',
+		      nb.PRIORITY_INFO_LOW,
+		      buttons);
 	  	
-	  		var win = window.open("chrome://ccffext/content/firstscreen.xul", "aboutMyExtension", "chrome,centerscreen,alwaysRaised=yes,titlebar=no");
-	  		
-	  	}, 4000);
-	  	
-	  }		
-      
-      if (ver!=current && !firstrun){ // !firstrun ensures that this section does not get loaded if its a first run.
-        Prefs.setCharPref("version",current);
-	  }        
-      
-    }
-    window.removeEventListener("DOMContentLoaded",function(){ Overlay.init(); },true);
- }
+	      }, 2000);
+
+	      Prefs.setBoolPref("firstrun",false);
+	  }
+      }
+
+      window.removeEventListener("load",Overlay.init,false);
+  }
+
 };
 
-window.addEventListener("DOMContentLoaded",Overlay.init(),true);
+window.addEventListener("load",Overlay.init,false);
