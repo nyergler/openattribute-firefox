@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE window SYSTEM "chrome://testext/locale/test.dtd">
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<overlay id="firstScreen" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<window id="yourwindow" title="Openattribute Firefox plugin" width="300" height="300" chromemargin="5">
+<label id="yx" value="Put your XUL here!"/>
+<image src="media/cc.png" flex="0" />
+<groupbox>
+  <caption label="Open Attribute"/>
+  Thanks for installing the Open Attribute Plugin. Please notice the symbol in the address bar at the top of the screen.
+</groupbox>
+<button id="left" onclick="window.close();">Close</button>
+</window>
+<script type="text/javascript"
+		src="chrome://ccffext/content/firstscreen.js"></script>
+<script type="text/javascript"
+	  src="chrome://ccffext/content/pat.js"></script> 
+</overlay>
