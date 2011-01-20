@@ -11,8 +11,5 @@
 </groupbox>
 <button id="left" onclick="window.close();">Close</button>
 </window>
-<script type="text/javascript"
-		src="chrome://ccffext/content/firstscreen.js"></script>
-<script type="text/javascript"
-	  src="chrome://ccffext/content/pat.js"></script> 
+<script type="text/javascript" src="chrome://ccffext/content/firstscreen.js"></script>
 </overlay>
