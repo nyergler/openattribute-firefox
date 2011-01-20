@@ -29,14 +29,16 @@
 	    <em:description>Displays license and attribution information for Creative Commons licensed content.</em:description>
 
 	    <!-- Extension contributors -->
-	    <em:creator>Creative Commons (webmaster@creativecommons.org)</em:creator>
-	    <em:developer>Igor Lukanin (mail@igor.lukanin.name)</em:developer>
+	    <em:creator>OpenAttribute Project</em:creator>
 	    <em:developer>Nathan Yergler (nathan@yergler.net)</em:developer>
+	    <em:developer>Pat Lockley</em:developer>
+	    <em:developer>Igor Lukanin (mail@igor.lukanin.name)</em:developer>
 
 	    <!--
 	        Extension homepage.
 	    -->
-	    <em:homepageURL>http://wiki.creativecommons.org/MozCC</em:homepageURL>
+	    <em:homepageURL>http://openattribute.com</em:homepageURL>
+
 	    <em:iconURL>chrome://ccffext/skin/icon32.png</em:iconURL>
 	    <em:icon64URL>chrome://ccffext/skin/icon64.png</em:icon64URL>
 
