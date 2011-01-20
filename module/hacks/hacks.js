@@ -16,6 +16,31 @@ var ccffext_site_hacks = new function Hacks() {
 		if (h[1].test(location))];
     };
 
+    /**
+     * 
+     * Evaluate a series of xpath expressions against a document,
+     * returning the string value of the first that has a match.
+     * 
+     * exprs is an Array of xpath expressions
+     * 
+     **/
+    this.evaluateXpath = function (document, exprs) {
+
+	for each (ex in exprs) {
+	    var result = document.evaluate(ex,
+					   document,
+					   null,
+					   Components.interfaces.nsIDOMXPathResult.STRING_TYPE,
+					   null).stringValue;
+	    if ("undefined" != typeof result) {
+		return result;
+	    }
+	}
+
+	return null;
+
+    };
+
 };
 
 // register site hacks here
@@ -25,11 +50,10 @@ ccffext_site_hacks.register(
 
 	Components.utils.import("resource://ccffext/rdfa.js");
 
-	var author = document.evaluate("//span[@class='realname']/a",
-				       document,
-				       null,
-				       Components.interfaces.nsIDOMXPathResult.STRING_TYPE,
-				       null).stringValue;
+	var author = ccffext_site_hacks.evaluateXpath(
+	    document,
+	    ["//span[@class='realname']/span",
+	     "//strong[@class='username']/a"]);
 
 	if ("undefined" != typeof author) {
 	    triples.add(new RDFSymbol(location),
@@ -37,11 +61,11 @@ ccffext_site_hacks.register(
 			new RDFLiteral(author), 'RDFa');
 	}
 
-	var authorUri = document.evaluate("//span[@class='realname']/a/@href",
-				       document,
-				       null,
-				       Components.interfaces.nsIDOMXPathResult.STRING_TYPE,
-				       null).stringValue;
+	var authorUri = ccffext_site_hacks.evaluateXpath(
+	    document,
+	    ["//span[@class='realname']/a/@href",
+	     "//strong[@class='username']/a/@href"]);
+
 	if ("undefined" != typeof authorUri) {
 	    triples.add(new RDFSymbol(location),
 			new RDFSymbol("http://creativecommons.org/ns#attributionURL"),
