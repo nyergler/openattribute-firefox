@@ -76,3 +76,26 @@ ccffext_site_hacks.register(
 
 	}
     }); // flickr
+
+// Wikipedia(s)
+ccffext_site_hacks.register(
+    "wikipedia",  /^(http\:\/\/[a-z]+\.wikipedia\.org\/wiki\/.*)|(https\:\/\/secure\.wikimedia\.org\/wikipedia\/[a-z]+\/wiki\/.*)/,
+    function(triples, location, document) {
+
+	// import the RDFa library
+	Components.utils.import("resource://ccffext/rdfa.js");
+	
+	// Wikipedias are licensed CC BY-SA 3.0 Unported
+	// remove any license triples that may have crept in
+	// (enwp uses rel="license", others do not)
+	triples.removeMany(new RDFSymbol(location),
+			   new RDFSymbol("http://www.w3.org/1999/xhtml/vocab#license"),
+			   undefined,
+			   'RDFa');
+
+	// add the license triple
+	triples.add(new RDFSymbol(location),
+		    new RDFSymbol("http://www.w3.org/1999/xhtml/vocab#license"),
+		    new RDFSymbol("http://creativecommons.org/licenses/by-sa/3.0/"), 
+		    'RDFa');	
+    }); // wikipedia
