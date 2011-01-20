@@ -229,6 +229,15 @@ var ccffext =
 	    
 	    ccffext.cache.put(location, RDFA.triplestore);
 
+
+	    // Apply any site-specific hacks 
+	    // -- these hacks are applied for high value adopters, who
+	    // -- for whatever reason have adopted, ahem, imperfectly.
+	    Components.utils.import("resource://ccffext/hacks/hacks.js");
+	    for each (hack in ccffext_site_hacks.match(location)) {
+		hack(ccffext.cache.get(location), location, document);
+	    }
+
 	    // see if the document contains license information
 	    ccffext.objects.callbackify(
 		document, 
@@ -249,14 +258,6 @@ var ccffext =
 			.forEach(licenses.load);
 
 		});
-
-	    // Apply any site-specific hacks 
-	    // -- these hacks are applied for high value adopters, who
-	    // -- for whatever reason have adopted, ahem, imperfectly.
-	    Components.utils.import("resource://ccffext/hacks/hacks.js");
-	    for each (hack in ccffext_site_hacks.match(location)) {
-		hack(ccffext.cache.get(location), location, document);
-	    }
 
 	},
 	
