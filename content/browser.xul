@@ -15,6 +15,10 @@
   <script type="text/javascript"
 	  src="chrome://ccffext/content/browser.js"></script>
 
+  <!-- First run handling -->
+  <script type="text/javascript" 
+	  src="chrome://ccffext/content/firstrun.js"></script>
+
   <!-- CC urlbar icon -->
   <hbox id="urlbar-icons">
     <image id="ccffext-icon" hidden="true"
