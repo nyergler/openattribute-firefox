@@ -446,6 +446,13 @@ var ccffext =
 		    }
 
 		attrib_ns["cc"] = "http://creativecommons.org/ns#";
+	    } else {
+
+		// no attribution metadata available
+		attrib_pieces.push(
+		    'Work found at <a href="' + object.uri + '">' + 
+			object.uri + '</a> ');
+
 	    } // attribution name/url
 
 	    // -- identifier / publisher
@@ -513,6 +520,11 @@ var ccffext =
 			attrib_pieces.push(
 			    attrib_name + " (" + attrib_url.uri + ")");
 		    }
+
+	    } else {
+
+		// no attribution metadata available
+		attrib_pieces.push('Work found at ' + object.uri);
 
 	    } // attribution name/url
 
