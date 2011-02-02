@@ -239,14 +239,14 @@ var ccffext =
 	 */
 	parse : function(location, document)
 	{
+
 	    XH.transform(document.getElementsByTagName("body")[0]);
 	    XH.transform(document.getElementsByTagName("head")[0]);
 	    
 	    RDFA.reset();
 	    RDFA.parse(document);
 	    
-	    ccffext.cache.put(location, RDFA.triplestore);
-
+	    ccffext.cache.putDocument(document, RDFA.triplestore);
 
 	    // Apply any site-specific hacks 
 	    // -- these hacks are applied for high value adopters, who
@@ -290,12 +290,13 @@ var ccffext =
 	    // For all pages, except for system ones like "about:blank", "about:config" and so on
 	    if (! location.match(/^about\:/i))
 	    {
-		if (! ccffext.cache.contains(location) && "function" == typeof callbackNotCached)
+		if (! ccffext.cache.containsDocument(document) && 
+		    "function" == typeof callbackNotCached)
 		{
 		    callbackNotCached(document);
 		}
 		
-		if (ccffext.cache.contains(location))
+		if (ccffext.cache.containsDocument(document))
 		{
 		    const objects = ccffext.objects.getLicensedSubjects(location);
 		    
