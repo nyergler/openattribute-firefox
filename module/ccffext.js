@@ -110,6 +110,18 @@ var ccffext =
 	contains : function(key)
 	{
 	    return undefined != ccffext.cache.values[key];
+
+	},
+
+
+	containsDocument : function(document)
+	{
+	    var key = document.location.href;
+	    var lastModified = document.lastModified;
+
+	    return ((undefined != ccffext.cache.values[key]) &&
+		    (lastModified == ccffext.cache.values[key]["__lastModified"]));
+
 	},
 
 	/**
@@ -123,6 +135,12 @@ var ccffext =
 	    ccffext.cache.values[key] = object;
 	},
 	
+	putDocument : function(document,object)
+	{
+	    ccffext.cache.values[document.location.href] = object;
+	    ccffext.cache.values[document.location.href]["__lastModified"] = document.lastModified;
+	},
+
 	/**
 	 * Fetches an object by its key from the cache
 	 *
