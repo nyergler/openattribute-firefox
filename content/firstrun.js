@@ -25,7 +25,7 @@ var Overlay = {
 		      callback: function(n, btn) {
 			  nb.removeTransientNotifications();
 
-			  gBrowser.selectedTab = gBrowser.addTab("http://openattribute.com/first-run");
+			  gBrowser.selectedTab = gBrowser.addTab("http://openattribute.com/first-run-firefox/");
 			  return true;
 		      }
 		  }];
