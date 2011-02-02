@@ -1,29 +1,5 @@
 var EXPORTED_SYMBOLS = ["ccffext"];
 
-/**
- * An extension of the "Array" object's prototype. 
- * Inspired by Shamasis Bhattacharya's code
- *
- * @return array An array of unique items
- * @see http://www.shamasis.net/2009/09/fast-algorithm-to-find-unique-items-in-javascript-array/
- */
-Array.prototype.unique = function()
-{
-    var object = {}, result = [];
-
-    for(let i = 0; i < this.length; ++i)
-    {
-	object[this[i]] = this[i];
-    }
-
-    for(let i in object)
-    {
-	result.push(object[i]);
-    }
-
-    return result;
-};
-
 // Support for l10n of plurals
 Components.utils.import("resource://gre/modules/PluralForm.jsm");
 
@@ -36,6 +12,30 @@ Components.utils.import("resource://ccffext/rdfa.js");
  */
 var ccffext =
 {
+    /**
+     * An extension of the "Array" object's prototype. 
+     * Inspired by Shamasis Bhattacharya's code
+     * 
+     * @return array An array of unique items
+     * @see http://www.shamasis.net/2009/09/fast-algorithm-to-find-unique-items-in-javascript-array/
+     */
+    unique : function(in_array)
+    {
+	var object = {}, result = [];
+
+	for(let i = 0; i < in_array.length; ++i)
+	{
+	    object[in_array[i]] = in_array[i];
+	}
+	
+	for(let i in object)
+	{
+	    result.push(object[i]);
+	}
+	
+	return result;
+    },
+
     /**
      * Localization object that is used to fetch localized strings from a property file
      **/
@@ -180,7 +180,7 @@ var ccffext =
 	    var subjects = [s.subject for each (s in statements) 
 			    if (ccffext.objects.predicates.indexOf(s.predicate.uri) > -1)];
 
-	    return subjects.unique();
+	    return ccffext.unique(subjects);
 	},
 	
 	/**
@@ -266,10 +266,10 @@ var ccffext =
 		    // this document has licensed objects; 
 		    // get the list of uncached licenses to retrieve
 		    // and pass each to the license loader
-		    [l.uri for each (l in [
+		    [l.uri for each (l in ccffext.unique([
 			    ccffext.objects.getLicense(location, subject)
 			    for each (subject in objects) 
-			    if ("undefined" !== typeof subject)].unique() )
+			if ("undefined" !== typeof subject)]) )
 			if ("undefined" !== typeof l &&
 			    !ccffext.cache.contains(l.uri))]
 
