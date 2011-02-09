@@ -60,13 +60,12 @@ ccffext_site_hacks.register(
 	if ("undefined" != typeof author) {
 	    triples.add(new RDFSymbol(location),
 			new RDFSymbol("http://creativecommons.org/ns#attributionName"),
-			new RDFLiteral(author), 'RDFa');
+			new RDFLiteral(author.trim()), 'RDFa');
 	}
 
 	var authorUri = ccffext_site_hacks.evaluateXpath(
 	    document,
-	    ["//span[@class='realname']/a/@href",
-	     "//strong[@class='username']/a/@href"]);
+	    ["//strong[@class='username']/a/@href"]);
 
 	if ("undefined" != typeof authorUri) {
 	    triples.add(new RDFSymbol(location),
