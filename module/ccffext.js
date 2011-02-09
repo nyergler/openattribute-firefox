@@ -426,9 +426,15 @@ var ccffext =
 	    // -- title
 	    if (title) {
 		attrib_pieces.push(
-		    '<a href="' + doc_uri + '" property="dct:title">' + title + '</a>'
+		    '<a href="' + object.uri + '" property="dct:title">' + title + '</a>'
 		);
 		attrib_ns["dct"] = "http://purl.org/dc/terms/";
+	    } else {
+
+		// no attribution metadata available
+		attrib_pieces.push(
+		    'Work found at <a href="' + object.uri + '">' + 
+			object.uri + '</a> ');	
 	    }
 
 	    // -- attrib name/URL
@@ -465,13 +471,6 @@ var ccffext =
 		    }
 
 		attrib_ns["cc"] = "http://creativecommons.org/ns#";
-	    } else {
-
-		// no attribution metadata available
-		attrib_pieces.push(
-		    'Work found at <a href="' + object.uri + '">' + 
-			object.uri + '</a> ');
-
 	    } // attribution name/url
 
 	    // -- identifier / publisher
@@ -516,8 +515,13 @@ var ccffext =
 
 	    // -- title
 	    if (title) {
-		attrib_pieces.push(title);
-	    }
+		attrib_pieces.push( title + " (" + object.uri + ")" );
+	    } else {
+
+		// no attribution metadata available
+		attrib_pieces.push('Work found at ' + object.uri);
+
+	    } 
 
 	    // -- attrib name/URL
 	    if ("undefined" != typeof attrib_name || 
@@ -539,11 +543,6 @@ var ccffext =
 			attrib_pieces.push(
 			    attrib_name + " (" + attrib_url.uri + ")");
 		    }
-
-	    } else {
-
-		// no attribution metadata available
-		attrib_pieces.push('Work found at ' + object.uri);
 
 	    } // attribution name/url
 
