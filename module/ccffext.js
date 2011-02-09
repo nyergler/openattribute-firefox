@@ -426,7 +426,7 @@ var ccffext =
 	    // -- title
 	    if (title) {
 		attrib_pieces.push(
-		    '<span property="dct:title">' + title + '</span>'
+		    '<a href="' + doc_uri + '" property="dct:title">' + title + '</a>'
 		);
 		attrib_ns["dct"] = "http://purl.org/dc/terms/";
 	    }
