@@ -32,7 +32,7 @@ var ccffext_site_hacks = new function Hacks() {
 					   null,
 					   Components.interfaces.nsIDOMXPathResult.STRING_TYPE,
 					   null).stringValue;
-	    if ("undefined" != typeof result) {
+	    if (("undefined" != typeof result) && (result.trim() != '')) {
 		return result;
 	    }
 	}
