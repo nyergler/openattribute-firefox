@@ -54,7 +54,7 @@ ccffext_site_hacks.register(
 
 	var author = ccffext_site_hacks.evaluateXpath(
 	    document,
-	    ["//span[@class='realname']/span",
+	    ["//span[@class='realname']/span/a",
 	     "//strong[@class='username']/a"]);
 
 	if ("undefined" != typeof author) {
