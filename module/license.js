@@ -5,7 +5,7 @@ Components.utils.import("resource://ccffext/ccffext.js");
 var licenses = new function Licenses() {
 
     var timer = Components.classes["@mozilla.org/timer;1"].createInstance(Components.interfaces.nsITimer);
-    var license_frame = null, queue = new Array(), working = false, current_callback = null;
+    var license_frame = null, queue = new Array(), working = false, _current_callback = null, _current_license;
     var that = this;
 
     this.init = function (browser) {
@@ -181,10 +181,10 @@ var licenses = new function Licenses() {
 	
 	var doc = e.originalTarget;
 	var url = doc.location.href;
-			    
+
 	// parse the license document for RDFa
-	ccffext.objects.parse(url, doc);
-			    
+	ccffext.objects.parse(_current_license, doc);
+
 	// reset flags
 	working = false;
 	
@@ -219,13 +219,11 @@ var licenses = new function Licenses() {
 	    };
 
 	    working = true;
-	    var license_uri;
 
-	    [license_uri, _current_callback] = queue.pop();
+	    [_current_license, _current_callback] = queue.pop();
 	    license_frame.webNavigation.loadURI(
-		license_uri,
+		_current_license,
 		Components.interfaces.nsIWebNavigation, null, null, null);
-
 	}	   
 
     }; // check_queue

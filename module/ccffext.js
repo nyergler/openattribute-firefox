@@ -135,10 +135,10 @@ var ccffext =
 	    ccffext.cache.values[key] = object;
 	},
 	
-	putDocument : function(document,object)
+	putDocument : function(location,last_modified,object)
 	{
-	    ccffext.cache.values[document.location.href] = object;
-	    ccffext.cache.values[document.location.href]["__lastModified"] = document.lastModified;
+	    ccffext.cache.values[location] = object;
+	    ccffext.cache.values[location]["__lastModified"] = last_modified;
 	},
 
 	/**
@@ -246,7 +246,7 @@ var ccffext =
 	    RDFA.reset();
 	    RDFA.parse(document);
 	    
-	    ccffext.cache.putDocument(document, RDFA.triplestore);
+	    ccffext.cache.putDocument(location, document.lastModified, RDFA.triplestore);
 
 	    // Apply any site-specific hacks 
 	    // -- these hacks are applied for high value adopters, who
