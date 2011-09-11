@@ -49,7 +49,7 @@
 			       https://addons.mozilla.org/en-US/firefox/pages/appversions/
 			    -->
 			    <em:minVersion>3.6</em:minVersion>
-			    <em:maxVersion>8.*</em:maxVersion>
+			    <em:maxVersion>9.0a1</em:maxVersion>
 		    </Description>
 	    </em:targetApplication>
 	</Description>
