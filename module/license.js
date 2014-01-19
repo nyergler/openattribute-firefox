@@ -16,17 +16,17 @@ var licenses = new function Licenses() {
 	browser.webNavigation.allowMetaRedirects = true;
 	browser.webNavigation.allowPlugins = false;
 	browser.webNavigation.allowSubframes = false;
-	
+
 	// attach the event listener which will handle parsing licenses
 	browser.addEventListener(
 	    "DOMContentLoaded", onDomLoaded, true);
-	
+
 	// store a reference to the browser
 	license_frame = browser;
-	
+
 	// reset the internal state flag
 	working = false;
-				
+
     }; // init
 
     this.load = function (license_uri, callback) {
@@ -66,7 +66,7 @@ var licenses = new function Licenses() {
      * @param license_uri The URI of the license to load
      * @param callback Callback when the license details have been retrieved;
      * @param cb_args An array to be passed into the callback
-     * 
+     *
      *        This is called with the signature (license, cb_args).
      **/
     this.getLicenseInfo = function(license_uri, callback, cb_args) {
@@ -78,7 +78,7 @@ var licenses = new function Licenses() {
 	    code: undefined,
 	    color : undefined
 	};
-	    
+
 	license.uri = license.name = that.normalizeLicenseUri(license_uri);
 
 	if (ccffext.cache.contains(license.uri)) {
@@ -90,7 +90,7 @@ var licenses = new function Licenses() {
 	    if ("undefined" != typeof callback) {
 		callback (license, cb_args);
 	    }
-	} else 
+	} else
 
 	// retrieve the license document to introspect for RDFa
 	if ("undefined" != typeof license_frame) {
@@ -105,14 +105,14 @@ var licenses = new function Licenses() {
 		      });
 
 	} // if a license browser is available
-	else 
+	else
 
-	    // make sure the call back happens, 
+	    // make sure the call back happens,
 	    // even if we can't load the license
 	    if ("undefined" != typeof callback) {
 		callback (license, cb_args);
 	    }
-	    
+
 	return license;
 
     }; // getLicenseInfo
@@ -120,14 +120,14 @@ var licenses = new function Licenses() {
     function populateLicenseObject(license) {
 
 	license.name = ccffext.objects.getValue(
-	    license.uri, {'uri':license.uri}, 
+	    license.uri, {'uri':license.uri},
 	    ["http://purl.org/dc/terms/title",
 	     "http://purl.org/dc/elements/1.1/title"]);
-			    
-	if ("object" == typeof license.name) 
+
+	if ("object" == typeof license.name)
 	    license.name = license.name.toString();
-		
-	if ("string" == typeof license.name) 
+
+	if ("string" == typeof license.name)
 	    license.name = license.name.trim();
 
 	license.identifier = ccffext.objects.getValue(
@@ -135,10 +135,10 @@ var licenses = new function Licenses() {
 	    ["http://purl.org/dc/terms/identifier",
 	     "http://purl.org/dc/elements/1.1/identifier"]);
 
-	if ("object" == typeof license.identifier) 
+	if ("object" == typeof license.identifier)
 	    license.identifier = license.identifier.toString();
-		
-	if ("string" == typeof license.identifier) 
+
+	if ("string" == typeof license.identifier)
 	    license.identifier = license.identifier.trim();
 
 	if (license.uri.indexOf("http://creativecommons.org/") == 0) {
@@ -159,7 +159,7 @@ var licenses = new function Licenses() {
 	case "publicdomain":
 	    license.color = "green";
 	    break;
-	    
+
 	case "by-nc":
 	case "by-nd":
 	case "by-nc-nd":
@@ -168,17 +168,17 @@ var licenses = new function Licenses() {
 	case "nc-sampling+":
 	    license.color = "yellow";
 	    break;
-	    
+
 	case "sampling":
 	case "devnations":
 	    license.color = "red";
 	    break;
 	}; // switch on license code
-	
+
     }; // populateLicenseObject
 
     function onDomLoaded (e) {
-	
+
 	var doc = e.originalTarget;
 	var url = doc.location.href;
 
@@ -187,7 +187,7 @@ var licenses = new function Licenses() {
 
 	// reset flags
 	working = false;
-	
+
 	// see if there's anything else to process once we're done
 	timer.initWithCallback(
 	    that,
@@ -224,7 +224,7 @@ var licenses = new function Licenses() {
 	    license_frame.webNavigation.loadURI(
 		_current_license,
 		Components.interfaces.nsIWebNavigation, null, null, null);
-	}	   
+	}
 
     }; // check_queue
 

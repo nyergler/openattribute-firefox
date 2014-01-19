@@ -84,24 +84,24 @@ var gCcHandler = {
 		content.document.location.href, doc_subject);
 	    let author_uri = ccffext.objects.getAuthorUri(
 		content.document.location.href, doc_subject);
-	    
-	    if ("undefined" != typeof author || 
+
+	    if ("undefined" != typeof author ||
 		"undefined" != typeof author_uri) {
-		
+
 		// at least one has been provided
 		this._popup_attribution.hidden = false;
-		
-		if ("undefined" == typeof author && 
+
+		if ("undefined" == typeof author &&
 		    "undefined" != typeof author_uri)
 		    author = author_uri;
-		
+
 		if ("undefined" != typeof author) {
 		    // attribution name was supplied
 		    this._popup_attribution.value = author;
 		}
-		
+
 		if ("undefined" != typeof author_uri) {
-		    this._popup_attribution.setAttribute('href', 
+		    this._popup_attribution.setAttribute('href',
 							 author_uri.uri);
 		    this._popup_attribution.setAttribute(
 			"class", "text-link");
@@ -110,15 +110,15 @@ var gCcHandler = {
 		    this._popup_attribution.setAttribute(
 			"class", "");
 		}
-	    } 
-	    
+	    }
+
 	} // if license is not undefined
 
 	// how many licensed objects described by this page, excluding the page
 	var count = ccffext.objects.getLicensedSubjects(
 	    content.document.location.href).length - (is_doc_licensed?1:0);
 	if (count > 0) {
-	    this._popup_num_licensed_objects.value = 
+	    this._popup_num_licensed_objects.value =
 		ccffext.l10n.get("icon.title.label", count);
 	    this._popup_num_licensed_objects.hidden = false;
 	}
@@ -133,7 +133,7 @@ var gCcHandler = {
 
     handleMoreInfo : function(e) {
 	gCcHandler.hidePopup();
-	BrowserPageInfo(null,'ccffext-tab'); 
+	BrowserPageInfo(null,'ccffext-tab');
     },
 
     handleCopyHtml : function(e) {
@@ -141,7 +141,7 @@ var gCcHandler = {
 	    getService(Components.interfaces.nsIClipboardHelper);
 	clipboard.copyString(
 	    ccffext.objects.getAttributionHtml(
-		content.document.location.href, 
+		content.document.location.href,
 		{'uri':content.document.location.href}));
 
 	// close the popup
@@ -153,7 +153,7 @@ var gCcHandler = {
 	    getService(Components.interfaces.nsIClipboardHelper);
 	clipboard.copyString(
 	    ccffext.objects.getAttributionText(
-		content.document.location.href, 
+		content.document.location.href,
 		{'uri':content.document.location.href}));
 
 	// close the popup
@@ -168,7 +168,7 @@ var gCcHandler = {
     hideIcon : function() {
 	this._icon.hidden = true;
     },
-    
+
     showIcon : function(document) {
 	const objects = ccffext.objects.getLicensedSubjects(
 	    document.location.href);
@@ -192,9 +192,9 @@ var gCcHandler = {
 
 	if (document instanceof HTMLDocument) {
 	    ccffext.objects.callbackify(
-		document, 
+		document,
 		function(document,objects) {
-		    if (gBrowser.contentDocument == document) 
+		    if (gBrowser.contentDocument == document)
 			gCcHandler.showIcon(document);
 		},
 		function(document) {
@@ -207,15 +207,15 @@ var gCcHandler = {
 
 /**
  *  Register window load listener which adds event listeners for tab,
- *  location, and state changes. 
+ *  location, and state changes.
  **/
 window.addEventListener("load",function() {
 
     gBrowser.addEventListener(
-	"TabSelect", 
+	"TabSelect",
 	function(e) { gCcHandler.showIconIfLicenseInfo();}, false);
     gBrowser.tabContainer.addEventListener(
-	"TabSelect", 
+	"TabSelect",
 	function(e) { gCcHandler.showIconIfLicenseInfo();}, false);
 
     gBrowser.addTabsProgressListener({
@@ -224,23 +224,23 @@ window.addEventListener("load",function() {
 	    // A tab is opened, closed, or switched to
 	    // Show the location bar icon if license information is present
 
-	    // XXX disabling; this is called before the browser fully 
+	    // XXX disabling; this is called before the browser fully
 	    // -- loads the document, causing errors in the parse process
 	    // gCcHandler.showIconIfLicenseInfo(progress.DOMWindow.document);
 
 	},
-	
+
 	onStateChange : function(browser, progress,request,flag,status) {
-	    
+
 	    // A document in an existing tab stopped loading
 	    if (flag & Components.interfaces.nsIWebProgressListener.STATE_STOP)
 	    {
 		const doc = progress.DOMWindow.document;
-		
+
 		gCcHandler.showIconIfLicenseInfo(progress.DOMWindow.document);
 	    }
 	},
-	
+
     });
 
     licenses.init(gCcHandler._license_browser);

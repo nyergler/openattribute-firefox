@@ -13,9 +13,9 @@ Components.utils.import("resource://ccffext/rdfa.js");
 var ccffext =
 {
     /**
-     * An extension of the "Array" object's prototype. 
+     * An extension of the "Array" object's prototype.
      * Inspired by Shamasis Bhattacharya's code
-     * 
+     *
      * @return array An array of unique items
      * @see http://www.shamasis.net/2009/09/fast-algorithm-to-find-unique-items-in-javascript-array/
      */
@@ -27,12 +27,12 @@ var ccffext =
 	{
 	    object[in_array[i]] = in_array[i];
 	}
-	
+
 	for(let i in object)
 	{
 	    result.push(object[i]);
 	}
-	
+
 	return result;
     },
 
@@ -78,7 +78,7 @@ var ccffext =
 		    ccffext.l10n.getPlural = PluralForm
 			.makeGetter(ccffext.l10n.bundle.GetStringFromName("l10n.plural.rule"))[0];
 		}
-		
+
 		// Find appropriate plural form, substitute the placeholder
 		return ccffext.l10n.getPlural(
 		    number,
@@ -134,7 +134,7 @@ var ccffext =
 	{
 	    ccffext.cache.values[key] = object;
 	},
-	
+
 	putDocument : function(location,last_modified,object)
 	{
 	    ccffext.cache.values[location] = object;
@@ -151,7 +151,7 @@ var ccffext =
 	    return ccffext.cache.values[key];
 	}
     },
-    
+
     /**
      * Licensed objects (RDFa subjects) methods
      **/
@@ -173,16 +173,16 @@ var ccffext =
 	 */
 	getLicensedSubjects : function(doc_uri)
 	{
-	    
+
 	    // get the set of statements extracted from the location
 	    let statements = ccffext.cache.get(doc_uri).statements;
 	    // get an array of subjects which have a license predicate
-	    var subjects = [s.subject for each (s in statements) 
+	    var subjects = [s.subject for each (s in statements)
 			    if (ccffext.objects.predicates.indexOf(s.predicate.uri) > -1)];
 
 	    return ccffext.unique(subjects);
 	},
-	
+
 	/**
 	 * Returns an array of "predicate-object" pairs for the specified subject
 	 *
@@ -193,7 +193,7 @@ var ccffext =
 	getPredObjPairs : function(doc_uri,subject)
 	{
 	    var pairs = [];
-	    
+
 	    let statements = ccffext.cache.get(doc_uri).statements;
 	    for (let i = 0; i < statements.length; ++i)
 	    {
@@ -202,13 +202,13 @@ var ccffext =
 		    pairs.push([statements[i].predicate,statements[i].object]);
 		}
 	    }
-	    
+
 	    return pairs;
 	},
 
 	/**
 	 * Return the first object for the given subject and predicate.
-	 * 
+	 *
 	 * @param doc_uri The URI of the document containing the assertions.
 	 * @param subject The subject object to match.
 	 * @predicates array Predicates to search for, in order of preference.
@@ -218,15 +218,15 @@ var ccffext =
 	getValue : function(doc_uri, subject, predicates) {
 
 	    for each (let p in predicates) {
-		for (let i = 0, 
-		     pairs = ccffext.objects.getPredObjPairs(doc_uri,subject); 
+		for (let i = 0,
+		     pairs = ccffext.objects.getPredObjPairs(doc_uri,subject);
 		     i < pairs.length; ++i) {
 		    if (pairs[i][0].uri == p) {
 			return pairs[i][1];
 		    }
 		}
 	    }
-	    
+
 	    return undefined;
 
 	}, // getValue
@@ -242,13 +242,13 @@ var ccffext =
 
 	    XH.transform(document.getElementsByTagName("body")[0]);
 	    XH.transform(document.getElementsByTagName("head")[0]);
-	    
+
 	    RDFA.reset();
 	    RDFA.parse(document);
-	    
+
 	    ccffext.cache.putDocument(location, document.lastModified, RDFA.triplestore);
 
-	    // Apply any site-specific hacks 
+	    // Apply any site-specific hacks
 	    // -- these hacks are applied for high value adopters, who
 	    // -- for whatever reason have adopted, ahem, imperfectly.
 	    Components.utils.import("resource://ccffext/hacks/hacks.js");
@@ -258,17 +258,17 @@ var ccffext =
 
 	    // see if the document contains license information
 	    ccffext.objects.callbackify(
-		document, 
+		document,
 		function (doc, objects) {
 
 		    Components.utils.import("resource://ccffext/license.js");
 
-		    // this document has licensed objects; 
+		    // this document has licensed objects;
 		    // get the list of uncached licenses to retrieve
 		    // and pass each to the license loader
 		    [l.uri for each (l in ccffext.unique([
 			    ccffext.objects.getLicense(location, subject)
-			    for each (subject in objects) 
+			    for each (subject in objects)
 			if ("undefined" !== typeof subject)]) )
 			if ("undefined" !== typeof l &&
 			    !ccffext.cache.contains(l.uri))]
@@ -278,7 +278,7 @@ var ccffext =
 		});
 
 	},
-	
+
 	/**
 	 * Checks if the cache contains the information for a document, calling a callback if not. Then calls a callback
 	 * if the document has any licensed objects
@@ -286,20 +286,20 @@ var ccffext =
 	callbackify : function(document,callbackHas,callbackNotCached)
 	{
 	    const location = document.location.href;
-	    
+
 	    // For all pages, except for system ones like "about:blank", "about:config" and so on
 	    if (! location.match(/^about\:/i))
 	    {
-		if (! ccffext.cache.containsDocument(document) && 
+		if (! ccffext.cache.containsDocument(document) &&
 		    "function" == typeof callbackNotCached)
 		{
 		    callbackNotCached(document);
 		}
-		
+
 		if (ccffext.cache.containsDocument(document))
 		{
 		    const objects = ccffext.objects.getLicensedSubjects(location);
-		    
+
 		    if (0 < objects.length && "function" == typeof callbackHas)
 		    {
 			callbackHas(document,objects);
@@ -307,7 +307,7 @@ var ccffext =
 		}
 	    }
 	},
-	
+
 	/**
 	 * Returns a title for a licensed subject.
 	 *
@@ -321,7 +321,7 @@ var ccffext =
 		["http://purl.org/dc/terms/title",
 		 "http://purl.org/dc/elements/1.1/title"]);
 	},
-	
+
 	/**
 	 * Returns the display title for a licensed subject. If no
 	 * title is available, and the subject URI is the same as the
@@ -335,7 +335,7 @@ var ccffext =
 	    var title = ccffext.objects.getTitle(doc_uri, subject);
 
 	    if (typeof title != "undefined") return title;
-	    
+
 	    return doc_uri == subject.uri
 		? ccffext.l10n.get("object.title.current-page.label")
 		: subject.uri;
@@ -350,11 +350,11 @@ var ccffext =
 	getType : function(doc_uri,object)
 	{
 	    var type = ccffext.objects.getValue(
-		doc_uri, object, 
+		doc_uri, object,
 		["http://purl.org/dc/terms/type",
 		 "http://purl.org/dc/elements/1.1/type"]);
 
-	    if ("undefined" != typeof type) 
+	    if ("undefined" != typeof type)
 		return type.uri.replace("http://purl.org/dc/dcmitype/","");
 
 	    return undefined;
@@ -369,10 +369,10 @@ var ccffext =
 	getAuthor : function(doc_uri,object)
 	{
 	    return ccffext.objects.getValue(
-		doc_uri, object, 
+		doc_uri, object,
 		["http://creativecommons.org/ns#attributionName"]);
 	},
-	
+
 	/**
 	 * Returns an URI for an author for a licensed object
 	 *
@@ -382,10 +382,10 @@ var ccffext =
 	getAuthorUri : function(doc_uri,object)
 	{
 	    return ccffext.objects.getValue(
-		doc_uri, object, 
+		doc_uri, object,
 		["http://creativecommons.org/ns#attributionURL"]);
 	},
-	
+
 	/**
 	 * Returns a source for a licensed object.
 	 *
@@ -418,7 +418,7 @@ var ccffext =
 
 	    attrib_name = ccffext.objects.getAuthor(doc_uri, object);
 	    attrib_url = ccffext.objects.getAuthorUri(doc_uri, object);
-	    
+
 	    // create the pieces for the attribution HTML
 	    attrib_pieces = new Array();
 	    attrib_ns = new Object();
@@ -433,18 +433,18 @@ var ccffext =
 
 		// no attribution metadata available
 		attrib_pieces.push(
-		    'Work found at <a href="' + object.uri + '">' + 
-			object.uri + '</a> ');	
+		    'Work found at <a href="' + object.uri + '">' +
+			object.uri + '</a> ');
 	    }
 
 	    // -- attrib name/URL
-	    if ("undefined" != typeof attrib_name || 
+	    if ("undefined" != typeof attrib_name ||
 		"undefined" != typeof attrib_url) {
 		// we have at least one of the name + URL
 		if ("undefined" == typeof attrib_url) {
 		    // no attribution URL
 		    attrib_pieces.push(
-			'<span property="cc:attributionName">' + 
+			'<span property="cc:attributionName">' +
 			    attrib_name + '</span>'
 		    );
 
@@ -454,18 +454,18 @@ var ccffext =
 			// w/o attrib_name we include the URL as the link text
 			// but do not annotate it as the attribution name
 			attrib_pieces.push(
-			    '<a rel="cc:attributionURL" ' + 
-				'href="' + attrib_url.uri + '">' + 
+			    '<a rel="cc:attributionURL" ' +
+				'href="' + attrib_url.uri + '">' +
 				attrib_url.uri +
 				'</a>'
 			);
-			
+
 		    } else {
 
 			attrib_pieces.push(
-			    '<a rel="cc:attributionURL" ' + 
-				'property="cc:attributionName" ' + 
-				'href="' + attrib_url.uri + '">' + 
+			    '<a rel="cc:attributionURL" ' +
+				'property="cc:attributionName" ' +
+				'href="' + attrib_url.uri + '">' +
 				attrib_name + '</a>'
 			);
 		    }
@@ -479,7 +479,7 @@ var ccffext =
 	    // -- license
 	    attrib_pieces.push(
 		'<a rel="license" href="' + license.uri + '">' +
-		    (license.identifier ? license.identifier : license.name) + 
+		    (license.identifier ? license.identifier : license.name) +
 		    '</a>');
 
 	    // assemble the final HTML from the pieces
@@ -509,7 +509,7 @@ var ccffext =
 
 	    attrib_name = ccffext.objects.getAuthor(doc_uri, object);
 	    attrib_url = ccffext.objects.getAuthorUri(doc_uri, object);
-	    
+
 	    // create the pieces for the attribution HTML
 	    attrib_pieces = new Array();
 
@@ -521,10 +521,10 @@ var ccffext =
 		// no attribution metadata available
 		attrib_pieces.push('Work found at ' + object.uri);
 
-	    } 
+	    }
 
 	    // -- attrib name/URL
-	    if ("undefined" != typeof attrib_name || 
+	    if ("undefined" != typeof attrib_name ||
 		"undefined" != typeof attrib_url) {
 		// we have at least one of the name + URL
 		if ("undefined" == typeof attrib_url) {
@@ -537,7 +537,7 @@ var ccffext =
 			// w/o attrib_name we include the URL as the link text
 			// but do not annotate it as the attribution name
 			attrib_pieces.push("(" + attrib_url.uri + ")");
-			
+
 		    } else {
 
 			attrib_pieces.push(
@@ -568,7 +568,7 @@ var ccffext =
 
 	},
     },
-        
+
     /**
      * Utility function that writes a message to the JavaScript console
      *
