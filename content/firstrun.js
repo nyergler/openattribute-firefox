@@ -2,8 +2,8 @@ var Prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(
 Prefs = Prefs.getBranch("extensions.ccffext.");
 
 var Overlay = {
-	
-  init: function(){ 
+
+  init: function(){
 
 
       var ver = -1, firstrun = true;
@@ -29,14 +29,14 @@ var Overlay = {
 			  return true;
 		      }
 		  }];
-				
+
 		  nb.appendNotification(
 		      "You've installed OpenAttribute, an add-on that helps you find CC licensed works and properly attribute them.",
 		      'installed-oa',
 		      'chrome://ccffext/skin/icon32.png',
 		      nb.PRIORITY_INFO_LOW,
 		      buttons);
-	  	
+
 	      }, 2000);
 
 	      Prefs.setBoolPref("firstrun",false);

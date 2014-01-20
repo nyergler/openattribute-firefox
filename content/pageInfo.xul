@@ -6,7 +6,7 @@
 <!-- Setup UI augmentations -->
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	<!-- Bootstrap scripts -->
-	<script type="text/javascript" 
+	<script type="text/javascript"
 		src="resource://ccffext/bootstrap.js"></script>
 
 	<!-- Control the "Page Info" dialog behavior -->

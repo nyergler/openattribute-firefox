@@ -17,12 +17,12 @@ var ccffext_site_hacks = new function Hacks() {
     };
 
     /**
-     * 
+     *
      * Evaluate a series of xpath expressions against a document,
      * returning the string value of the first that has a match.
-     * 
+     *
      * exprs is an Array of xpath expressions
-     * 
+     *
      **/
     this.evaluateXpath = function (document, exprs) {
 
@@ -70,7 +70,7 @@ ccffext_site_hacks.register(
 	if ("undefined" != typeof authorUri) {
 	    triples.add(new RDFSymbol(location),
 			new RDFSymbol("http://creativecommons.org/ns#attributionURL"),
-			new RDFSymbol(Util.uri.join(authorUri, location)), 
+			new RDFSymbol(Util.uri.join(authorUri, location)),
 			'RDFa');
 
 	}
@@ -83,7 +83,7 @@ ccffext_site_hacks.register(
 
 	// import the RDFa library
 	Components.utils.import("resource://ccffext/rdfa.js");
-	
+
 	// Wikipedias are licensed CC BY-SA 3.0 Unported
 	// remove any license triples that may have crept in
 	// (enwp uses rel="license", others do not)
@@ -95,6 +95,6 @@ ccffext_site_hacks.register(
 	// add the license triple
 	triples.add(new RDFSymbol(location),
 		    new RDFSymbol("http://www.w3.org/1999/xhtml/vocab#license"),
-		    new RDFSymbol("http://creativecommons.org/licenses/by-sa/3.0/"), 
-		    'RDFa');	
+		    new RDFSymbol("http://creativecommons.org/licenses/by-sa/3.0/"),
+		    'RDFa');
     }); // wikipedia

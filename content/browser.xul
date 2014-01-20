@@ -8,7 +8,7 @@
 	 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <!-- Bootstrap scripts -->
-  <script type="text/javascript" 
+  <script type="text/javascript"
 	  src="resource://ccffext/bootstrap.js"></script>
 
   <!-- Control the main browser window behavior -->
@@ -16,7 +16,7 @@
 	  src="chrome://ccffext/content/browser.js"></script>
 
   <!-- First run handling -->
-  <script type="text/javascript" 
+  <script type="text/javascript"
 	  src="chrome://ccffext/content/firstrun.js"></script>
 
   <!-- CC urlbar icon -->
@@ -24,11 +24,11 @@
     <image id="ccffext-icon" hidden="true"
 	   onclick="gCcHandler.handleIconClick(event)" />
   </hbox>
-  
+
   <!-- CC License popup -->
   <popupset id="mainPopupSet">
     <!-- Popup for site license information -->
-    <panel id="ccffext-popup" position="after_start" 
+    <panel id="ccffext-popup" position="after_start"
 	   hidden="true" noautofocus="true"
 	   onpopupshown="document.getElementById('ccffext-popup-more-info-button').focus();"
 	   level="top">
@@ -42,16 +42,16 @@
 		 href="" />
 	  <label id="ccffext-popup-license-link"
                  class="text-link"
-                 value="" 
+                 value=""
 		 href="" />
 	  <label id="ccffext-popup-licensed-objects"
 		 value="" />
 	  <hbox>
 	    <button type="menu" label="Copy Attribution">
 	      <menupopup>
-		<menuitem label="as HTML" 
+		<menuitem label="as HTML"
 			  oncommand="gCcHandler.handleCopyHtml(event);"/>
-		<menuitem label="as Plain Text" 
+		<menuitem label="as Plain Text"
 			  oncommand="gCcHandler.handleCopyText(event);"/>
 	      </menupopup>
 	    </button>
@@ -64,7 +64,7 @@
       <box id="ccffext-popup-license-band" flex="1" />
       <browser id="ccffext-license-frame" name="ccffext-license-frame"
 	       type="content" height="0" width="0" />
-      
+
     </panel>
   </popupset>
 
